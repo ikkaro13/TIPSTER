@@ -116,15 +116,18 @@ def get_matches():
         else:
             print("Consultando a The Odds API...")
             url = f"https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/?apiKey={API_KEY}&regions=eu&markets=h2h,totals,spreads"
-            response = requests.get(url, verify=False)
-            
-            if response.status_code != 200:
-                print(f"La API TheOddsAPI devolvió error {response.status_code}. Usando Mock Data de demostración.")
-                data = [] # Forzar mock data
-            else:
-                data = response.json()
-                ODDS_CACHE["timestamp"] = current_time
-                ODDS_CACHE["data"] = data
+            try:
+                response = requests.get(url, verify=False, timeout=5)
+                if response.status_code != 200:
+                    print(f"La API TheOddsAPI devolvió error {response.status_code}. Usando Mock Data.")
+                    data = []
+                else:
+                    data = response.json()
+                    ODDS_CACHE["timestamp"] = current_time
+                    ODDS_CACHE["data"] = data
+            except requests.exceptions.RequestException as e:
+                print(f"Bloqueo de red detectado (PythonAnywhere Free Tier). Usando Mock Data de demostración. Error: {e}")
+                data = []
             
         processed_matches = []
         
