@@ -1,0 +1,18 @@
+{
+    "Argentina": 2155, "France": 2115, "Brazil": 2095, "England": 2050, "Belgium": 1980,
+    "Portugal": 2040, "Netherlands": 2035, "Spain": 2020, "Italy": 1960, "Croatia": 1985,
+    "Uruguay": 1990, "Germany": 1985, "Colombia": 1975, "Mexico": 2015, "USA": 1965, "United States": 1965,
+    "Switzerland": 1985, "Senegal": 1955, "Morocco": 1965, "Japan": 1960, "Denmark": 1940,
+    "Iran": 1920, "Ecuador": 1930, "South Korea": 1925, "Peru": 1890, "Serbia": 1895,
+    "Poland": 1890, "Ukraine": 1905, "Sweden": 1895, "Wales": 1880, "Chile": 1875,
+    "Australia": 1885, "Austria": 1875, "Hungary": 1860, "Turkey": 1870, "Czech Republic": 1850,
+    "Scotland": 1845, "Cameroon": 1840, "Nigeria": 1850, "Egypt": 1835, "Tunisia": 1825,
+    "Algeria": 1820, "Mali": 1815, "Ivory Coast": 1825, "Canada": 1840, "Costa Rica": 1800,
+    "Panama": 1795, "Jamaica": 1790, "Saudi Arabia": 1780, "Qatar": 1775, "Iraq": 1770,
+    "UAE": 1765, "Norway": 1880, "Venezuela": 1840, "Paraguay": 1850, "Bolivia": 1740,
+    "Greece": 1845, "Romania": 1835, "Slovakia": 1820, "Ireland": 1810, "Finland": 1800,
+    "Iceland": 1790, "Northern Ireland": 1780, "Bosnia and Herzegovina": 1770,
+    "Ghana": 1790, "South Africa": 1820, "DR Congo": 1770, "Burkina Faso": 1760,
+    "Uzbekistan": 1765, "Oman": 1750, "China": 1740, "Syria": 1730, "Bahrain": 1720,
+    "Honduras": 1740, "El Salvador": 1720, "Haiti": 1710, "New Zealand": 1755
+}
