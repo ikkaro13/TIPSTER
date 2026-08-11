@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://192.168.1.14:8000";
+let API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+if (typeof window !== "undefined") {
+  API_BASE = `http://${window.location.hostname}:8000`;
+}
 
 interface Portfolio {
   bankroll: number;
