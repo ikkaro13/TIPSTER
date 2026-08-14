@@ -116,6 +116,51 @@ class ValueAggregator:
                 
         return "NO BET (Sin Valor Matemático > 3%)", 0
 
+    def evaluate_safe(self, current_pick, confidence, context):
+        """
+        El 'Ladrillo'. Busca el mercado con mayor probabilidad absoluta que tenga una cuota mínima de 1.60.
+        Ignora por completo el Edge matemático.
+        """
+        odds = context.get('odds', {})
+        probs = context.get('probs', {})
+        
+        market_map = {
+            "Gana Local": "home",
+            "Empate": "draw",
+            "Gana Visita": "away",
+            "Más de 1.5 Goles": "over_1_5",
+            "Más de 2.5 Goles": "over_2_5",
+            "Menos de 3.5 Goles": "under_3_5",
+            "Ambos Anotan (SÍ)": "btts_yes",
+            "Ambos Anotan (NO)": "btts_no",
+            "Menos de 2.5 Goles": "under_2_5",
+        }
+        
+        valid_safe_markets = {}
+        for market_desc, key in market_map.items():
+            if key in odds and key in probs:
+                try:
+                    o = float(odds[key])
+                    p = float(probs[key])
+                except (ValueError, TypeError):
+                    continue
+                
+                # REGLA DEL LADRILLO: Cuota mínima de 1.60
+                if o >= 1.60:
+                    valid_safe_markets[market_desc] = p
+                    
+        if not valid_safe_markets:
+            return "NO HAY SAFE PICK (Ningún mercado seguro >= 1.60)", 0
+            
+        best_safe_desc = max(valid_safe_markets, key=valid_safe_markets.get)
+        best_safe_prob = valid_safe_markets[best_safe_desc]
+        
+        # Opcionalmente, agregar DO (Doble Oportunidad) si tenemos cuotas de DO y cumplen >= 1.60
+        # Por simplicidad, tomamos el mejor de los principales.
+        
+        return f"{best_safe_desc} (Cuota >= 1.60)", int(best_safe_prob)
+
+
 class EvidenceAggregator:
     def __init__(self):
         # Asignación de pesos dinámicos por regla
@@ -194,12 +239,20 @@ class EvidenceAggregator:
                 confidence = 0
 
         # Paso Final: Evaluar Apuestas de Valor si existen cuotas
+        value_pick, value_confidence = final_pick, confidence
+        safe_pick, safe_confidence = "NO BET", 0
+        
         if 'odds' in context and 'probs' in context:
-            final_pick, confidence = self.value_aggregator.evaluate_value(final_pick, confidence, context)
+            # Francotirador (Valor)
+            value_pick, value_confidence = self.value_aggregator.evaluate_value(final_pick, confidence, context)
+            # Ladrillo (Seguro/Banker)
+            safe_pick, safe_confidence = self.value_aggregator.evaluate_safe(final_pick, confidence, context)
 
         return {
-            "pick": final_pick,
-            "confidence": confidence,
+            "value_pick": value_pick,
+            "value_confidence": value_confidence,
+            "safe_pick": safe_pick,
+            "safe_confidence": safe_confidence,
             "total_score": round(total_actual_score, 1),
             "is_conflicted": is_conflicted
         }
@@ -210,6 +263,15 @@ class Hermes:
         self.aggregator = EvidenceAggregator()
 
     def analyze(self, context: dict):
+        # Sanitizar strings vacíos
+        for k, v in context.get('odds', {}).items():
+            if v == "" or v is None:
+                context['odds'][k] = 0
+                
+        for k, v in context.get('probs', {}).items():
+            if v == "" or v is None:
+                context['probs'][k] = 0
+                
         results = []
         
         for rule in self.rules:
@@ -224,9 +286,9 @@ class Hermes:
         aggregation = self.aggregator.aggregate(results, context)
         
         # Stake Engine (1 Unidad = 100 por defecto, pero dejaremos que el frontend decida el valor base de la unidad)
-        # Aquí solo sugerimos las Unidades
-        conf = aggregation["confidence"]
-        if "NO BET" in aggregation["pick"]:
+        # Aquí solo sugerimos las Unidades en base al pick de Valor
+        conf = aggregation["value_confidence"]
+        if "NO BET" in aggregation["value_pick"]:
             recommended_units = 0
         elif conf >= 80:
             recommended_units = 2.0
@@ -238,8 +300,12 @@ class Hermes:
             recommended_units = 0.5
             
         return {
-            "pick": aggregation["pick"],
-            "confidence": aggregation["confidence"],
+            "pick": aggregation["value_pick"], # Por retrocompatibilidad con componentes antiguos si los hay
+            "confidence": aggregation["value_confidence"],
+            "value_pick": aggregation["value_pick"],
+            "value_confidence": aggregation["value_confidence"],
+            "safe_pick": aggregation["safe_pick"],
+            "safe_confidence": aggregation["safe_confidence"],
             "total_score": aggregation["total_score"],
             "is_conflicted": aggregation["is_conflicted"],
             "recommended_units": recommended_units,

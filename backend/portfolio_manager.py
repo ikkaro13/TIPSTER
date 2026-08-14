@@ -48,7 +48,7 @@ def reset_bankroll(new_amount):
     conn.close()
     return {"status": "success", "new_bankroll": new_amount}
 
-def place_bet(match_id, pick, odds, stake, evidence_snapshot=None):
+def place_bet(match_id, pick, odds, stake, evidence_snapshot=None, bet_type="PRE"):
     conn = get_db_connection()
     cursor = conn.cursor()
     
@@ -69,9 +69,9 @@ def place_bet(match_id, pick, odds, stake, evidence_snapshot=None):
             cursor.execute("INSERT INTO portfolio (key, value) VALUES ('bankroll', ?)", (new_bankroll,))
             
         cursor.execute('''
-            INSERT INTO bets (id, match_id, pick, odds, stake, status, profit, evidence_snapshot)
-            VALUES (?, ?, ?, ?, ?, 'OPEN', 0, ?)
-        ''', (bet_id, match_id, pick, odds, stake, evidence_snapshot))
+            INSERT INTO bets (id, match_id, pick, odds, stake, status, profit, evidence_snapshot, created_at, bet_type)
+            VALUES (?, ?, ?, ?, ?, 'OPEN', 0, ?, datetime('now'), ?)
+        ''', (bet_id, match_id, pick, odds, stake, evidence_snapshot, bet_type))
         
         conn.commit()
         return {"status": "success", "bet_id": bet_id, "new_bankroll": new_bankroll}

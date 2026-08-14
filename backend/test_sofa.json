@@ -1,0 +1,225 @@
+{
+  "eventState": {},
+  "tournament": {
+    "name": "CONCACAF Central American Cup, Group A",
+    "slug": "concacaf-central-american-cup-group-a",
+    "category": {
+      "name": "North & Central America",
+      "slug": "north-central-america",
+      "sport": {
+        "name": "Football",
+        "slug": "football",
+        "id": 1
+      },
+      "priority": 15,
+      "country": {},
+      "id": 1469,
+      "flag": "north-and-central-america",
+      "fieldTranslations": {
+        "nameTranslation": {
+          "ar": "\u0623\u0645\u0631\u064a\u0643\u0627 \u0627\u0644\u0634\u0645\u0627\u0644\u064a\u0629 \u0648\u0627\u0644\u0648\u0633\u0637\u0649",
+          "ru": "\u0421\u0435\u0432\u0435\u0440\u043d\u0430\u044f \u0438 \u0426\u0435\u043d\u0442\u0440\u0430\u043b\u044c\u043d\u0430\u044f \u0410\u043c\u0435\u0440\u0438\u043a\u0430"
+        },
+        "shortNameTranslation": {}
+      }
+    },
+    "uniqueTournament": {
+      "name": "CONCACAF Central American Cup",
+      "slug": "concacaf-central-american-cup",
+      "category": {
+        "name": "North & Central America",
+        "slug": "north-central-america",
+        "sport": {
+          "name": "Football",
+          "slug": "football",
+          "id": 1
+        },
+        "priority": 15,
+        "country": {},
+        "id": 1469,
+        "flag": "north-and-central-america",
+        "fieldTranslations": {
+          "nameTranslation": {
+            "ar": "\u0623\u0645\u0631\u064a\u0643\u0627 \u0627\u0644\u0634\u0645\u0627\u0644\u064a\u0629 \u0648\u0627\u0644\u0648\u0633\u0637\u0649",
+            "ru": "\u0421\u0435\u0432\u0435\u0440\u043d\u0430\u044f \u0438 \u0426\u0435\u043d\u0442\u0440\u0430\u043b\u044c\u043d\u0430\u044f \u0410\u043c\u0435\u0440\u0438\u043a\u0430"
+          },
+          "shortNameTranslation": {}
+        }
+      },
+      "userCount": 5829,
+      "hasPerformanceGraphFeature": false,
+      "country": {},
+      "id": 20695,
+      "hasEventPlayerStatistics": false,
+      "displayInverseHomeAwayTeams": false,
+      "fieldTranslations": {
+        "nameTranslation": {
+          "ar": "\u0643\u0623\u0633 \u0623\u0645\u0631\u064a\u0643\u0627 \u0627\u0644\u0648\u0633\u0637\u0649 \u0643\u0648\u0646\u0643\u0627\u0643\u0627\u0641",
+          "bn": "\u0995\u09a8\u0995\u09be\u0995\u09be\u09ab \u09b8\u09c7\u09a8\u09cd\u099f\u09cd\u09b0\u09be\u09b2 \u0986\u09ae\u09c7\u09b0\u09bf\u0995\u09be\u09a8 \u0995\u09be\u09aa",
+          "hi": "\u0915\u094b\u0928\u0915\u093e\u0915\u0948\u092b\u093c \u0938\u0947\u0902\u091f\u094d\u0930\u0932 \u0905\u092e\u0947\u0930\u093f\u0915\u0928 \u0915\u092a",
+          "es": "Copa Centroamericana",
+          "es-la": "Copa Centroamericana",
+          "ru": "\u041a\u0443\u0431\u043e\u043a \u0426\u0435\u043d\u0442\u0440\u0430\u043b\u044c\u043d\u043e\u0439 \u0410\u043c\u0435\u0440\u0438\u043a\u0438 \u041a\u041e\u041d\u041a\u0410\u041a\u0410\u0424"
+        },
+        "shortNameTranslation": {}
+      }
+    },
+    "priority": 0,
+    "isGroup": true,
+    "groupName": "Group A",
+    "groupSign": "A",
+    "isLive": false,
+    "id": 117745,
+    "fieldTranslations": {
+      "nameTranslation": {
+        "ar": "\u0643\u0623\u0633 \u0623\u0645\u0631\u064a\u0643\u0627 \u0627\u0644\u0648\u0633\u0637\u0649 - \u0627\u0644\u0643\u0648\u0646\u0643\u0627\u0643\u0627\u0641\u060c \u0627\u0644\u0645\u062c\u0645\u0648\u0639\u0629 A",
+        "bn": "\u0995\u09a8\u0995\u09be\u0995\u09be\u09ab \u09b8\u09c7\u09a8\u09cd\u099f\u09cd\u09b0\u09be\u09b2 \u0986\u09ae\u09c7\u09b0\u09bf\u0995\u09be\u09a8 \u0995\u09be\u09aa, \u0997\u09cd\u09b0\u09c1\u09aa \u098f",
+        "hi": "\u0915\u0949\u0928\u0915\u0948\u0915\u093e\u092b\u093c \u0938\u0947\u0902\u091f\u094d\u0930\u0932 \u0905\u092e\u0947\u0930\u093f\u0915\u0928 \u0915\u092a, \u0917\u094d\u0930\u0941\u092a \u090f",
+        "es": "Copa Centroamericana, Grupo A",
+        "es-la": "Copa Centroamericana, Grupo A",
+        "ru": "\u041a\u0443\u0431\u043e\u043a \u0426\u0435\u043d\u0442\u0440\u0430\u043b\u044c\u043d\u043e\u0439 \u0410\u043c\u0435\u0440\u0438\u043a\u0438 \u041a\u041e\u041d\u041a\u0410\u041a\u0410\u0424, \u0413\u0440\u0443\u043f\u043f\u0430 A"
+      },
+      "shortNameTranslation": {}
+    }
+  },
+  "season": {
+    "name": "CONCACAF Central American Cup 2026",
+    "year": "2026",
+    "editor": false,
+    "seasonCoverageInfo": {
+      "editorCoverageLevel": 3
+    },
+    "id": 95751
+  },
+  "roundInfo": {
+    "round": 3
+  },
+  "customId": "NMjsJoZb",
+  "status": {
+    "code": 31,
+    "description": "Halftime",
+    "type": "inprogress"
+  },
+  "homeTeam": {
+    "name": "CD Luis \u00c1ngel Firpo",
+    "slug": "c-d-luis-angel-firpo",
+    "shortName": "L.A. Firpo",
+    "gender": "M",
+    "sport": {
+      "name": "Football",
+      "slug": "football",
+      "id": 1
+    },
+    "userCount": 6023,
+    "nameCode": "LAF",
+    "disabled": false,
+    "national": false,
+    "type": 0,
+    "country": {
+      "alpha2": "SV",
+      "alpha3": "SLV",
+      "name": "El Salvador",
+      "slug": "el-salvador"
+    },
+    "id": 24388,
+    "subTeams": [],
+    "teamColors": {
+      "primary": "#0000ff",
+      "secondary": "#ffffff",
+      "text": "#ffffff"
+    },
+    "fieldTranslations": {
+      "nameTranslation": {
+        "ar": "\u0633\u064a \u062f\u064a \u0644\u0648\u064a\u0633 \u0623\u0646\u062e\u064a\u0644 \u0641\u064a\u0631\u067e\u0648",
+        "ru": "\u041a\u0414 \u041b\u0443\u0438\u0441 \u0410\u043d\u0445\u0435\u043b\u044c \u0424\u0438\u0440\u043f\u043e"
+      },
+      "shortNameTranslation": {
+        "ar": "\u0644.\u0623. \u0641\u064a\u0631\u067e\u0648",
+        "ru": "\u041b.\u0410. \u0424\u0438\u0440\u043f\u043e"
+      }
+    }
+  },
+  "awayTeam": {
+    "name": "Diriang\u00e9n FC",
+    "slug": "diriangen-fc",
+    "shortName": "Diriang\u00e9n FC",
+    "gender": "M",
+    "sport": {
+      "name": "Football",
+      "slug": "football",
+      "id": 1
+    },
+    "userCount": 6073,
+    "nameCode": "DIR",
+    "national": false,
+    "type": 0,
+    "country": {
+      "alpha2": "NI",
+      "alpha3": "NIC",
+      "name": "Nicaragua",
+      "slug": "nicaragua"
+    },
+    "id": 248234,
+    "subTeams": [],
+    "teamColors": {
+      "primary": "#000000",
+      "secondary": "#ffffff",
+      "text": "#ffffff"
+    },
+    "fieldTranslations": {
+      "nameTranslation": {
+        "ar": "\u062f\u064a\u0631\u064a\u0627\u0646\u063a\u064a\u0646 \u0625\u0641 \u0633\u064a",
+        "ru": "\u0414\u0438\u0440\u0438\u0430\u043d\u0433\u0435\u043d"
+      },
+      "shortNameTranslation": {
+        "ar": "\u062f\u064a\u0631\u064a\u0627\u0646\u063a\u064a\u0646 \u0625\u0641 \u0633\u064a"
+      }
+    }
+  },
+  "homeScore": {
+    "current": 2,
+    "display": 2,
+    "period1": 2
+  },
+  "awayScore": {
+    "current": 0,
+    "display": 0,
+    "period1": 0
+  },
+  "time": {
+    "periodLength": 2700,
+    "overtimeLength": 900,
+    "totalPeriodCount": 2,
+    "currentPeriodStartTimestamp": 1786674008,
+    "lastPeriodEndTimestamp": 1786676060
+  },
+  "changes": {
+    "changes": [
+      "time.currentPeriodStart"
+    ],
+    "changeTimestamp": 1786676888
+  },
+  "hasGlobalHighlights": false,
+  "crowdsourcingDataDisplayEnabled": false,
+  "id": 16277856,
+  "varInProgress": {
+    "homeTeam": false,
+    "awayTeam": false
+  },
+  "slug": "diriangen-fc-cd-luis-angel-firpo",
+  "startTimestamp": 1786672800,
+  "finalResultOnly": false,
+  "feedLocked": false,
+  "isEditor": false,
+  "eventFilters": {
+    "category": [
+      "club"
+    ],
+    "level": [
+      "pro"
+    ],
+    "gender": [
+      "M"
+    ]
+  }
+}

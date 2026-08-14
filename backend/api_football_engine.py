@@ -43,11 +43,32 @@ def make_api_request(endpoint):
             
     return None
 
+import json
+import os
+
+CACHE_FILE = "calendar_cache_persistent.json"
+
+def load_calendar_cache():
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r") as f:
+                return json.load(f)
+        except:
+            pass
+    return {}
+
+def save_calendar_cache(calendar_data):
+    try:
+        with open(CACHE_FILE, "w") as f:
+            json.dump(calendar_data, f)
+    except:
+        pass
+
 # Sistema de Caché Inteligente (Para ahorrar peticiones)
 # Se almacenan las respuestas y su timestamp
 CACHE = {
     'fixtures': {'data': [], 'timestamp': 0},
-    'calendar': {'data': [], 'timestamp': 0, 'date': ''},
+    'calendar': load_calendar_cache(),
     'stats': {},
     'odds': {}
 }
@@ -80,10 +101,11 @@ def get_daily_fixtures(date_str, timezone_str="America/Mexico_City"):
     """ Obtiene todos los partidos para una fecha dada (YYYY-MM-DD) """
     current_time = time.time()
     
-    # Usar caché de 1 hora para el calendario del día
-    if CACHE['calendar']['date'] == date_str and (current_time - CACHE['calendar']['timestamp']) < 3600:
-        print("[API-Football] Usando caché de Calendario")
-        return CACHE['calendar']['data']
+    # Usar caché de 10 minutos para el calendario (así detecta cuando finalizan los partidos)
+    if date_str in CACHE['calendar']:
+        if current_time - CACHE['calendar'][date_str]['timestamp'] < 600:
+            print("[API-Football] Usando caché de Calendario")
+            return CACHE['calendar'][date_str]['data']
         
     print(f"[API-Football] Petición a /fixtures?date={date_str}")
     try:
@@ -91,9 +113,16 @@ def get_daily_fixtures(date_str, timezone_str="America/Mexico_City"):
         data = make_api_request(f"/fixtures?date={date_str}&timezone={timezone_str}")
         if data:
             data = data.get('response', [])
-            CACHE['calendar']['data'] = data
-            CACHE['calendar']['timestamp'] = current_time
-            CACHE['calendar']['date'] = date_str
+            # Guardar el día actual y mantener máximo 3 días en memoria
+            CACHE['calendar'][date_str] = {
+                'data': data,
+                'timestamp': current_time
+            }
+            if len(CACHE['calendar']) > 3:
+                oldest = min(CACHE['calendar'].keys(), key=lambda k: CACHE['calendar'][k]['timestamp'])
+                del CACHE['calendar'][oldest]
+                
+            save_calendar_cache(CACHE['calendar'])
             return data
     except Exception as e:
         print(f"Error fetching daily fixtures: {e}")

@@ -53,28 +53,35 @@ def get_live_stats(mock=False, match_id=None):
             
         events = res.json().get('events', [])
         
-        # Fuzzy Match Mejorado
-        home_words = home_name.lower().split()
-        away_words = away_name.lower().split()
+        # Fuzzy Match Mejorado (Puntuación por solapamiento de palabras)
+        home_words = set(home_name.lower().split())
+        away_words = set(away_name.lower().split())
         
-        target_word_home = home_words[0] if len(home_words) > 0 else ""
-        if len(target_word_home) < 4 and len(home_words) > 1:
-             target_word_home = home_words[1]
-             
-        target_word_away = away_words[0] if len(away_words) > 0 else ""
-        if len(target_word_away) < 4 and len(away_words) > 1:
-             target_word_away = away_words[1]
-             
-        sofascore_event_id = None
+        best_match_id = None
+        best_score = 0
+        
         for e in events:
             shome = e.get('homeTeam', {}).get('name', '').lower()
             saway = e.get('awayTeam', {}).get('name', '').lower()
             
-            # Buscar coincidencia cruzada o directa
-            if (target_word_home in shome or target_word_home in saway) or \
-               (target_word_away in shome or target_word_away in saway):
-                sofascore_event_id = e.get('id')
-                break
+            shome_words = set(shome.split())
+            saway_words = set(saway.split())
+            
+            # Score is based on how many words intersect between home/home and away/away
+            score_home = len(home_words.intersection(shome_words))
+            score_away = len(away_words.intersection(saway_words))
+            
+            # Cross-check just in case home/away are flipped
+            cross_score_home = len(home_words.intersection(saway_words))
+            cross_score_away = len(away_words.intersection(shome_words))
+            
+            total_score = max(score_home + score_away, cross_score_home + cross_score_away)
+            
+            if total_score > best_score and total_score >= 2: # At least 2 words must match
+                best_score = total_score
+                best_match_id = e.get('id')
+                
+        sofascore_event_id = best_match_id
                 
         if not sofascore_event_id:
             print(f"[SofaScraper] Evento no encontrado en SofaScore para: {home_name}")
@@ -128,13 +135,26 @@ def get_live_stats(mock=False, match_id=None):
                                 
         # Calculate Live Expected Goals (xG)
         xg_live = (stats_data['dangerous_attacks'] * 0.01) + (stats_data['shots_on_target'] * 0.11)
+
+        # Extract Live Score
+        live_home_score = target_event.get('homeScore', {}).get('current', 0)
+        live_away_score = target_event.get('awayScore', {}).get('current', 0)
+        live_score_str = f"{live_home_score}-{live_away_score}"
         
-        # Real goals (We can extract them from the API if needed, but for simplicity we assume 0 or we get them from the caller. 
-        # Actually sofascore API has goals, let's just assume we check xG_live against a threshold for now)
-        # We will pass xg_live in the return so athena_engine can decide.
-        
+        # Extract True Minute from SofaScore
+        status_code = target_event.get('status', {}).get('code', 0)
+        if status_code == 31: # Halftime
+            minute = 45
+        elif status_code in [6, 7]: # 1st or 2nd half
+            import time
+            start_ts = target_event.get('time', {}).get('currentPeriodStartTimestamp', 0)
+            if start_ts > 0:
+                elapsed = int((time.time() - start_ts) / 60)
+                minute = elapsed if status_code == 6 else 45 + elapsed
+
         return {
             "minute": minute,
+            "score": live_score_str,
             "stats": stats_data,
             "xg_live": round(xg_live, 2)
         }

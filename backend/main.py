@@ -56,6 +56,7 @@ class BetRequest(BaseModel):
     odds: float
     stake: float
     evidence_snapshot: str = None
+    bet_type: str = "PRE"
 
 class ResetBankrollRequest(BaseModel):
     new_amount: float
@@ -136,7 +137,7 @@ def api_recalculate_hermes(req: RecalculateHermesRequest):
 
 @app.post("/api/portfolio/bet")
 def api_place_bet(req: BetRequest):
-    return place_bet(req.match_id, req.pick, req.odds, req.stake, req.evidence_snapshot)
+    return place_bet(req.match_id, req.pick, req.odds, req.stake, req.evidence_snapshot, req.bet_type)
 
 @app.post("/api/portfolio/reset")
 def api_reset_bankroll(req: ResetBankrollRequest):

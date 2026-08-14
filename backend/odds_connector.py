@@ -130,11 +130,45 @@ def fetch_real_odds(fixture_id):
         
     return get_simulated_odds("Caliente.mx (Fallback Error)")
 
+import json
+import os
+
+ODDS_CACHE_FILE = "odds_cache_persistent.json"
+
+def load_odds_cache():
+    if os.path.exists(ODDS_CACHE_FILE):
+        try:
+            with open(ODDS_CACHE_FILE, "r") as f:
+                return json.load(f)
+        except:
+            pass
+    return {}
+
+def save_odds_cache(cache):
+    try:
+        with open(ODDS_CACHE_FILE, "w") as f:
+            json.dump(cache, f)
+    except:
+        pass
+
+ODDS_DATE_CACHE = load_odds_cache()
+
 def fetch_odds_by_date(date_str):
     """
     Extrae las cuotas reales de API-Football para TODOS los partidos de una fecha (YYYY-MM-DD).
     Devuelve un diccionario { fixture_id: odds_data }
     """
+    import time
+    current_time = time.time()
+    
+    # Caché de 2 horas (7200s) para cuotas históricas/pre-match
+    if date_str in ODDS_DATE_CACHE:
+        cache_entry = ODDS_DATE_CACHE[date_str]
+        if current_time - cache_entry['timestamp'] < 7200:
+            print(f"[OddsConnector] Usando caché PERSISTENTE de cuotas para {date_str}")
+            return cache_entry['data']
+            
+    print(f"[OddsConnector] Descargando cuotas frescas para {date_str}...")
     try:
         data = make_api_request(f"/odds?date={date_str}")
         if data and not data.get('errors') and data.get('response'):
@@ -157,6 +191,17 @@ def fetch_odds_by_date(date_str):
                         selected_bookie['name'] = f"{selected_bookie['name']} (Proxy Caliente)"
                     results[fixture_id] = parse_odds_data(selected_bookie)
                     
+            # Guardar en memoria
+            ODDS_DATE_CACHE[date_str] = {
+                'timestamp': current_time,
+                'data': results
+            }
+            # Mantener solo los últimos 3 días para evitar saturación de RAM/Disco
+            if len(ODDS_DATE_CACHE) > 3:
+                oldest = min(ODDS_DATE_CACHE.keys(), key=lambda k: ODDS_DATE_CACHE[k]['timestamp'])
+                del ODDS_DATE_CACHE[oldest]
+                
+            save_odds_cache(ODDS_DATE_CACHE)
             return results
     except Exception as e:
         print(f"[OddsConnector] Excepción al extraer cuotas globales: {e}")
