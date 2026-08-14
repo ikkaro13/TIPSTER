@@ -3,6 +3,8 @@ import os
 import joblib
 from scraper import get_corners_data
 from player_props import get_player_props
+from engine.hermes import Hermes
+
 
 CORNERS_DB = get_corners_data()
 ML_MODEL = None
@@ -35,15 +37,26 @@ def elo_to_expected_goals(home_elo, away_elo, home_advantage_points):
     away_xg = total_goals_avg * (1 - win_expectancy)
     return home_xg, away_xg
 
-def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0, current_home_goals=0, current_away_goals=0):
+def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=None):
     home_elo = elo_db.get(home_team, 1750)
     away_elo = elo_db.get(away_team, 1750)
     
     hosts = ["Mexico", "Canada", "USA", "United States"]
     home_advantage_points = 100 if home_team in hosts else 0
     
-    # xG para los 90 minutos
-    home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
+    # Si tenemos contexto histórico real, calculamos xG basados en goles promedio y forma
+    if historical_context and historical_context.get("home") and historical_context.get("away"):
+        home_stats = historical_context["home"]
+        away_stats = historical_context["away"]
+        
+        # Algoritmo de xG basado en Historial
+        # xG Local = (Goles Favor Local + Goles Contra Visita) / 2 + Ventaja Local(0.2)
+        home_expected_full = (home_stats["avg_goals_scored"] + away_stats["avg_goals_conceded"]) / 2.0 + 0.2
+        # xG Visita = (Goles Favor Visita + Goles Contra Local) / 2
+        away_expected_full = (away_stats["avg_goals_scored"] + home_stats["avg_goals_conceded"]) / 2.0
+    else:
+        # Fallback a la estimación basada en Elo
+        home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
     
     # --------------------------------------------
     # TIME DECAY (Decaimiento Temporal para En Vivo)
@@ -58,7 +71,10 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     prob_over_35 = 0.0; prob_under_35 = 0.0
     prob_btts_yes = 0.0; prob_btts_no = 0.0
     prob_home_minus_1_5 = 0.0; prob_away_minus_1_5 = 0.0
-    prob_ultra_home = 0.0; prob_ultra_away = 0.0
+    prob_exact_score = {}
+    
+    prob_ultra_home_btts_o35 = 0.0; prob_ultra_away_btts_o35 = 0.0
+    prob_ultra_draw_btts_o35 = 0.0; prob_ultra_home_to_nil_o25 = 0.0; prob_ultra_away_to_nil_o25 = 0.0
     
     best_exact_score = f"{current_home_goals} - {current_away_goals}"
     best_exact_score_prob = 0.0
@@ -99,11 +115,20 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             if (home_goals - away_goals) > 1.5: prob_home_minus_1_5 += prob
             if (away_goals - home_goals) > 1.5: prob_away_minus_1_5 += prob
                 
-            # ULTRA (Same Game Parlay)
-            if home_goals > away_goals and away_goals > 0 and (home_goals + away_goals) > 3.5:
-                prob_ultra_home += prob
-            if away_goals > home_goals and home_goals > 0 and (home_goals + away_goals) > 3.5:
-                prob_ultra_away += prob
+            # ULTRA (Súper Parlays Dinámicos)
+            if home_goals > away_goals:
+                if away_goals > 0 and (home_goals + away_goals) > 3.5:
+                    prob_ultra_home_btts_o35 += prob
+                elif away_goals == 0 and home_goals > 2.5:
+                    prob_ultra_home_to_nil_o25 += prob
+            elif away_goals > home_goals:
+                if home_goals > 0 and (home_goals + away_goals) > 3.5:
+                    prob_ultra_away_btts_o35 += prob
+                elif home_goals == 0 and away_goals > 2.5:
+                    prob_ultra_away_to_nil_o25 += prob
+            else:
+                if home_goals > 0 and (home_goals + away_goals) > 3.5:
+                    prob_ultra_draw_btts_o35 += prob
 
     # Ensamblaje con IA (Random Forest) si el modelo está disponible
     is_ensembled = False
@@ -125,30 +150,54 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     total = prob_home_win + prob_draw + prob_away_win
     if total == 0: total = 1.0 
     
+    # Evaluar contexto con el Oráculo de Hermes (Motor de Reglas)
+    ml_winner = None
+    if is_ensembled:
+        if ml_probs[2] > ml_probs[0] and ml_probs[2] > ml_probs[1]: ml_winner = home_team
+        elif ml_probs[0] > ml_probs[2] and ml_probs[0] > ml_probs[1]: ml_winner = away_team
+        else: ml_winner = "Empate"
+
+    poisson_winner = None
+    if prob_home_win > prob_away_win and prob_home_win > prob_draw: poisson_winner = home_team
+    elif prob_away_win > prob_home_win and prob_away_win > prob_draw: poisson_winner = away_team
+    else: poisson_winner = "Empate"
+
+    hermes = Hermes()
+    hermes_insight = hermes.analyze({
+        'home_team': home_team,
+        'away_team': away_team,
+        'home_elo': elo_db.get(home_team, 1500),
+        'away_elo': elo_db.get(away_team, 1500),
+        'home_xg': home_expected,
+        'away_xg': away_expected,
+        'ml_winner': ml_winner,
+        'poisson_winner': poisson_winner,
+        'historical_context': historical_context
+    })
+    
     # --------------------------------------------
     # DATOS ALTERNATIVOS: POISSON PARA CORNERS
     # --------------------------------------------
     corners_prediction = None
-    if home_team in CORNERS_DB and away_team in CORNERS_DB:
-        h_corners_for = CORNERS_DB[home_team]["for"]
-        h_corners_against = CORNERS_DB[home_team]["against"]
-        a_corners_for = CORNERS_DB[away_team]["for"]
-        a_corners_against = CORNERS_DB[away_team]["against"]
-        
-        # Promedio cruzado (Decaimiento temporal no aplica pre-match, pero si es en vivo, reducimos)
-        exp_home_corners = ((h_corners_for + a_corners_against) / 2) * remaining_ratio
-        exp_away_corners = ((a_corners_for + h_corners_against) / 2) * remaining_ratio
-        exp_total_corners = exp_home_corners + exp_away_corners
-        
-        # Poisson para Corners: Probabilidad de Menos de 9.5 (0 a 9)
-        prob_under_9_5 = sum(calculate_poisson(exp_total_corners, k) for k in range(10)) * 100
-        prob_over_9_5 = 100 - prob_under_9_5
-        
-        corners_prediction = {
-            "expected_total": round(exp_total_corners, 1),
-            "over_9_5_prob": round(prob_over_9_5, 1),
-            "under_9_5_prob": round(prob_under_9_5, 1)
-        }
+    h_corners_for = CORNERS_DB.get(home_team, {}).get("for", 5.0)
+    h_corners_against = CORNERS_DB.get(home_team, {}).get("against", 4.5)
+    a_corners_for = CORNERS_DB.get(away_team, {}).get("for", 4.8)
+    a_corners_against = CORNERS_DB.get(away_team, {}).get("against", 5.2)
+    
+    # Promedio cruzado
+    exp_home_corners = ((h_corners_for + a_corners_against) / 2) * remaining_ratio
+    exp_away_corners = ((a_corners_for + h_corners_against) / 2) * remaining_ratio
+    exp_total_corners = exp_home_corners + exp_away_corners
+    
+    # Poisson para Corners: Probabilidad de Menos de 9.5 (0 a 9)
+    prob_under_9_5 = sum(calculate_poisson(exp_total_corners, k) for k in range(10)) * 100
+    prob_over_9_5 = 100 - prob_under_9_5
+    
+    corners_prediction = {
+        "expected_total": round(exp_total_corners, 1),
+        "over_9_5_prob": round(prob_over_9_5, 1),
+        "under_9_5_prob": round(prob_under_9_5, 1)
+    }
     
     return {
         "home": (prob_home_win / total) * 100,
@@ -166,13 +215,19 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "away_minus_1_5": (prob_away_minus_1_5 / total) * 100,
         "exact_score": best_exact_score,
         "exact_score_prob": (best_exact_score_prob / total) * 100,
-        "ultra_home": (prob_ultra_home / total) * 100,
-        "ultra_away": (prob_ultra_away / total) * 100,
+        "ultras": {
+            "Gana Local + Ambos Anotan + Más 3.5 Goles": (prob_ultra_home_btts_o35 / total) * 100,
+            "Gana Visita + Ambos Anotan + Más 3.5 Goles": (prob_ultra_away_btts_o35 / total) * 100,
+            "Empate + Ambos Anotan + Más 3.5 Goles (Ej: 2-2)": (prob_ultra_draw_btts_o35 / total) * 100,
+            "Gana Local sin recibir Gol + Más 2.5 Goles": (prob_ultra_home_to_nil_o25 / total) * 100,
+            "Gana Visita sin recibir Gol + Más 2.5 Goles": (prob_ultra_away_to_nil_o25 / total) * 100,
+        },
         "corners": corners_prediction,
         "player_prop_home": get_player_props(home_team, home_expected),
         "player_prop_away": get_player_props(away_team, away_expected),
         "metrics": { "home_xg": round(home_expected, 2), "away_xg": round(away_expected, 2) },
-        "is_ensembled": is_ensembled
+        "is_ensembled": is_ensembled,
+        "hermes": hermes_insight
     }
 
 def find_value_bets(real_probs, bookmaker_odds):
@@ -204,14 +259,38 @@ def find_value_bets(real_probs, bookmaker_odds):
     
     # TIER 1: MAIN LINE
     best_safe_prob = 0; best_safe_pick = None; best_safe_price = 0
+    best_safe_bookie = ""; best_safe_edge = 0.0; best_safe_kelly = 0.1
     for name, p_percent, odds_info in markets:
+        price = odds_info.get("price", 0)
+        if price <= 1.0:
+            continue
+            
         if p_percent > best_safe_prob and p_percent >= 55.0:
             best_safe_prob = p_percent
             best_safe_pick = name
-            best_safe_price = odds_info.get("price", 0)
+            best_safe_price = price
+            best_safe_bookie = odds_info.get("bookie", "Desconocida")
             
+            if best_safe_price > 1.0:
+                p_decimal = p_percent / 100.0
+                b_decimal = 1.0 / best_safe_price
+                if p_decimal > b_decimal:
+                    best_safe_edge = (p_decimal - b_decimal) * 100
+                    k_frac = ((p_decimal * best_safe_price) - 1.0) / (best_safe_price - 1.0)
+                    best_safe_kelly = max(0.1, (k_frac * 0.25) * 100)
+                else:
+                    best_safe_edge = 0.0
+                    best_safe_kelly = 0.1
+                    
     if best_safe_pick:
-        analysis["main_line"] = { "pick": best_safe_pick, "prob": round(best_safe_prob, 1), "odds": best_safe_price }
+        analysis["main_line"] = { 
+            "pick": best_safe_pick, 
+            "prob": round(best_safe_prob, 1), 
+            "odds": best_safe_price,
+            "edge": round(best_safe_edge, 1),
+            "kelly_percent": round(best_safe_kelly, 2),
+            "bookmaker": best_safe_bookie
+        }
 
     # TIER 2: MEDIUM RISK
     best_edge = 0.0; best_val_pick = None; best_val_prob = 0.0; best_val_price = 0.0; best_val_bookie = ""
@@ -240,11 +319,19 @@ def find_value_bets(real_probs, bookmaker_odds):
     analysis["dreamer"] = { "pick": f"Marcador {real_probs['exact_score']}", "prob": round(es_prob, 1), "fair_odds": round(cuota_justa, 2) }
     
     # TIER 4: ULTRA
-    uh = real_probs["ultra_home"]; ua = real_probs["ultra_away"]
-    best_u_prob = max(uh, ua)
-    best_u_pick = "Gana Local + Ambos Anotan + Más 3.5 Goles" if uh > ua else "Gana Visita + Ambos Anotan + Más 3.5 Goles"
-    cuota_ultra = 100.0 / best_u_prob if best_u_prob > 0 else 0
-    analysis["ultra"] = { "pick": best_u_pick, "prob": round(best_u_prob, 1), "fair_odds": round(cuota_ultra, 2) }
+    ultras = real_probs.get("ultras", {})
+    if ultras:
+        best_u_pick = max(ultras, key=ultras.get)
+        best_u_prob = ultras[best_u_pick]
+        cuota_ultra = 100.0 / best_u_prob if best_u_prob > 0 else 0
+        analysis["ultra"] = { "pick": best_u_pick, "prob": round(best_u_prob, 1), "fair_odds": round(cuota_ultra, 2) }
+    else:
+        # Fallback para caché antiguo
+        uh = real_probs.get("ultra_home", 0); ua = real_probs.get("ultra_away", 0)
+        best_u_prob = max(uh, ua)
+        best_u_pick = "Gana Local + Ambos Anotan + Más 3.5 Goles" if uh > ua else "Gana Visita + Ambos Anotan + Más 3.5 Goles"
+        cuota_ultra = 100.0 / best_u_prob if best_u_prob > 0 else 0
+        analysis["ultra"] = { "pick": best_u_pick, "prob": round(best_u_prob, 1), "fair_odds": round(cuota_ultra, 2) }
         
     # DATOS ALTERNATIVOS (CORNERS)
     if real_probs.get("corners"):

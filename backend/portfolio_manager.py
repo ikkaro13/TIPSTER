@@ -31,34 +31,52 @@ def get_portfolio():
         "bets": bets
     }
 
-def place_bet(match_id, pick, odds, stake):
+def reset_bankroll(new_amount):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
-    row = cursor.fetchone()
-    bankroll = row['value'] if row else 10000.0
-    
-    if stake > bankroll:
-        conn.close()
-        return {"status": "error", "message": "Bankroll insuficiente"}
-        
-    new_bankroll = bankroll - stake
-    bet_id = f"bet_{len(get_portfolio()['bets']) + 1}"
-    
-    cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
+    # Update both bankroll and initial_bankroll
+    cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_amount,))
     if cursor.rowcount == 0:
-        cursor.execute("INSERT INTO portfolio (key, value) VALUES ('bankroll', ?)", (new_bankroll,))
+        cursor.execute("INSERT INTO portfolio (key, value) VALUES ('bankroll', ?)", (new_amount,))
         
-    cursor.execute('''
-        INSERT INTO bets (id, match_id, pick, odds, stake, status, profit)
-        VALUES (?, ?, ?, ?, ?, 'OPEN', 0)
-    ''', (bet_id, match_id, pick, odds, stake))
-    
+    cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'initial_bankroll'", (new_amount,))
+    if cursor.rowcount == 0:
+        cursor.execute("INSERT INTO portfolio (key, value) VALUES ('initial_bankroll', ?)", (new_amount,))
+        
     conn.commit()
     conn.close()
+    return {"status": "success", "new_bankroll": new_amount}
+
+def place_bet(match_id, pick, odds, stake, evidence_snapshot=None):
+    conn = get_db_connection()
+    cursor = conn.cursor()
     
-    return {"status": "success", "bet_id": bet_id, "new_bankroll": new_bankroll}
+    try:
+        cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+        row = cursor.fetchone()
+        bankroll = row['value'] if row else 10000.0
+        
+        if stake > bankroll:
+            return {"status": "error", "message": "Bankroll insuficiente"}
+            
+        new_bankroll = bankroll - stake
+        import uuid
+        bet_id = f"bet_{uuid.uuid4().hex[:8]}"
+        
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
+        if cursor.rowcount == 0:
+            cursor.execute("INSERT INTO portfolio (key, value) VALUES ('bankroll', ?)", (new_bankroll,))
+            
+        cursor.execute('''
+            INSERT INTO bets (id, match_id, pick, odds, stake, status, profit, evidence_snapshot)
+            VALUES (?, ?, ?, ?, ?, 'OPEN', 0, ?)
+        ''', (bet_id, match_id, pick, odds, stake, evidence_snapshot))
+        
+        conn.commit()
+        return {"status": "success", "bet_id": bet_id, "new_bankroll": new_bankroll}
+    finally:
+        conn.close()
 
 def settle_bet(bet_id, result_status):
     conn = get_db_connection()
@@ -89,6 +107,88 @@ def settle_bet(bet_id, result_status):
         
     cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
     cursor.execute("UPDATE bets SET status = ?, profit = ? WHERE id = ?", (result_status, profit, bet_id))
+    
+    conn.commit()
+    conn.close()
+    
+    return {"status": "success", "new_bankroll": bankroll}
+
+def delete_bet(bet_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
+    bet = cursor.fetchone()
+    
+    if not bet:
+        conn.close()
+        return {"status": "error", "message": "Apuesta no encontrada"}
+        
+    cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+    row = cursor.fetchone()
+    bankroll = row['value'] if row else 10000.0
+    
+    stake = bet['stake']
+    odds = bet['odds']
+    status = bet['status']
+    
+    # Revertir el bankroll según el estado en el que estaba la apuesta
+    if status == 'OPEN':
+        bankroll += stake
+    elif status == 'WON':
+        bankroll = bankroll - (stake * odds) + stake
+    elif status == 'LOST':
+        bankroll += stake
+    elif status == 'REFUND':
+        # bankroll remained unchanged when refunded (stake was already returned)
+        # Actually, when settled as REFUND, bankroll += stake is done.
+        # So to undo it, we shouldn't do anything because the stake was returned, 
+        # so if we delete the bet, it's as if the bet never happened. 
+        # Wait, if we never placed the bet, we would have stake in bankroll.
+        # After place_bet: bankroll - stake
+        # After REFUND: bankroll + stake
+        # Result = bankroll. So if we delete it now, we don't need to change the bankroll!
+        pass
+        
+    cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
+    cursor.execute("DELETE FROM bets WHERE id = ?", (bet_id,))
+    
+    conn.commit()
+    conn.close()
+    
+    return {"status": "success", "new_bankroll": bankroll}
+
+def update_bet_odds(bet_id, new_odds):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
+    bet = cursor.fetchone()
+    
+    if not bet:
+        conn.close()
+        return {"status": "error", "message": "Apuesta no encontrada"}
+        
+    old_odds = bet['odds']
+    stake = bet['stake']
+    status = bet['status']
+    
+    cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+    row = cursor.fetchone()
+    bankroll = row['value'] if row else 10000.0
+    
+    profit = bet['profit']
+    
+    if status == 'WON':
+        # Revert the old win from bankroll
+        bankroll = bankroll - (stake * old_odds)
+        # Apply the new win
+        bankroll = bankroll + (stake * new_odds)
+        profit = (stake * new_odds) - stake
+        
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
+        
+    cursor.execute("UPDATE bets SET odds = ?, profit = ? WHERE id = ?", (new_odds, profit, bet_id))
     
     conn.commit()
     conn.close()

@@ -47,62 +47,38 @@ interface Match {
 
 const MatchCard = ({ initialMatch, onPlaceBet }: { initialMatch: Match, onPlaceBet: any }) => {
   const [match, setMatch] = useState(initialMatch);
-  const [liveMinute, setLiveMinute] = useState(0);
-  const [liveHomeGoals, setLiveHomeGoals] = useState(0);
-  const [liveAwayGoals, setLiveAwayGoals] = useState(0);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [arbCapital, setArbCapital] = useState(1000);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const [athenaData, setAthenaData] = useState<any>(null);
 
+  // Hook para cargar datos reales de ATHENA automáticamente y refrescar en vivo
   useEffect(() => {
+    const fetchAthena = async () => {
+      try {
+        const athRes = await fetch(`${API_BASE}/api/athena-live/${match.id}`);
+        const athData = await athRes.json();
+        if (athData.athena) {
+          setAthenaData(athData.athena);
+        }
+      } catch (e) {
+        console.error("Athena Live Error:", e);
+      }
+    };
+    
+    // Cargar inicial
+    fetchAthena();
+    
+    // Refrescar cada 60 segundos si el partido está en vivo
     let interval: NodeJS.Timeout;
-    if (isAutoPlaying && liveMinute < 90) {
-      interval = setInterval(() => {
-        setLiveMinute(m => {
-          const newMinute = m + 1;
-          
-          // Lógica de Goles Aleatorios basados en distribución muy básica
-          // (aprox. 1 gol cada 30-40 minutos por equipo)
-          if (Math.random() < 0.02) {
-             setLiveHomeGoals(g => g + 1);
-          } else if (Math.random() < 0.02) {
-             setLiveAwayGoals(g => g + 1);
-          }
-          
-          return newMinute;
-        });
-      }, 1500); // 1 minuto de partido = 1.5 segundos en la vida real
-    } else if (liveMinute >= 90) {
-      setIsAutoPlaying(false);
+    if (match.status === 'LIVE') {
+      interval = setInterval(fetchAthena, 60000);
     }
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, liveMinute]);
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [match.id, match.status]);
 
-  // Hook secundario: Cuando cambia el marcador/minuto en AutoPlay, llamar API
-  useEffect(() => {
-    if (isAutoPlaying) {
-      calculateLive();
-    }
-  }, [liveMinute, liveHomeGoals, liveAwayGoals]);
 
-  const calculateLive = async () => {
-    setIsCalculating(true);
-    try {
-      const res = await fetch(`${API_BASE}/api/live-analysis`, {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            homeTeam: match.homeTeam, awayTeam: match.awayTeam,
-            minute: liveMinute, homeGoals: liveHomeGoals, awayGoals: liveAwayGoals,
-            currentOdds: match.odds
-        })
-      });
-      const data = await res.json();
-      setMatch({ ...match, analysis: data.analysis, score: `${liveHomeGoals} - ${liveAwayGoals}` });
-    } catch (e) {
-      console.error(e);
-    }
-    setIsCalculating(false);
-  };
+  const liveMinute = parseInt(match.minute) || 0;
 
   return (
     <div className="match-card" style={{padding: '2rem'}}>
@@ -131,36 +107,84 @@ const MatchCard = ({ initialMatch, onPlaceBet }: { initialMatch: Match, onPlaceB
           🚨 ALERTA INSTITUCIONAL: Dinero Inteligente Detectado (Caída abrupta de Cuota)
         </div>
       )}
+      
+      {athenaData?.goal_alert && (
+        <div style={{background: '#fef3c7', color: '#b45309', padding: '0.6rem', borderRadius: '8px', textAlign: 'center', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem', border: '1px solid #fcd34d', boxShadow: '0 0 15px rgba(245, 158, 11, 0.2)'}}>
+          🔥 ALERTA ATHENA: Gol Inminente Detectado (Presión Extrema - Alta Probabilidad de Próximo Gol)
+        </div>
+      )}
 
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '1rem'}}>
+      {athenaData && (
+        <div className="athena-panel">
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+              <span style={{fontSize: '1.5rem'}}>🦉</span>
+              <h3 style={{margin: 0, color: '#f8fafc', letterSpacing: '1px'}}>ATHENA LIVE ENGINE v1.1</h3>
+            </div>
+            <div style={{background: athenaData.state === 'BET' ? '#10b981' : athenaData.state === 'WATCH' ? '#f59e0b' : athenaData.state === 'VALUE CANDIDATE' ? '#8b5cf6' : '#334155', padding: '0.4rem 1rem', borderRadius: '20px', fontWeight: 800, fontSize: '0.8rem', color: 'white', letterSpacing: '1px', boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>
+              ESTADO: {athenaData.state}
+            </div>
+          </div>
+          
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginTop: '1.5rem'}}>
+            <div className="athena-stat-box">
+              <div style={{color: '#94a3b8', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px'}}>GOAL PRESSURE INDEX (GPI)</div>
+              <div style={{fontSize: '2.5rem', fontWeight: 900, color: athenaData.gpi >= 60 ? '#ef4444' : '#38bdf8', marginTop: '0.5rem', textShadow: athenaData.gpi >= 60 ? '0 0 15px rgba(239, 68, 68, 0.4)' : 'none'}}>{athenaData.gpi}</div>
+              <div style={{fontSize: '0.75rem', color: '#cbd5e1'}}>Presión: {athenaData.reading}</div>
+            </div>
+            <div className="athena-stat-box">
+              <div style={{color: '#94a3b8', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px'}}>MOMENTUM (Δ)</div>
+              <div style={{fontSize: '2.5rem', fontWeight: 900, color: athenaData.momentum > 0 ? '#10b981' : '#ef4444', marginTop: '0.5rem', textShadow: athenaData.momentum > 0 ? '0 0 15px rgba(16, 185, 129, 0.4)' : 'none'}}>{athenaData.momentum > 0 ? '+' : ''}{athenaData.momentum}</div>
+              <div style={{fontSize: '0.75rem', color: '#cbd5e1'}}>Aceleración de Ataque</div>
+            </div>
+            <div className="athena-stat-box">
+              <div style={{color: '#94a3b8', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px'}}>RECOMENDACIÓN OVER 0.5 HT</div>
+              <div style={{fontSize: '1.2rem', fontWeight: 900, color: athenaData.state === 'BET' ? '#10b981' : '#94a3b8', marginTop: '1rem'}}>
+                {athenaData.state === 'BET' ? '🔥 ALERTA DE GOL' : 'ESPERAR'}
+              </div>
+            </div>
+          </div>
+           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '1rem'}}>
         
-        <div style={{background: 'linear-gradient(180deg, #dcfce7 0%, #f0fdf4 100%)', border: '1px solid #86efac', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
-          <div style={{color: '#047857', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🟢 MAIN LINE (SEGURA)</div>
+        <div style={{background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(16, 185, 129, 0.02)'}}>
+          <div style={{color: '#10b981', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🟢 MAIN LINE (SEGURA)</div>
           {match.analysis?.main_line ? (
             <div>
-              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#0f172a'}}>{match.analysis.main_line.pick}</div>
+              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#f8fafc'}}>{match.analysis.main_line.pick}</div>
               <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Prob: <span style={{color: '#047857', fontWeight: 700}}>{match.analysis.main_line.prob}%</span></span>
-                {match.analysis.main_line.odds > 0 && <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Cuota Inicial: {match.analysis.main_line.odds.toFixed(2)}</span>}
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Índice AVI: <span style={{color: '#10b981', fontWeight: 700}}>+{match.analysis.main_line.edge}%</span></span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Inversión: <span style={{color: '#f8fafc', fontWeight: 700}}>{match.analysis.main_line.kelly_percent}% Bank</span></span>
+                {match.analysis.main_line.bookmaker && (
+                  <span style={{color: '#94a3b8', fontSize: '0.85rem', fontWeight: 500, marginTop: '0.2rem'}}>Bookie: <span style={{color: '#f8fafc'}}>{match.analysis.main_line.bookmaker}</span></span>
+                )}
               </div>
+              <button 
+                onClick={() => onPlaceBet(match.id, `${match.homeTeam} vs ${match.awayTeam}: ${match.analysis.main_line?.pick}`, match.analysis.main_line?.odds, match.analysis.main_line?.kelly_percent)}
+                style={{marginTop: '1rem', width: '100%', padding: '0.6rem', background: '#10b981', color: '#111827', border: 'none', borderRadius: '6px', fontWeight: 800, cursor: 'pointer', transition: '0.2s', boxShadow: '0 0 10px rgba(16, 185, 129, 0.3)'}}
+              >
+                + Rastrear Apuesta
+              </button>
             </div>
           ) : (
             <div style={{color: '#475569', fontStyle: 'italic', fontSize: '0.9rem', marginTop: '1rem', fontWeight: 500}}>Sin línea segura.</div>
           )}
         </div>
 
-        <div style={{background: 'linear-gradient(180deg, #fef3c7 0%, #fffbeb 100%)', border: '1px solid #fcd34d', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
-          <div style={{color: '#b45309', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🟡 LÍNEA DE VALOR (EDGE)</div>
+        <div style={{background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(245, 158, 11, 0.02)'}}>
+          <div style={{color: '#f59e0b', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🟡 LÍNEA DE VALOR (AVI)</div>
           {match.analysis?.medium_risk ? (
             <div>
-              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#0f172a'}}>{match.analysis.medium_risk.pick}</div>
+              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#f8fafc'}}>{match.analysis.medium_risk.pick}</div>
               <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Edge Inicial: <span style={{color: '#d97706', fontWeight: 700}}>+{match.analysis.medium_risk.edge}%</span></span>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Inversión: <span style={{color: '#0f172a', fontWeight: 700}}>{match.analysis.medium_risk.kelly_percent}% Bank</span></span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Índice AVI: <span style={{color: '#f59e0b', fontWeight: 700}}>+{match.analysis.medium_risk.edge}%</span></span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Inversión: <span style={{color: '#f8fafc', fontWeight: 700}}>{match.analysis.medium_risk.kelly_percent}% Bank</span></span>
+                {match.analysis.medium_risk.bookmaker && (
+                  <span style={{color: '#94a3b8', fontSize: '0.85rem', fontWeight: 500, marginTop: '0.2rem'}}>Bookie: <span style={{color: '#f8fafc'}}>{match.analysis.medium_risk.bookmaker}</span></span>
+                )}
               </div>
               <button 
-                onClick={() => onPlaceBet(match.id, match.analysis.medium_risk?.pick, match.analysis.medium_risk?.odds, match.analysis.medium_risk?.kelly_percent)}
-                style={{marginTop: '1rem', width: '100%', padding: '0.5rem', background: '#d97706', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 700, cursor: 'pointer'}}
+                onClick={() => onPlaceBet(match.id, `${match.homeTeam} vs ${match.awayTeam}: ${match.analysis.medium_risk?.pick}`, match.analysis.medium_risk?.odds, match.analysis.medium_risk?.kelly_percent)}
+                style={{marginTop: '1rem', width: '100%', padding: '0.6rem', background: '#f59e0b', color: '#111827', border: 'none', borderRadius: '6px', fontWeight: 800, cursor: 'pointer', transition: '0.2s', boxShadow: '0 0 10px rgba(245, 158, 11, 0.3)'}}
               >
                 + Rastrear Apuesta
               </button>
@@ -171,15 +195,21 @@ const MatchCard = ({ initialMatch, onPlaceBet }: { initialMatch: Match, onPlaceB
         </div>
 
         {/* TIER: DATOS ALTERNATIVOS (CORNERS) */}
-        <div style={{background: 'linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 100%)', border: '1px solid #7dd3fc', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
-          <div style={{color: '#0369a1', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🔵 ALTERNATIVO (CORNERS)</div>
+        <div style={{background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(56, 189, 248, 0.02)'}}>
+          <div style={{color: '#38bdf8', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🔵 ALTERNATIVO (CORNERS)</div>
           {match.analysis?.corners_alert ? (
             <div>
-              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#0f172a'}}>{match.analysis.corners_alert.pick}</div>
+              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#f8fafc'}}>{match.analysis.corners_alert.pick}</div>
               <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Prob: <span style={{color: '#0369a1', fontWeight: 700}}>{match.analysis.corners_alert.prob}%</span></span>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Fair Odds: {match.analysis.corners_alert.fair_odds.toFixed(2)}</span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Prob: <span style={{color: '#38bdf8', fontWeight: 700}}>{match.analysis.corners_alert.prob}%</span></span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Fair Odds: {match.analysis.corners_alert.fair_odds.toFixed(2)}</span>
               </div>
+              <button 
+                onClick={() => onPlaceBet(match.id, `${match.homeTeam} vs ${match.awayTeam}: ${match.analysis.corners_alert?.pick}`, match.analysis.corners_alert?.fair_odds, 1)}
+                style={{marginTop: '1rem', width: '100%', padding: '0.6rem', background: '#38bdf8', color: '#111827', border: 'none', borderRadius: '6px', fontWeight: 800, cursor: 'pointer', transition: '0.2s', boxShadow: '0 0 10px rgba(56, 189, 248, 0.3)'}}
+              >
+                + Rastrear Apuesta
+              </button>
             </div>
           ) : (
             <div style={{color: '#475569', fontStyle: 'italic', fontSize: '0.9rem', marginTop: '1rem', fontWeight: 500}}>Sin predicción sólida.</div>
@@ -187,15 +217,15 @@ const MatchCard = ({ initialMatch, onPlaceBet }: { initialMatch: Match, onPlaceB
         </div>
 
         {/* TIER: PLAYER PROPS */}
-        <div style={{background: 'linear-gradient(180deg, #ffedd5 0%, #fff7ed 100%)', border: '1px solid #fdba74', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
-          <div style={{color: '#c2410c', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🎯 PLAYER PROPS</div>
+        <div style={{background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(139, 92, 246, 0.02)'}}>
+          <div style={{color: '#a78bfa', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🎯 PLAYER PROPS</div>
           {match.analysis?.player_prop ? (
             <div>
-              <div style={{fontSize: '1.1rem', fontWeight: 800, color: '#c2410c'}}>{match.analysis.player_prop.player}</div>
-              <div style={{fontSize: '1.1rem', fontWeight: 600, color: '#0f172a', marginTop: '0.3rem'}}>{match.analysis.player_prop.pick}</div>
+              <div style={{fontSize: '1.1rem', fontWeight: 800, color: '#a78bfa'}}>{match.analysis.player_prop.player}</div>
+              <div style={{fontSize: '1.1rem', fontWeight: 600, color: '#f8fafc', marginTop: '0.3rem'}}>{match.analysis.player_prop.pick}</div>
               <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Edge IA: <span style={{color: '#c2410c', fontWeight: 700}}>{match.analysis.player_prop.prob}%</span></span>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Fair Odds: {match.analysis.player_prop.fair_odds.toFixed(2)}</span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Edge IA: <span style={{color: '#a78bfa', fontWeight: 700}}>{match.analysis.player_prop.prob}%</span></span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Fair Odds: {match.analysis.player_prop.fair_odds.toFixed(2)}</span>
               </div>
             </div>
           ) : (
@@ -203,79 +233,468 @@ const MatchCard = ({ initialMatch, onPlaceBet }: { initialMatch: Match, onPlaceB
           )}
         </div>
 
-        <div style={{background: 'linear-gradient(180deg, #fee2e2 0%, #fef2f2 100%)', border: '1px solid #fca5a5', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
-          <div style={{color: '#b91c1c', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🔴 SOÑADORA (MARCADOR)</div>
+        <div style={{background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(239, 68, 68, 0.02)'}}>
+          <div style={{color: '#ef4444', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🔴 SOÑADORA (MARCADOR)</div>
           {match.analysis?.dreamer && (
             <div>
-              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#0f172a'}}>{match.analysis.dreamer.pick}</div>
+              <div style={{fontSize: '1.5rem', fontWeight: 800, color: '#f8fafc'}}>{match.analysis.dreamer.pick}</div>
               <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Prob: <span style={{color: '#b91c1c', fontWeight: 700}}>{match.analysis.dreamer.prob}%</span></span>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Cuota Justa: <span style={{color: '#0f172a', fontWeight: 700}}>{match.analysis.dreamer.fair_odds.toFixed(2)}</span></span>
+                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>ROI Histórico: <span style={{color: '#ef4444', fontWeight: 700}}>+{match.analysis.dreamer.prob}%</span></span>
+                {match.analysis.dreamer.odds !== undefined && match.analysis.dreamer.odds > 0 && <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Cuota: {match.analysis.dreamer.odds.toFixed(2)}</span>}
               </div>
             </div>
           )}
         </div>
-
-        <div style={{background: 'linear-gradient(180deg, #f3e8ff 0%, #faf5ff 100%)', border: '1px solid #d8b4fe', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
-          <div style={{color: '#7e22ce', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🟣 ULTRA (SÚPER PARLAY)</div>
-          {match.analysis?.ultra && (
-            <div>
-              <div style={{fontSize: '1.0rem', fontWeight: 700, color: '#0f172a', lineHeight: 1.2}}>{match.analysis.ultra.pick}</div>
-              <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Prob: <span style={{color: '#7e22ce', fontWeight: 700}}>{match.analysis.ultra.prob}%</span></span>
-                <span style={{color: '#334155', fontSize: '0.9rem', fontWeight: 500}}>Cuota Justa: <span style={{color: '#0f172a', fontWeight: 700}}>{match.analysis.ultra.fair_odds.toFixed(2)}</span></span>
-              </div>
-            </div>
-          )}
-        </div>
-
       </div>
-
-      <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#0f172a', borderRadius: '12px', border: '1px solid #334155' }}>
-          <h4 style={{ margin: '0 0 1.2rem 0', color: '#94a3b8', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{width: '8px', height: '8px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 8px #ef4444', animation: 'pulse 2s infinite'}}></div>
-            Laboratorio En Vivo (Time Decay)
-          </h4>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end' }}>
-              <div>
-                  <label style={{display:'block', fontSize:'0.8rem', color:'#cbd5e1', marginBottom:'0.4rem'}}>Minuto (0-90)</label>
-                  <input type="number" min="0" max="90" value={liveMinute} onChange={e => setLiveMinute(parseInt(e.target.value)||0)} style={{width:'80px', padding:'0.6rem', borderRadius:'6px', background:'#1e293b', border:'1px solid #475569', color:'white'}} />
-              </div>
-              <div>
-                  <label style={{display:'block', fontSize:'0.8rem', color:'#cbd5e1', marginBottom:'0.4rem'}}>Goles {match.homeTeam}</label>
-                  <input type="number" min="0" value={liveHomeGoals} onChange={e => setLiveHomeGoals(parseInt(e.target.value)||0)} style={{width:'80px', padding:'0.6rem', borderRadius:'6px', background:'#1e293b', border:'1px solid #475569', color:'white'}} />
-              </div>
-              <div>
-                  <label style={{display:'block', fontSize:'0.8rem', color:'#cbd5e1', marginBottom:'0.4rem'}}>Goles {match.awayTeam}</label>
-                  <input type="number" min="0" value={liveAwayGoals} onChange={e => setLiveAwayGoals(parseInt(e.target.value)||0)} style={{width:'80px', padding:'0.6rem', borderRadius:'6px', background:'#1e293b', border:'1px solid #475569', color:'white'}} />
-              </div>
-              <button 
-                  onClick={calculateLive} 
-                  disabled={isCalculating || isAutoPlaying} 
-                  style={{background: 'linear-gradient(90deg, #3b82f6 0%, #2563eb 100%)', color:'white', border:'none', padding:'0.6rem 1.2rem', borderRadius:'6px', cursor: (isCalculating || isAutoPlaying) ? 'not-allowed' : 'pointer', fontWeight:600, transition:'0.2s', opacity: (isCalculating || isAutoPlaying) ? 0.5 : 1}}
-              >
-                  Recalcular Manual
-              </button>
-              <button 
-                  onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                  style={{background: isAutoPlaying ? '#ef4444' : 'linear-gradient(90deg, #10b981 0%, #059669 100%)', color:'white', border:'none', padding:'0.6rem 1.2rem', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem'}}
-              >
-                  {isAutoPlaying ? '⏹️ Detener Simulación' : '▶️ Iniciar Partido Live'}
-              </button>
-          </div>
-          <p style={{color: '#64748b', fontSize: '0.75rem', marginTop: '1rem'}}>
-            El motor automático avanzará el reloj 1 minuto cada 1.5 segundos, inyectando goles basándose en la varianza matemática (Poisson) y recalculando todo el panel en tiempo real.
-          </p>
       </div>
+      )}
     </div>
   );
 }
 
+const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void }) => {
+  const [loadingInsights, setLoadingInsights] = useState(true);
+  const [insights, setInsights] = useState<any>(null);
+  
+  // Manual Odds State (Persistent per match)
+  const [oddsHome, setOddsHome] = useState(() => localStorage.getItem(`odds_home_${cMatch.id}`) || '');
+  const [oddsDraw, setOddsDraw] = useState(() => localStorage.getItem(`odds_draw_${cMatch.id}`) || '');
+  const [oddsAway, setOddsAway] = useState(() => localStorage.getItem(`odds_away_${cMatch.id}`) || '');
+  const [oddsOver25, setOddsOver25] = useState(() => localStorage.getItem(`odds_o25_${cMatch.id}`) || '');
+  const [oddsUnder25, setOddsUnder25] = useState(() => localStorage.getItem(`odds_u25_${cMatch.id}`) || '');
+  const [oddsBttsYes, setOddsBttsYes] = useState(() => localStorage.getItem(`odds_byes_${cMatch.id}`) || '');
+  const [oddsBttsNo, setOddsBttsNo] = useState(() => localStorage.getItem(`odds_bno_${cMatch.id}`) || '');
+  const [oddsExactScore, setOddsExactScore] = useState(() => localStorage.getItem(`odds_exact_${cMatch.id}`) || '');
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [realOdds, setRealOdds] = useState('');
+
+  // Save to local storage on change
+  useEffect(() => {
+    localStorage.setItem(`odds_home_${cMatch.id}`, oddsHome);
+    localStorage.setItem(`odds_draw_${cMatch.id}`, oddsDraw);
+    localStorage.setItem(`odds_away_${cMatch.id}`, oddsAway);
+    localStorage.setItem(`odds_o25_${cMatch.id}`, oddsOver25);
+    localStorage.setItem(`odds_u25_${cMatch.id}`, oddsUnder25);
+    localStorage.setItem(`odds_byes_${cMatch.id}`, oddsBttsYes);
+    localStorage.setItem(`odds_bno_${cMatch.id}`, oddsBttsNo);
+    localStorage.setItem(`odds_exact_${cMatch.id}`, oddsExactScore);
+  }, [oddsHome, oddsDraw, oddsAway, oddsOver25, oddsUnder25, oddsBttsYes, oddsBttsNo, oddsExactScore, cMatch.id]);
+
+  useEffect(() => {
+    if (insights?.hermes?.recommended_units !== undefined) {
+      setStakeAmount((insights.hermes.recommended_units * 100).toString());
+    }
+  }, [insights?.hermes?.recommended_units]);
+
+  useEffect(() => {
+    const fetchInsights = async () => {
+      setLoadingInsights(true);
+      try {
+        const res = await fetch(`${API_BASE}/api/prematch-insight`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({homeTeam: cMatch.homeTeam, awayTeam: cMatch.awayTeam, match_id: String(cMatch.id)})
+        });
+        const data = await res.json();
+        setInsights(data.probs);
+      } catch (e) {
+        console.error(e);
+      }
+      setLoadingInsights(false);
+    };
+    fetchInsights();
+  }, [cMatch]);
+
+  const calculateEdge = (probPercent: number, oddsStr: string) => {
+    const odds = parseFloat(oddsStr);
+    if (isNaN(odds) || odds <= 1.0) return null;
+    const prob = probPercent / 100.0;
+    const edge = (prob * odds) - 1;
+    return (edge * 100).toFixed(2);
+  };
+
+  const handleRecalculateHermes = async () => {
+    try {
+      const odds = {
+        home: oddsHome, draw: oddsDraw, away: oddsAway,
+        over_2_5: oddsOver25, under_2_5: oddsUnder25,
+        btts_yes: oddsBttsYes, btts_no: oddsBttsNo
+      };
+      
+      const res = await fetch(`${API_BASE}/api/recalculate-hermes`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          homeTeam: cMatch.homeTeam,
+          awayTeam: cMatch.awayTeam,
+          home_xg: insights.metrics.home_xg,
+          away_xg: insights.metrics.away_xg,
+          odds: odds,
+          probs: insights
+        })
+      });
+      const data = await res.json();
+      setInsights(prev => ({ ...prev, hermes: data.hermes }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleExecuteBet = async () => {
+    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
+      alert("Por favor ingresa un monto válido (Stake).");
+      return;
+    }
+    if (!realOdds || parseFloat(realOdds) <= 1.0) {
+      alert("Por favor ingresa la cuota real con la que tomaste la apuesta.");
+      return;
+    }
+    
+    // Si es un NO BET no dejamos apostar
+    if (insights.hermes.pick.includes("NO BET")) {
+      alert("No puedes registrar un NO BET. El algoritmo indica que no hay valor matemático.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/portfolio/bet`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          match_id: String(cMatch.id),
+          pick: `${cMatch.homeTeam} vs ${cMatch.awayTeam}: ${insights.hermes.pick}`,
+          odds: parseFloat(realOdds),
+          stake: parseFloat(stakeAmount),
+          evidence_snapshot: JSON.stringify(insights)
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        alert(`¡Inversión registrada en Ledger! Nuevo Bankroll: $${data.new_bankroll.toFixed(2)}`);
+        setRealOdds(''); // Clear input
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const renderEdgeBadge = (prob: number, oddsStr: string) => {
+    const edge = calculateEdge(prob, oddsStr);
+    if (edge === null) return null;
+    const edgeVal = parseFloat(edge);
+    if (edgeVal > 0) {
+      return <span style={{background: '#10b981', color: '#111827', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800}}>AVI +{edge}% ✅</span>;
+    } else {
+      return <span style={{background: '#ef4444', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800}}>AVI {edge}% ❌</span>;
+    }
+  };
+
+  if (loadingInsights) {
+    return (
+      <div className="loader-container">
+        <div className="spinner"></div>
+        <p style={{ color: "var(--text-muted)", fontWeight: 600 }}>Cargando ATHENA Engine para {cMatch.homeTeam} vs {cMatch.awayTeam}...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{animation: 'fadeIn 0.3s ease-out'}}>
+      {/* Botón Volver */}
+      <button 
+        onClick={onBack}
+        style={{background: 'rgba(255,255,255,0.05)', color: '#cbd5e1', border: '1px solid rgba(255,255,255,0.1)', padding: '0.6rem 1.2rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', transition: '0.2s'}}
+        onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#f8fafc'; }}
+        onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#cbd5e1'; }}
+      >
+        <span>⬅️</span> Volver al Calendario
+      </button>
+
+      {/* Header Dashboard */}
+      <div style={{background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9))', border: '1px solid #334155', borderRadius: '16px', padding: '2rem', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'}}>
+        <div>
+          <div style={{color: '#38bdf8', fontWeight: 800, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem'}}>{cMatch.league} • {cMatch.round} • {cMatch.startTime}</div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '2rem', fontWeight: 900, color: '#f8fafc'}}>
+            <span>{cMatch.homeTeam}</span>
+            <span style={{color: '#475569', fontSize: '1.2rem', fontWeight: 700}}>VS</span>
+            <span>{cMatch.awayTeam}</span>
+          </div>
+        </div>
+        <div style={{textAlign: 'right'}}>
+          <div style={{background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8', padding: '0.5rem 1rem', borderRadius: '8px', fontWeight: 800, fontSize: '0.9rem', display: 'inline-block'}}>
+            🧠 ATHENA ENGINE ACTIVO
+          </div>
+          {insights?.is_ensembled && (
+            <div style={{marginTop: '0.5rem', fontSize: '0.8rem', color: '#10b981', fontWeight: 700}}>Machine Learning Habilitado</div>
+          )}
+        </div>
+      </div>
+
+      {/* Grilla de Módulos */}
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem'}}>
+        
+        {/* Módulo 1X2 */}
+        <div style={{background: 'rgba(15, 23, 42, 0.6)', border: '1px solid #334155', borderRadius: '16px', padding: '1.5rem'}}>
+          <h3 style={{color: '#f8fafc', fontSize: '1.2rem', marginBottom: '1.5rem', borderBottom: '1px solid #334155', paddingBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+            <span>⚖️</span> La Balanza de Temis (1X2)
+          </h3>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            {/* Local */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #10b981'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Gana Local</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.home.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsHome} onChange={e => setOddsHome(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.home, oddsHome)}
+              </div>
+            </div>
+            {/* Empate */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #f59e0b'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Empate</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.draw.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsDraw} onChange={e => setOddsDraw(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.draw, oddsDraw)}
+              </div>
+            </div>
+            {/* Visita */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ef4444'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Gana Visita</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.away.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsAway} onChange={e => setOddsAway(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.away, oddsAway)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Módulo Goles */}
+        <div style={{background: 'rgba(15, 23, 42, 0.6)', border: '1px solid #334155', borderRadius: '16px', padding: '1.5rem'}}>
+          <h3 style={{color: '#f8fafc', fontSize: '1.2rem', marginBottom: '1.5rem', borderBottom: '1px solid #334155', paddingBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+            <span>🔥</span> La Furia de Ares (Goles)
+          </h3>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            {/* Over 2.5 */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #8b5cf6'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Más de 2.5 Goles</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.over_2_5.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsOver25} onChange={e => setOddsOver25(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.over_2_5, oddsOver25)}
+              </div>
+            </div>
+            {/* Under 2.5 */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #38bdf8'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Menos de 2.5 Goles</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.under_2_5.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsUnder25} onChange={e => setOddsUnder25(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.under_2_5, oddsUnder25)}
+              </div>
+            </div>
+            
+            <div style={{height: '1px', background: '#334155', margin: '0.5rem 0'}}></div>
+            
+            {/* BTTS Yes */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #10b981'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Ambos Anotan (SÍ)</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.btts_yes.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsBttsYes} onChange={e => setOddsBttsYes(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.btts_yes, oddsBttsYes)}
+              </div>
+            </div>
+            {/* BTTS No */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ef4444'}}>
+              <div>
+                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Ambos Anotan (NO)</div>
+                <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.btts_no.toFixed(1)}%</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsBttsNo} onChange={e => setOddsBttsNo(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.btts_no, oddsBttsNo)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Módulo Especial & xG */}
+        <div style={{background: 'rgba(15, 23, 42, 0.6)', border: '1px solid #334155', borderRadius: '16px', padding: '1.5rem'}}>
+          <h3 style={{color: '#f8fafc', fontSize: '1.2rem', marginBottom: '1.5rem', borderBottom: '1px solid #334155', paddingBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+            <span>🦉</span> La Sabiduría de Atenea (Avanzados)
+          </h3>
+          
+          {/* xG */}
+          <div style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem'}}>
+            <div style={{color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Goles Esperados (xG)</div>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+              <div style={{textAlign: 'center'}}>
+                <div style={{color: '#38bdf8', fontWeight: 800, fontSize: '1.2rem'}}>{insights.metrics.home_xg.toFixed(2)}</div>
+                <div style={{color: '#64748b', fontSize: '0.7rem'}}>LOCAL</div>
+              </div>
+              <div style={{color: '#475569', fontWeight: 800}}>VS</div>
+              <div style={{textAlign: 'center'}}>
+                <div style={{color: '#38bdf8', fontWeight: 800, fontSize: '1.2rem'}}>{insights.metrics.away_xg.toFixed(2)}</div>
+                <div style={{color: '#64748b', fontSize: '0.7rem'}}>VISITA</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Marcador Exacto */}
+          <div style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', borderLeft: '4px solid #eab308'}}>
+            <div style={{color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Marcador MÁS Probable</div>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+              <div>
+                <div style={{color: '#f8fafc', fontWeight: 900, fontSize: '1.5rem'}}>{insights.exact_score}</div>
+                <div style={{color: '#eab308', fontWeight: 700, fontSize: '0.9rem'}}>{insights.exact_score_prob.toFixed(1)}% Probabilidad</div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
+                <input type="number" placeholder="Cuota" value={oddsExactScore} onChange={e => setOddsExactScore(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
+                {renderEdgeBadge(insights.exact_score_prob, oddsExactScore)}
+              </div>
+            </div>
+          </div>
+
+          {/* Corners (si existen) */}
+          {insights.corners && (
+            <div style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ec4899'}}>
+              <div style={{color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Tiros de Esquina Proyectados</div>
+              <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.corners.expected_total} Totales</div>
+              <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem'}}>
+                <div style={{color: '#ec4899', fontSize: '0.8rem'}}>Over 9.5: {insights.corners.over_9_5_prob}%</div>
+                <div style={{color: '#64748b', fontSize: '0.8rem'}}>Under 9.5: {insights.corners.under_9_5_prob}%</div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Módulo Hermes (Rule Engine) */}
+        {insights.hermes && (
+          <div style={{background: 'rgba(15, 23, 42, 0.6)', border: '1px solid #38bdf8', borderRadius: '16px', padding: '1.5rem', gridColumn: '1 / -1'}}>
+            <h3 style={{color: '#38bdf8', fontSize: '1.2rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(56, 189, 248, 0.3)', paddingBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+              <span>⚖️</span> El Oráculo de Hermes
+            </h3>
+            
+            <div style={{display: 'flex', flexWrap: 'wrap', gap: '2rem'}}>
+              <div style={{flex: '1 1 300px'}}>
+                <div style={{background: 'rgba(0,0,0,0.4)', padding: '1.5rem', borderRadius: '12px', height: '100%'}}>
+                  <div style={{color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem'}}>Veredicto del Motor de Reglas</div>
+                  <div style={{fontSize: '2rem', fontWeight: 900, color: insights.hermes.pick === cMatch.homeTeam ? '#10b981' : insights.hermes.pick === cMatch.awayTeam ? '#ef4444' : '#f59e0b', marginBottom: '1rem'}}>
+                    {insights.hermes.pick}
+                  </div>
+                  
+                  <div style={{color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Confianza Global</div>
+                  <div style={{width: '100%', background: '#1e293b', borderRadius: '8px', height: '12px', overflow: 'hidden'}}>
+                    <div style={{width: `${insights.hermes.confidence}%`, background: 'linear-gradient(90deg, #38bdf8, #8b5cf6)', height: '100%'}}></div>
+                  </div>
+                  <div style={{textAlign: 'right', color: '#f8fafc', fontWeight: 800, marginTop: '0.5rem', fontSize: '1.2rem'}}>{insights.hermes.confidence}%</div>
+                  
+                  <button onClick={handleRecalculateHermes} className="cyber-button" style={{marginTop: '1.5rem', width: '100%'}}>
+                    ⚡ Recalibrar Veredicto con Cuotas
+                  </button>
+
+                  <div style={{marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+                    <div style={{display: 'flex', gap: '1rem', marginBottom: '0.5rem'}}>
+                      <div style={{flex: 1}}><div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Inversión (Stake)</div></div>
+                      <div style={{flex: 1}}><div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Cuota Real (Momio)</div></div>
+                    </div>
+                    <div style={{display: 'flex', gap: '1rem'}}>
+                      <input 
+                        type="number" 
+                        value={stakeAmount} 
+                        onChange={e => setStakeAmount(e.target.value)} 
+                        placeholder="Ej: 100"
+                        style={{flex: 1, padding: '0.8rem', borderRadius: '8px', background: '#0f172a', border: '1px solid #38bdf8', color: 'white', fontWeight: 800, fontSize: '1.2rem', textAlign: 'center'}}
+                      />
+                      <input 
+                        type="number" 
+                        value={realOdds} 
+                        onChange={e => setRealOdds(e.target.value)} 
+                        placeholder="Ej: 1.85"
+                        style={{flex: 1, padding: '0.8rem', borderRadius: '8px', background: '#0f172a', border: '1px solid #10b981', color: 'white', fontWeight: 800, fontSize: '1.2rem', textAlign: 'center'}}
+                      />
+                    </div>
+                    {insights.hermes.recommended_units !== undefined && (
+                      <div style={{color: '#10b981', fontSize: '0.75rem', marginTop: '0.4rem', textAlign: 'left'}}>
+                        Recomendación ATHENA: {insights.hermes.recommended_units} Unidades
+                      </div>
+                    )}
+                    
+                    <button 
+                      onClick={handleExecuteBet}
+                      style={{marginTop: '1rem', width: '100%', background: 'linear-gradient(90deg, #10b981, #059669)', color: 'white', border: 'none', padding: '1rem', borderRadius: '8px', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)', transition: '0.2s'}}
+                      onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                      onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+                    >
+                      💰 Ejecutar y Guardar en Ledger
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div style={{flex: '2 1 400px'}}>
+                <div style={{color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1rem'}}>Lógica (Reglas Activadas)</div>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '0.8rem'}}>
+                  {insights.hermes.rules_evaluated.map((rule: any, i: number) => (
+                    <div key={i} style={{background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: `3px solid ${rule.score > 5 ? '#8b5cf6' : '#334155'}`}}>
+                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+                        <div>
+                          <div style={{color: '#f8fafc', fontWeight: 700, fontSize: '0.95rem'}}>{rule.rule}</div>
+                          <div style={{color: '#cbd5e1', fontSize: '0.85rem', marginTop: '0.2rem'}}>{rule.message}</div>
+                        </div>
+                        {rule.winner && (
+                          <div style={{background: 'rgba(56, 189, 248, 0.1)', color: '#38bdf8', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700, whiteSpace: 'nowrap'}}>
+                            + {rule.score} {rule.winner}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'radar' | 'portfolio'>('radar');
+  const [activeTab, setActiveTab] = useState('radar'); // 'radar', 'portfolio', 'calendar', 'match-detail'
+  const [selectedMatch, setSelectedMatch] = useState<any>(null);
+  
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
+  const [calendarMatches, setCalendarMatches] = useState<any[]>([]);
+  const [calendarLoading, setCalendarLoading] = useState(false);
+  const [calendarDate, setCalendarDate] = useState(() => {
+    const today = new Date();
+    today.setHours(today.getHours() - 6);
+    return today.toISOString().split('T')[0];
+  });
+  const [oracleInsights, setOracleInsights] = useState<any[]>([]);
+  const [oracleLoading, setOracleLoading] = useState(false);
+  
+  const [editingBetId, setEditingBetId] = useState<string | null>(null);
+  const [editOddsValue, setEditOddsValue] = useState<string>('');
 
   const fetchMatches = async () => {
     try {
@@ -304,7 +723,10 @@ export default function Home() {
 
   const handlePlaceBet = async (matchId: string, pick: string, odds: number, kellyPercent: number) => {
     if (!portfolio) return;
-    const stake = portfolio.bankroll * (kellyPercent / 100);
+    let stake = portfolio.bankroll * ((kellyPercent || 0.1) / 100);
+    if (isNaN(stake) || stake <= 0) stake = portfolio.bankroll * 0.01;
+    stake = Math.round(stake * 100) / 100; // Round to 2 decimal places
+    
     try {
       const res = await fetch(`${API_BASE}/api/portfolio/bet`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -322,22 +744,107 @@ export default function Home() {
 
   const handleSettleBet = async (betId: string, result: string) => {
     try {
-      const res = await fetch(`${API_BASE}/api/portfolio/settle`, {
+      const res = await fetch(`${API_BASE}/api/portfolio/settle/${betId}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bet_id: betId, result })
+        body: JSON.stringify({ result })
       });
       fetchPortfolio();
     } catch (e) { console.error(e); }
   };
 
+  const handleDeleteBet = async (betId: string) => {
+    if (!confirm("¿Estás seguro de que deseas eliminar esta entrada del Ledger? Esta acción revertirá el bankroll asociado.")) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/portfolio/bets/${betId}`, {
+        method: "DELETE", headers: { "Content-Type": "application/json" }
+      });
+      fetchPortfolio();
+    } catch (e) { console.error(e); }
+  };
+
+  const handleUpdateOdds = async (betId: string) => {
+    if (!editOddsValue || isNaN(parseFloat(editOddsValue))) return;
+    try {
+      await fetch(`${API_BASE}/api/portfolio/bets/${betId}/odds`, {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ odds: parseFloat(editOddsValue) })
+      });
+      setEditingBetId(null);
+      fetchPortfolio();
+    } catch (e) { console.error(e); }
+  };
+
+  const handleAutopsy = async () => {
+    if (confirm("¿Ejecutar Autopsia de ATHENA? Esto buscará los marcadores finales reales de todas las apuestas ABIERTAS y actualizará tu capital.")) {
+      try {
+        const res = await fetch(`${API_BASE}/api/portfolio/autopsy`, { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+            alert(`Autopsia completada. Se resolvieron ${data.resolved_count} apuestas.`);
+            fetchPortfolio();
+        } else {
+            alert(`Error en Autopsia: ${data.message || 'Desconocido'}`);
+        }
+      } catch (e) { console.error(e); }
+    }
+  };
+
+  const handleResetBankroll = async () => {
+    const amount = prompt("Ingresa el nuevo capital base (Bankroll Inicial):", "1000");
+    if (amount !== null && !isNaN(parseFloat(amount))) {
+      try {
+        await fetch(`${API_BASE}/api/portfolio/reset`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ new_amount: parseFloat(amount) })
+        });
+        fetchPortfolio();
+        alert("Bankroll reiniciado con éxito.");
+      } catch (e) { console.error(e); }
+    }
+  };
+
+  const fetchCalendar = async () => {
+    setCalendarLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/calendar?date=${calendarDate}`);
+      const data = await res.json();
+      setCalendarMatches(data);
+    } catch (e) {
+      console.error(e);
+    }
+    setCalendarLoading(false);
+  };
+
+  const handleActivateOracle = async () => {
+    setOracleLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/chronos/scan-day?date=${calendarDate}`);
+      const data = await res.json();
+      if (data.status === 'success') {
+        setOracleInsights(data.value_bets);
+        if (data.value_bets.length === 0) {
+            alert("El oráculo escaneó todas las cuotas del día y no encontró ningún Value Bet con Edge mayor al 5%.");
+        }
+      } else {
+        alert("Error del oráculo: " + data.message);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setOracleLoading(false);
+  };
+
+  useEffect(() => {
+    if (activeTab === 'calendar') {
+      fetchCalendar();
+      setOracleInsights([]);
+    }
+  }, [calendarDate, activeTab]);
+
   useEffect(() => {
     fetchMatches();
     fetchPortfolio();
-    const interval = setInterval(() => {
-        fetchMatches();
-        fetchPortfolio();
-    }, 60000);
-    return () => clearInterval(interval);
+    fetchCalendar();
   }, []);
 
   return (
@@ -345,32 +852,41 @@ export default function Home() {
       <header className="app-header">
         <div className="header-content">
           <div className="logo">
-            ⚡ <span>TipsterAI Quad-Core</span>
+            <img src="/logo.png" alt="ATHENA Logo" style={{height: '40px', objectFit: 'contain', filter: 'drop-shadow(0px 0px 8px rgba(6, 182, 212, 0.5))'}} />
+            <span>ATHENA ENGINE</span>
           </div>
-          <div className="status-badge" style={{background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)'}}>
-            <div className="status-dot" style={{backgroundColor: '#3b82f6', boxShadow: '0 0 10px #3b82f6'}}></div>
-            Motor En Vivo (Time Decay)
+          <div style={{display: 'flex', gap: '1.5rem', alignItems: 'center'}}>
+            <button onClick={() => { fetchMatches(); fetchCalendar(); fetchPortfolio(); }} style={{background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-pill)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, transition: 'var(--transition)'}} onMouseOver={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'} onMouseOut={e => e.currentTarget.style.background='rgba(255,255,255,0.05)'}>
+              🔄 Actualizar
+            </button>
+            <div className="status-badge">
+              <div className="status-dot"></div>
+              SISTEMA ONLINE
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="container" style={{maxWidth: '1200px'}}>
+      <main className="container">
         
-        <div style={{display: 'flex', gap: '1rem', marginBottom: '2rem'}}>
-            <button onClick={() => setActiveTab('radar')} style={{padding: '0.8rem 2rem', borderRadius: '8px', border: 'none', background: activeTab === 'radar' ? '#3b82f6' : '#e2e8f0', color: activeTab === 'radar' ? 'white' : '#475569', fontWeight: 700, cursor: 'pointer', transition: '0.2s'}}>📡 Radar Quant</button>
-            <button onClick={() => setActiveTab('portfolio')} style={{padding: '0.8rem 2rem', borderRadius: '8px', border: 'none', background: activeTab === 'portfolio' ? '#3b82f6' : '#e2e8f0', color: activeTab === 'portfolio' ? 'white' : '#475569', fontWeight: 700, cursor: 'pointer', transition: '0.2s'}}>💼 Mi Portafolio</button>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <div className="tabs-container">
+              <button onClick={() => setActiveTab('calendar')} className={`cyber-button ${activeTab === 'calendar' ? 'active' : ''}`}>📅 Chronos</button>
+              <button onClick={() => setActiveTab('radar')} className={`cyber-button ${activeTab === 'radar' ? 'active' : ''}`}>🔭 Argos</button>
+              <button onClick={() => setActiveTab('portfolio')} className={`cyber-button ${activeTab === 'portfolio' ? 'active' : ''}`}>💼 Plutus</button>
+          </div>
         </div>
 
         {activeTab === 'radar' && (
           <>
-            <h2 className="section-title">Escáner de Oportunidades - Mundial 2026</h2>
+            <h2 className="section-title">El Oráculo de Delfos - Escáner Global</h2>
             {loading ? (
           <div className="loader-container">
             <div className="spinner"></div>
             <p style={{ color: "var(--text-muted)", fontWeight: 600 }}>Obteniendo cuotas e inicializando matrices...</p>
           </div>
         ) : matches.length === 0 ? (
-          <div className="loading">No hay partidos del Mundial disponibles en este momento.</div>
+          <div className="loading">No hay partidos en vivo disponibles en este momento.</div>
         ) : (
           <div className="match-grid" style={{gridTemplateColumns: '1fr'}}>
             {matches.map((match) => (
@@ -381,42 +897,197 @@ export default function Home() {
         </>
         )}
 
+        {activeTab === 'calendar' && (
+          <>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem'}}>
+              <h2 className="section-title" style={{marginBottom: 0}}>Calendario Diario (Hora Centro)</h2>
+              <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
+                <input 
+                  type="date" 
+                  value={calendarDate} 
+                  onChange={(e) => setCalendarDate(e.target.value)}
+                  style={{padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: '#f8fafc', fontWeight: 600, outline: 'none'}}
+                />
+                <button onClick={handleActivateOracle} disabled={oracleLoading} style={{
+                  background: 'linear-gradient(90deg, #8b5cf6, #3b82f6)', border: 'none', color: 'white', padding: '0.6rem 1.2rem',
+                  borderRadius: '8px', fontWeight: 800, cursor: 'pointer', boxShadow: '0 0 15px rgba(139, 92, 246, 0.4)',
+                  transition: '0.2s', display: 'flex', alignItems: 'center', gap: '0.5rem'
+                }}>
+                  {oracleLoading ? '🔮 Escaneando Mundo...' : '👁️ Activar Oráculo'}
+                </button>
+              </div>
+            </div>
+            
+            {oracleInsights.length > 0 && (
+              <div className="match-card" style={{padding: '1.5rem', marginBottom: '2rem', border: '1px solid #8b5cf6', background: 'rgba(139, 92, 246, 0.1)'}}>
+                <h3 style={{color: '#c4b5fd', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                  <span>👁️</span> Predicciones del Oráculo (AVI &gt; 5%)
+                </h3>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '0.8rem'}}>
+                  {oracleInsights.map((insight, idx) => (
+                    <div key={idx} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px'}}>
+                      <div>
+                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 700}}>{insight.league}</div>
+                        <div style={{color: '#f8fafc', fontWeight: 700, fontSize: '1.1rem'}}>{insight.home_team} vs {insight.away_team}</div>
+                        <div style={{color: '#38bdf8', fontSize: '0.9rem', marginTop: '0.2rem', display: 'flex', gap: '0.5rem'}}>
+                          <span>Pick: <strong style={{color: '#f8fafc'}}>{insight.pick}</strong></span>
+                          <span>Prob: <strong style={{color: '#f8fafc'}}>{insight.prob}%</strong></span>
+                          <span>Bookie: <strong style={{color: '#f8fafc'}}>{insight.bookie}</strong></span>
+                        </div>
+                      </div>
+                      <div style={{textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+                        <div style={{color: '#f8fafc', fontSize: '1.5rem', fontWeight: 900}}>{insight.odds}</div>
+                        <div style={{color: '#10b981', fontWeight: 700, fontSize: '0.9rem', background: 'rgba(16, 185, 129, 0.2)', padding: '0.2rem 0.6rem', borderRadius: '4px'}}>
+                          AVI: +{insight.edge}%
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {calendarLoading ? (
+              <div className="loader-container">
+                <div className="spinner"></div>
+                <p style={{ color: "var(--text-muted)", fontWeight: 600 }}>Cargando cartelera de API-Football...</p>
+              </div>
+            ) : (
+              <div className="match-card" style={{padding: '1.5rem', overflowX: 'auto'}}>
+                <table className="data-grid">
+                  <thead>
+                    <tr>
+                      <th>HORA</th>
+                      <th>LIGA / FASE</th>
+                      <th>PARTIDO</th>
+                      <th style={{textAlign: 'center'}}>ESTADO</th>
+                      <th style={{textAlign: 'right'}}>ACCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {calendarMatches.map(cMatch => (
+                      <tr key={cMatch.id} style={{cursor: 'default'}}>
+                        <td className="mono-font" style={{color: 'var(--cyan)', fontWeight: 800, fontSize: '1.1rem'}}>{cMatch.startTime}</td>
+                        <td>
+                          <div style={{color: '#f8fafc', fontWeight: 700, letterSpacing: '0.5px'}}>{cMatch.league}</div>
+                          <div style={{color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem', textTransform: 'uppercase'}}>{cMatch.round}</div>
+                        </td>
+                        <td>
+                          <div style={{display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.1rem', fontWeight: 700, color: '#e2e8f0'}}>
+                            <span>{cMatch.homeTeam}</span>
+                            <span style={{color: 'var(--text-dim)', fontSize: '0.9rem'}}>vs</span>
+                            <span>{cMatch.awayTeam}</span>
+                          </div>
+                        </td>
+                        <td style={{textAlign: 'center'}}>
+                          <span style={{
+                            background: cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.03)',
+                            color: cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'var(--primary)' : 'var(--text-muted)',
+                            padding: '0.4rem 1rem', borderRadius: 'var(--radius-pill)', fontSize: '0.8rem', fontWeight: 800, border: '1px solid ' + (cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'rgba(16, 185, 129, 0.3)' : 'transparent')
+                          }}>{cMatch.status}</span>
+                        </td>
+                        <td style={{textAlign: 'right'}}>
+                          <button style={{
+                            background: 'transparent', border: '1px solid var(--cyan)',
+                            color: 'var(--cyan)', padding: '0.6rem 1.2rem', borderRadius: 'var(--radius-pill)', fontWeight: 800,
+                            cursor: 'pointer', transition: 'var(--transition)'
+                          }}
+                          onMouseOver={(e) => { e.currentTarget.style.background = 'var(--cyan-glow)'; e.currentTarget.style.boxShadow = '0 0 15px var(--cyan-glow)'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
+                          onClick={() => { setSelectedMatch(cMatch); setActiveTab('match-detail'); }}
+                          >
+                            ⚡ Analizar
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === 'match-detail' && selectedMatch && (
+          <MatchDashboard 
+            cMatch={selectedMatch} 
+            onBack={() => { setActiveTab('calendar'); setSelectedMatch(null); }} 
+          />
+        )}
+
         {activeTab === 'portfolio' && portfolio && (
-          <div style={{background: '#ffffff', borderRadius: '16px', padding: '2rem', boxShadow: '0 10px 25px rgba(0,0,0,0.05)'}}>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid #e2e8f0'}}>
+          <div className="match-card">
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--card-border)'}}>
               <div>
-                <div style={{color: '#64748b', fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase'}}>Bankroll Total</div>
-                <div style={{color: '#0f172a', fontWeight: 900, fontSize: '2.5rem'}}>${portfolio.bankroll.toFixed(2)}</div>
+                <div style={{color: 'var(--text-muted)', fontWeight: 800, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem'}}>Bankroll Total</div>
+                <div className="mono-font" style={{color: '#fff', fontWeight: 900, fontSize: '4rem', textShadow: '0 0 30px rgba(255,255,255,0.1)'}}>${portfolio.bankroll.toFixed(2)}</div>
               </div>
               <div style={{textAlign: 'right'}}>
-                <div style={{color: '#64748b', fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase'}}>ROI %</div>
-                <div style={{color: portfolio.bankroll >= portfolio.initial_bankroll ? '#10b981' : '#ef4444', fontWeight: 900, fontSize: '2.5rem'}}>
-                  {((portfolio.bankroll - portfolio.initial_bankroll) / portfolio.initial_bankroll * 100).toFixed(2)}%
+                <div style={{color: 'var(--text-muted)', fontWeight: 800, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem'}}>ROI %</div>
+                <div className="mono-font" style={{color: portfolio.bankroll >= portfolio.initial_bankroll ? 'var(--primary)' : 'var(--danger)', fontWeight: 900, fontSize: '4rem', textShadow: portfolio.bankroll >= portfolio.initial_bankroll ? '0 0 30px var(--primary-glow)' : '0 0 30px var(--danger-glow)'}}>
+                  {portfolio.bankroll >= portfolio.initial_bankroll ? '+' : ''}{((portfolio.bankroll - portfolio.initial_bankroll) / portfolio.initial_bankroll * 100).toFixed(2)}%
                 </div>
               </div>
             </div>
 
-            <h3 style={{color: '#0f172a', marginBottom: '1rem'}}>Historial de Inversiones</h3>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem'}}>
+              <h3 className="section-title" style={{marginBottom: 0, fontSize: '1.5rem'}}>Historial de Inversiones (Ledger)</h3>
+              <div style={{display: 'flex', gap: '1rem'}}>
+                <button 
+                  onClick={handleAutopsy}
+                  style={{background: 'linear-gradient(90deg, var(--cyan), #3b82f6)', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: 'var(--radius-pill)', cursor: 'pointer', fontWeight: 800, boxShadow: '0 0 15px var(--cyan-glow)', transition: 'var(--transition)'}}
+                >
+                  🧬 Ejecutar Autopsia
+                </button>
+                <button 
+                  onClick={handleResetBankroll}
+                  style={{background: 'transparent', color: 'var(--danger)', border: '1px solid var(--danger)', padding: '0.6rem 1.5rem', borderRadius: 'var(--radius-pill)', cursor: 'pointer', fontWeight: 700, transition: 'var(--transition)'}}
+                  onMouseOver={e => {e.currentTarget.style.background='var(--danger-glow)'; e.currentTarget.style.color='#fff';}}
+                  onMouseOut={e => {e.currentTarget.style.background='transparent'; e.currentTarget.style.color='var(--danger)';}}
+                >
+                  🔄 Reset
+                </button>
+              </div>
+            </div>
+            
             {portfolio.bets.length === 0 ? (
-              <div style={{color: '#64748b', fontStyle: 'italic'}}>No hay apuestas registradas aún.</div>
+              <div style={{color: '#94a3b8', fontStyle: 'italic'}}>No hay apuestas registradas aún.</div>
             ) : (
               <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
                 {portfolio.bets.map((bet: any) => (
-                  <div key={bet.id} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: '#f8fafc', borderRadius: '8px', borderLeft: `4px solid ${bet.status === 'win' ? '#10b981' : bet.status === 'lose' ? '#ef4444' : '#f59e0b'}`}}>
+                  <div key={bet.id} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', borderLeft: `4px solid ${bet.status === 'WON' ? '#10b981' : bet.status === 'LOST' ? '#ef4444' : bet.status === 'OPEN' ? '#38bdf8' : '#64748b'}`}}>
                     <div>
-                      <div style={{fontWeight: 700, color: '#0f172a'}}>{bet.pick}</div>
-                      <div style={{fontSize: '0.85rem', color: '#64748b'}}>{bet.date} • Cuota: {bet.odds}</div>
+                      <div style={{fontWeight: 700, color: '#f8fafc'}}>{bet.pick}</div>
+                      <div style={{fontSize: '0.85rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                        {bet.match_id} • Cuota: 
+                        {editingBetId === bet.id ? (
+                          <>
+                            <input type="number" step="0.01" value={editOddsValue} onChange={e => setEditOddsValue(e.target.value)} style={{width: '60px', background: '#1e293b', border: '1px solid #38bdf8', color: 'white', borderRadius: '4px', padding: '0.1rem 0.3rem', fontSize: '0.8rem'}} />
+                            <button onClick={() => handleUpdateOdds(bet.id)} style={{background: '#38bdf8', color: '#0f172a', border: 'none', borderRadius: '4px', padding: '0.1rem 0.4rem', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 800}}>💾</button>
+                            <button onClick={() => setEditingBetId(null)} style={{background: 'transparent', color: '#94a3b8', border: 'none', cursor: 'pointer', fontSize: '0.8rem'}}>❌</button>
+                          </>
+                        ) : (
+                          <>
+                            {bet.odds}
+                            <button onClick={() => { setEditingBetId(bet.id); setEditOddsValue(bet.odds.toString()); }} style={{background: 'transparent', color: '#38bdf8', border: 'none', cursor: 'pointer', fontSize: '0.8rem', padding: '0'}}>✏️</button>
+                          </>
+                        )}
+                      </div>
                     </div>
                     <div style={{textAlign: 'right'}}>
-                      <div style={{fontWeight: 800, color: '#0f172a'}}>${bet.stake}</div>
-                      {bet.status === 'pending' ? (
-                        <div style={{display: 'flex', gap: '0.5rem', marginTop: '0.5rem'}}>
-                          <button onClick={() => handleSettleBet(bet.id, 'win')} style={{background: '#10b981', color: 'white', border: 'none', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 700, fontSize: '0.75rem'}}>GANADA</button>
-                          <button onClick={() => handleSettleBet(bet.id, 'lose')} style={{background: '#ef4444', color: 'white', border: 'none', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 700, fontSize: '0.75rem'}}>PERDIDA</button>
+                      <div style={{fontWeight: 800, color: '#f8fafc'}}>${bet.stake}</div>
+                      {bet.status === 'OPEN' ? (
+                        <div style={{display: 'flex', gap: '0.5rem', marginTop: '0.5rem', justifyContent: 'flex-end'}}>
+                          <button onClick={() => handleSettleBet(bet.id, 'WON')} style={{background: '#10b981', color: '#111827', border: 'none', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 800, fontSize: '0.75rem'}}>GANADA</button>
+                          <button onClick={() => handleSettleBet(bet.id, 'LOST')} style={{background: '#ef4444', color: 'white', border: 'none', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 800, fontSize: '0.75rem'}}>PERDIDA</button>
+                          <button onClick={() => handleSettleBet(bet.id, 'REFUND')} style={{background: '#64748b', color: 'white', border: 'none', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 800, fontSize: '0.75rem'}}>VOID</button>
+                          <button onClick={() => handleDeleteBet(bet.id)} style={{background: 'rgba(239,68,68,0.2)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.4)', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 800, fontSize: '0.75rem'}}>🗑️</button>
                         </div>
                       ) : (
-                        <div style={{fontWeight: 700, fontSize: '0.85rem', color: bet.status === 'win' ? '#10b981' : '#ef4444'}}>
-                          {bet.status === 'win' ? `+ $${bet.expected_return}` : `- $${bet.stake}`}
+                        <div style={{display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'flex-end', marginTop: '0.5rem'}}>
+                          <div style={{fontWeight: 700, fontSize: '0.85rem', color: bet.status === 'WON' ? '#10b981' : bet.status === 'LOST' ? '#ef4444' : '#64748b'}}>
+                            {bet.status === 'WON' ? `+ $${bet.profit}` : bet.status === 'LOST' ? `- $${bet.stake}` : 'REEMBOLSO'}
+                          </div>
+                          <button onClick={() => handleDeleteBet(bet.id)} style={{background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: 'none', borderRadius: '4px', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.8rem'}}>🗑️</button>
                         </div>
                       )}
                     </div>

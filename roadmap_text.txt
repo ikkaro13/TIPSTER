@@ -1,0 +1,194 @@
+ATHENA ENGINE
+Roadmap de desarrollo, módulos pendientes y camino hacia V1.0
+Documento de orientación técnica — Agosto 2026
+1. Objetivo
+Definir el camino de ATHENA desde el motor base que ya funciona hasta un sistema de análisis y decisión de apuestas con memoria histórica, selección de mercado, cálculo de valor, análisis prepartido y en vivo, trazabilidad, ledger y validación estadística. La prioridad será avanzar por dependencias, no simplemente añadir archivos.
+2. Punto actual
+Configuración .env + backend/config.py.
+HttpClient y ApiFootballConnector.
+Repositories de equipos, fixtures y estadísticas.
+Modelos Team, Fixture, Statistics, MatchContext, RuleResult y Prediction.
+MatchContextService.
+Rule Engine con PossessionRule, ShotsRule, ShotsOnGoalRule y HomeAdvantageRule.
+Hermes como orquestador de reglas.
+AVI como capa inicial de valoración.
+ATHENA LAB para pruebas manuales.
+Estado: la infraestructura y el Rule Engine base están operativos. El siguiente salto es convertir datos aislados en conocimiento histórico y después en decisiones de mercado cuantificables.
+3. Arquitectura objetivo
+Capa
+Función
+Fuentes
+API-Football, proveedores de cuotas y fuentes live.
+Connectors
+Hablan con proveedores externos y entregan respuestas crudas.
+Repositories
+Transforman respuestas externas en modelos de dominio.
+Services
+Construyen contextos y agregan conocimiento.
+Models
+Representan partidos, estadísticas, historial, cuotas, mercados y decisiones.
+Engine / Rules
+Evalúan evidencia futbolística mediante reglas independientes.
+Hermes
+Orquesta evidencia y produce predicciones explicables.
+Probability / Value
+Calculan probabilidades, probabilidad implícita, EV y AVI.
+Decision Layer
+Selecciona mercado, stake y BET/NO BET.
+Live Engine
+Actualiza el contexto sin look-ahead bias.
+Corpus / Ledger
+Registra evidencia, decisiones, resultados y autopsias.
+Calibration
+Mide calibración, ROI, yield, unidades y rendimiento.
+4. Camino por fases
+FASE A — Datos
+Cerrar get_last_fixtures(), validar parámetros/temporada y asegurar que los repositories devuelvan modelos, no JSON.
+ApiFootballConnector.get_last_fixtures()
+FixtureRepository.get_last_fixtures()
+tests
+FASE B — Memoria histórica
+Crear el historial reciente de ambos equipos y convertirlo en conocimiento reutilizable.
+HistoricalContext
+HistoricalContextService
+RecentFormRule
+GoalsScoredRule
+GoalsAgainstRule
+CleanSheetRule
+BTTSRule
+OverUnderRule
+FASE C — Evidencia
+Combinar reglas con pesos, consenso y contradicciones, en vez de depender de una suma ciega.
+Evidence Aggregator
+Rule weights
+Conflict handling
+Confidence service
+FASE D — Predicción
+Generar probabilidades por mercado y separar probabilidad de confianza.
+Prediction ampliado
+Market candidates
+Probability Engine
+Calibration layer
+FASE E — Cuotas
+Incorporar cuotas observadas y normalizar mercados.
+OddsConnector
+OddsRepository
+Odds/Market models
+ImpliedProbability
+FASE F — Valor
+Comparar probabilidad ATHENA contra mercado y elegir el mercado de mayor valor; NO BET es válido.
+ValueEngine
+AVI
+MarketSelector
+Risk assessment
+Stake/Units
+FASE G — Prepartido
+Construir el expediente completo antes del inicio con contexto, mercado y snapshot de cuotas.
+PreMatchContext
+PreMatchAnalyzer
+DecisionRecord
+Odds snapshot
+FASE H — EN VIVO
+Procesar estado, eventos, métricas y cuotas live respetando estrictamente el momento de decisión.
+LiveContext
+LiveDataConnector
+LiveStateManager
+LiveOdds
+DecisionClock
+Anti-lookahead
+FASE I — Corpus
+Guardar decisiones, evidencia, resultado y autopsia sin alterar retrospectivamente el expediente.
+Decision Corpus
+ATHENA Ledger
+Autopsia Athena
+Decision ID
+Immutable snapshot
+FASE J — Validación V1.0
+Evaluar fuera de muestra y medir rendimiento y calibración.
+Backtesting
+Forward testing
+Calibration report
+Performance dashboard
+Ablation tests
+5. Módulos que faltan o deben consolidarse
+Módulo
+Qué hará
+HistoricalContext
+Modelo del historial reciente.
+HistoricalContextService
+Obtiene y prepara el historial para Hermes.
+Form/Trend Rules
+Forma, goles, BTTS, clean sheets, over/under y tendencias.
+Evidence Aggregator
+Pondera y combina evidencia.
+Probability Engine
+Produce probabilidades por mercado.
+OddsConnector
+Obtiene cuotas de proveedores compatibles.
+OddsRepository
+Normaliza y guarda snapshots de cuotas.
+Market Model
+Representa mercado, línea, cuota y timestamp.
+ValueEngine / AVI
+Probabilidad implícita, EV y AVI.
+MarketSelector
+Escoge el mercado con mayor valor o NO BET.
+Stake Engine
+Recomienda unidades según edge y riesgo.
+PreMatch Analyzer
+Integra el análisis antes del partido.
+Live Engine
+Actualiza contexto y decisiones durante el partido.
+Decision Corpus
+Expediente reproducible de cada decisión.
+ATHENA Ledger
+Resultado, unidades, ROI y yield.
+Autopsia Athena
+Revisión técnica posterior.
+Calibration Engine
+Calibración de probabilidades.
+Backtest / Forward Test
+Validación sin información futura.
+6. Flujo final de una decisión
+Datos externos → Connectors.
+Connectors → Repositories.
+Repositories → MatchContext + HistoricalContext + OddsContext.
+Contextos → Hermes / Rule Engine.
+Rules → evidencia y scores.
+Evidencia → Probability Engine.
+Probability + Odds → ValueEngine / AVI.
+AVI → MarketSelector.
+MarketSelector → BET o NO BET.
+BET → Stake Engine.
+Decisión → Decision Corpus + Ledger.
+Resultado → Autopsia Athena.
+Corpus → Calibration / Backtesting / mejora.
+7. Reglas de oro
+Hermes no conoce APIs externas.
+Los Repositories no exponen JSON a capas superiores.
+Las reglas son independientes y testeables.
+Agregar una regla no obliga a reescribir Hermes.
+Predicción, mercado y cuota son conceptos separados.
+AVI usa cuotas observadas y timestamp.
+NO BET es una salida válida.
+Toda decisión conserva un snapshot de la información disponible en ese instante.
+El análisis EN VIVO respeta estrictamente el timestamp y evita información posterior.
+El resultado nunca modifica retrospectivamente el expediente original.
+Cada módulo importante se prueba antes de avanzar.
+8. Camino inmediato
+A-088: cerrar get_last_fixtures() y resolver la respuesta real de API-Football.
+A-089: crear/validar HistoricalContext.
+A-090: implementar HistoricalContextService.
+A-091: reglas históricas iniciales.
+A-092: integrar historial en Hermes.
+A-093: dejar de asumir un único mercado y generar candidatos.
+A-094: Probability Engine básico.
+A-095: OddsConnector + OddsRepository.
+A-096: AVI real con cuotas observadas.
+A-097: MarketSelector + NO BET + stake.
+Después: prepartido completo → live → corpus/ledger → calibración → V1.0.
+9. Criterio real para V1.0
+ATHENA V1.0 no debe definirse por la cantidad de archivos. Debe poder recibir un evento, construir contexto histórico y actual, evaluar varios mercados, consultar cuotas disponibles, estimar probabilidades, calcular valor, seleccionar BET o NO BET, recomendar unidades y guardar un expediente reproducible. Además debe existir validación histórica/forward y métricas de calibración y rendimiento.
+10. Principio rector
+El orden correcto de construcción es: MEMORIA → EVIDENCIA → PROBABILIDAD → CUOTAS → VALOR → DECISIÓN → TRAZABILIDAD → VALIDACIÓN. Esto evita convertir ATHENA en una colección de reglas aisladas y mantiene el proyecto orientado hacia su objetivo: tomar mejores decisiones, no simplemente generar más predicciones.
+🏛️ ATHENA ENGINE — Por Athena.

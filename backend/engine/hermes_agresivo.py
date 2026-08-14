@@ -1,0 +1,238 @@
+from engine.rules import ALL_PREMATCH_RULES
+
+class ValueAggregator:
+    def __init__(self, min_edge=3.0):
+        self.min_edge = min_edge
+
+    def evaluate_value(self, current_pick, current_confidence, context):
+        odds = context.get('odds', {})
+        probs = context.get('probs', {})
+        
+        if not odds or not probs:
+            return current_pick, current_confidence
+            
+        # Mapeo de predicciones a claves de odds y probs
+        market_map = {
+            context.get('home_team'): "home",
+            "Empate": "draw",
+            context.get('away_team'): "away",
+            "Over 2.5 Goles (Alta Intensidad)": "over_2_5",
+            "Over 0.5 Goles 1T (Arranque Rápido)": "over_0_5_ht", # Asumiendo que pudiese existir, si no, lo ignoramos
+            "Ambos Anotan - SÍ": "btts_yes",
+            "Ambos Anotan - NO": "btts_no",
+            "Under 2.5 Goles (Partido Cerrado)": "under_2_5",
+        }
+        
+        market_map_inverse = {v: k for k, v in market_map.items()}
+        
+        # Calcular todos los edges disponibles
+        edges = {}
+        for market_desc, key in market_map.items():
+            if key in odds and key in probs:
+                o = float(odds[key])
+                p = float(probs[key]) / 100.0
+                if o > 1.0:
+                    edge = (p * o) - 1
+                    edges[market_desc] = edge * 100
+
+        if not edges:
+            return current_pick, current_confidence
+
+        # Revisar si el pick actual tiene buen edge
+        current_edge = edges.get(current_pick, -100)
+        
+        if current_edge >= self.min_edge:
+            return f"{current_pick} (Value Bet: +{current_edge:.1f}%)", current_confidence
+            
+        # Si el pick actual no tiene valor, buscamos el mercado MÁS PROBABLE que tenga un Edge positivo (>= min_edge)
+        # Priorizamos Probabilidad (Lo que más se pueda dar) sobre Edge Crudo (Beneficio irrealista)
+        valid_markets = {m: e for m, e in edges.items() if e >= self.min_edge}
+        
+        if valid_markets:
+            best_market = None
+            best_market_prob = -1
+            best_market_edge = 0
+            
+            for m_desc, edge in valid_markets.items():
+                m_key = market_map.get(m_desc)
+                p = float(probs.get(m_key, 0)) if m_key else 0
+                if p > best_market_prob:
+                    best_market_prob = p
+                    best_market = m_desc
+                    best_market_edge = edge
+                    
+            return f"{best_market} (Pivote Seguro: +{best_market_edge:.1f}%)", int(best_market_prob)
+            
+        # Si NO HAY NINGÚN MERCADO individual con valor, armamos una Combinada (SGP)
+        # 1. Buscar lo más probable de 1X2 (Incluyendo Doble Oportunidad)
+        p_home = float(probs.get('home', 0))
+        p_draw = float(probs.get('draw', 0))
+        p_away = float(probs.get('away', 0))
+        
+        home_team = context.get('home_team', 'Local')
+        away_team = context.get('away_team', 'Visita')
+        
+        winner_probs = {
+            f"Gana {home_team}": p_home,
+            "Empate": p_draw,
+            f"Gana {away_team}": p_away,
+            f"Doble Oport. ({home_team} o Empate)": min(p_home + p_draw, 99.0),
+            f"Doble Oport. ({away_team} o Empate)": min(p_away + p_draw, 99.0),
+            f"Cualquiera Gana ({home_team} o {away_team})": min(p_home + p_away, 99.0)
+        }
+        best_winner_desc = max(winner_probs, key=winner_probs.get)
+        best_winner_prob = winner_probs[best_winner_desc] / 100.0
+
+        # 2. Buscar lo más probable de Goles
+        goals_probs = {
+            "Más de 1.5 Goles": float(probs.get('over_1_5', 0)),
+            "Menos de 3.5 Goles": float(probs.get('under_3_5', 0)),
+            "Más de 2.5 Goles": float(probs.get('over_2_5', 0)),
+            "Ambos Anotan (SÍ)": float(probs.get('btts_yes', 0)),
+            "Ambos Anotan (NO)": float(probs.get('btts_no', 0))
+        }
+        goals_probs = {k: v for k, v in goals_probs.items() if v > 0}
+        
+        if goals_probs and best_winner_prob > 0.35:
+            best_goal_desc = max(goals_probs, key=goals_probs.get)
+            best_goal_prob = goals_probs[best_goal_desc] / 100.0
+            
+            # Combinar asumiendo independencia para la cuota base
+            combined_prob = best_winner_prob * best_goal_prob
+            
+            
+            if combined_prob > 0.25: # Al menos 25% de probabilidad conjunta (Cuotas ~4.00 o menores)
+                min_odds = (1.0 + (self.min_edge / 100.0)) / combined_prob
+                return f"👑 PARLAY (Crear Apuesta): {best_winner_desc} + {best_goal_desc} (Busca cuota > {min_odds:.2f})", int(combined_prob * 100)
+                
+        return "NO BET (Sin Valor Matemático > 3%)", 0
+
+class EvidenceAggregator:
+    def __init__(self):
+        # Asignación de pesos dinámicos por regla
+        self.weights = {
+            "Elo Dominance": 1.0,
+            "Poisson Lethality": 1.5,
+            "ML Consensus": 2.0,
+            "Recent Form": 1.5,
+            "Offensive Power": 1.2
+        }
+        self.value_aggregator = ValueAggregator(min_edge=3.0)
+
+    def aggregate(self, results, context):
+        home_team = context.get('home_team')
+        away_team = context.get('away_team')
+        
+        home_weighted_score = 0
+        away_weighted_score = 0
+        total_possible_weight = 0
+
+        for r in results:
+            rule_name = r['rule']
+            weight = self.weights.get(rule_name, 1.0)
+            score = r['score']
+            
+            total_possible_weight += (5 * weight)
+            
+            if r['winner'] == home_team:
+                home_weighted_score += (score * weight)
+            elif r['winner'] == away_team:
+                away_weighted_score += (score * weight)
+
+        is_conflicted = False
+        if home_weighted_score > 0 and away_weighted_score > 0:
+            ratio = min(home_weighted_score, away_weighted_score) / max(home_weighted_score, away_weighted_score)
+            if ratio > 0.6:
+                is_conflicted = True
+
+        total_actual_score = home_weighted_score + away_weighted_score
+        
+        final_pick = "Empate"
+        confidence = 50
+
+        if total_actual_score > 0:
+            if home_weighted_score > away_weighted_score:
+                final_pick = home_team
+                confidence = min(int((home_weighted_score / total_possible_weight) * 100), 100)
+            elif away_weighted_score > home_weighted_score:
+                final_pick = away_team
+                confidence = min(int((away_weighted_score / total_possible_weight) * 100), 100)
+                
+        if is_conflicted:
+            confidence = int(confidence * 0.5)
+            
+            home_xg = context.get('home_xg', 0)
+            away_xg = context.get('away_xg', 0)
+            total_xg = home_xg + away_xg
+            
+            if total_xg >= 3.0:
+                final_pick = "Over 2.5 Goles (Alta Intensidad)"
+                confidence = min(int((total_xg / 3.5) * 85), 95)
+            elif total_xg >= 2.2 and home_xg >= 1.1 and away_xg >= 1.1:
+                final_pick = "Ambos Anotan - SÍ"
+                confidence = 80
+            elif total_xg >= 2.0:
+                final_pick = "Over 0.5 Goles 1T (Arranque Rápido)"
+                confidence = 75
+            elif total_xg <= 1.5:
+                final_pick = "Under 2.5 Goles (Partido Cerrado)"
+                confidence = 85
+            elif home_xg < 0.8 or away_xg < 0.8:
+                final_pick = "Ambos Anotan - NO"
+                confidence = 78
+            else:
+                final_pick = "NO BET (Conflicto Extremo y Sin Tendencia)"
+                confidence = 0
+
+        # Paso Final: Evaluar Apuestas de Valor si existen cuotas
+        if 'odds' in context and 'probs' in context:
+            final_pick, confidence = self.value_aggregator.evaluate_value(final_pick, confidence, context)
+
+        return {
+            "pick": final_pick,
+            "confidence": confidence,
+            "total_score": round(total_actual_score, 1),
+            "is_conflicted": is_conflicted
+        }
+
+class Hermes:
+    def __init__(self):
+        self.rules = ALL_PREMATCH_RULES
+        self.aggregator = EvidenceAggregator()
+
+    def analyze(self, context: dict):
+        results = []
+        
+        for rule in self.rules:
+            result = rule.evaluate(context)
+            results.append({
+                "rule": result.rule,
+                "winner": result.winner,
+                "score": result.score,
+                "message": result.message
+            })
+
+        aggregation = self.aggregator.aggregate(results, context)
+        
+        # Stake Engine (1 Unidad = 100 por defecto, pero dejaremos que el frontend decida el valor base de la unidad)
+        # Aquí solo sugerimos las Unidades
+        conf = aggregation["confidence"]
+        if "NO BET" in aggregation["pick"]:
+            recommended_units = 0
+        elif conf >= 80:
+            recommended_units = 2.0
+        elif conf >= 65:
+            recommended_units = 1.5
+        elif conf >= 50:
+            recommended_units = 1.0
+        else:
+            recommended_units = 0.5
+            
+        return {
+            "pick": aggregation["pick"],
+            "confidence": aggregation["confidence"],
+            "total_score": aggregation["total_score"],
+            "is_conflicted": aggregation["is_conflicted"],
+            "recommended_units": recommended_units,
+            "rules_evaluated": results
+        }
