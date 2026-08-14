@@ -281,6 +281,7 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
   const [oddsExactScore, setOddsExactScore] = useState(() => localStorage.getItem(`odds_exact_${cMatch.id}`) || '');
   const [stakeAmount, setStakeAmount] = useState('');
   const [realOdds, setRealOdds] = useState('');
+  const [selectedBetType, setSelectedBetType] = useState('value_pick');
 
   // Save to local storage on change
   useEffect(() => {
@@ -386,7 +387,7 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           match_id: String(cMatch.id),
-          pick: `${cMatch.homeTeam} vs ${cMatch.awayTeam}: ${insights.hermes.pick}`,
+          pick: `${cMatch.homeTeam} vs ${cMatch.awayTeam}: ${insights.hermes[selectedBetType]}`,
           odds: parseFloat(realOdds),
           stake: parseFloat(stakeAmount),
           evidence_snapshot: JSON.stringify(insights)
@@ -736,9 +737,37 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
                     </div>
                     {insights.hermes.recommended_units !== undefined && (
                       <div style={{color: '#10b981', fontSize: '0.75rem', marginTop: '0.4rem', textAlign: 'left'}}>
-                        Recomendación ATHENA: {insights.hermes.recommended_units} Unidades
+                        Recomendación ATHENA (Francotirador): {insights.hermes.recommended_units} Unidades
                       </div>
                     )}
+                    
+                    <div style={{marginTop: '1.5rem', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)'}}>
+                      <div style={{color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.8rem'}}>Selecciona la apuesta a guardar:</div>
+                      <div style={{display: 'flex', gap: '1.5rem', flexWrap: 'wrap'}}>
+                        <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem', color: selectedBetType === 'value_pick' ? '#8b5cf6' : '#94a3b8', cursor: 'pointer', fontWeight: selectedBetType === 'value_pick' ? 700 : 400}}>
+                          <input 
+                            type="radio" 
+                            name="betType" 
+                            value="value_pick" 
+                            checked={selectedBetType === 'value_pick'} 
+                            onChange={() => setSelectedBetType('value_pick')} 
+                            style={{accentColor: '#8b5cf6', width: '1.2rem', height: '1.2rem'}}
+                          />
+                          🎯 Francotirador
+                        </label>
+                        <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem', color: selectedBetType === 'safe_pick' ? '#10b981' : '#94a3b8', cursor: 'pointer', fontWeight: selectedBetType === 'safe_pick' ? 700 : 400}}>
+                          <input 
+                            type="radio" 
+                            name="betType" 
+                            value="safe_pick" 
+                            checked={selectedBetType === 'safe_pick'} 
+                            onChange={() => setSelectedBetType('safe_pick')} 
+                            style={{accentColor: '#10b981', width: '1.2rem', height: '1.2rem'}}
+                          />
+                          🧱 Ladrillo
+                        </label>
+                      </div>
+                    </div>
                     
                     <button 
                       onClick={handleExecuteBet}

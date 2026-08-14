@@ -1,7 +1,7 @@
 from engine.rules import ALL_PREMATCH_RULES
 
 class ValueAggregator:
-    def __init__(self, min_edge=3.0, min_prob_threshold=55.0):
+    def __init__(self, min_edge=3.0, min_prob_threshold=52.0):
         self.min_edge = min_edge
         self.min_prob_threshold = min_prob_threshold
 

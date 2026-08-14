@@ -20,7 +20,7 @@ def get_portfolio():
     row = cursor.fetchone()
     initial_bankroll = row['value'] if row else 10000.0
     
-    cursor.execute("SELECT * FROM bets ORDER BY id DESC")
+    cursor.execute("SELECT * FROM bets ORDER BY created_at DESC")
     bets = [dict(row) for row in cursor.fetchall()]
     
     conn.close()
