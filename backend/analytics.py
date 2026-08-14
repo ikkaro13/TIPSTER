@@ -66,6 +66,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     away_expected = away_expected_full * remaining_ratio
     
     prob_home_win = 0.0; prob_draw = 0.0; prob_away_win = 0.0
+    prob_over_05 = 0.0; prob_under_05 = 0.0
     prob_over_15 = 0.0; prob_under_15 = 0.0
     prob_over_25 = 0.0; prob_under_25 = 0.0
     prob_over_35 = 0.0; prob_under_35 = 0.0
@@ -100,6 +101,9 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             else: prob_away_win += prob
             
             total_goals = home_goals + away_goals
+            if total_goals > 0.5: prob_over_05 += prob
+            else: prob_under_05 += prob
+            
             if total_goals > 1.5: prob_over_15 += prob
             else: prob_under_15 += prob
             
@@ -199,7 +203,10 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "under_9_5_prob": round(prob_under_9_5, 1)
     }
     
-    return {
+    total = prob_home_win + prob_draw + prob_away_win
+    if total == 0: total = 1.0 # Prevent division by zero
+    
+    result = {
         "home": (prob_home_win / total) * 100,
         "draw": (prob_draw / total) * 100,
         "away": (prob_away_win / total) * 100,
@@ -208,6 +215,8 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "dc_12": ((prob_home_win + prob_away_win) / total) * 100,
         "dnb_home": (prob_home_win / (prob_home_win + prob_away_win)) * 100 if (prob_home_win + prob_away_win) > 0 else 0,
         "dnb_away": (prob_away_win / (prob_home_win + prob_away_win)) * 100 if (prob_home_win + prob_away_win) > 0 else 0,
+        "over_0_5": (prob_over_05 / total) * 100,
+        "under_0_5": (prob_under_05 / total) * 100,
         "over_1_5": (prob_over_15 / total) * 100,
         "under_1_5": (prob_under_15 / total) * 100,
         "over_2_5": (prob_over_25 / total) * 100,
@@ -220,6 +229,62 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "away_minus_1_5": (prob_away_minus_1_5 / total) * 100,
         "exact_score": best_exact_score,
         "exact_score_prob": (best_exact_score_prob / total) * 100,
+        "home_xg": home_expected_full,
+        "away_xg": away_expected_full
+    }
+    
+    # --------------------------------------------
+    # GOLES PRIMER TIEMPO (HT)
+    # Asumimos ~45% de los goles suceden en el HT
+    # --------------------------------------------
+    if current_minute < 45:
+        ht_remaining_ratio = max(0.0, (45 - current_minute) / 45.0)
+        # xG esperado en el 1er tiempo restante
+        ht_home_xg = home_expected_full * 0.45 * ht_remaining_ratio
+        ht_away_xg = away_expected_full * 0.45 * ht_remaining_ratio
+        
+        prob_ht_over_05 = 0.0
+        prob_ht_over_15 = 0.0
+        
+        for rem_h in range(5):
+            for rem_a in range(5):
+                prob = calculate_poisson(ht_home_xg, rem_h) * calculate_poisson(ht_away_xg, rem_a)
+                total_ht_goals = current_home_goals + current_away_goals + rem_h + rem_a
+                if total_ht_goals > 0.5: prob_ht_over_05 += prob
+                if total_ht_goals > 1.5: prob_ht_over_15 += prob
+                
+        result["over_0_5_ht"] = prob_ht_over_05 * 100
+        result["over_1_5_ht"] = prob_ht_over_15 * 100
+    else:
+        result["over_0_5_ht"] = 100 if (current_home_goals + current_away_goals) > 0.5 else 0
+        result["over_1_5_ht"] = 100 if (current_home_goals + current_away_goals) > 1.5 else 0
+
+    # --------------------------------------------
+    # MODELO DE CORNERS EN VIVO
+    # Media de corners en liga suele ser ~10. Ajustamos por poder ofensivo.
+    # --------------------------------------------
+    corners_base = 9.5
+    # Equipos con alto xG tienden a provocar/recibir más corners
+    corner_multiplier = (home_expected_full + away_expected_full) / 2.5
+    expected_corners_full = corners_base * corner_multiplier
+    
+    expected_corners_rem = expected_corners_full * remaining_ratio
+    
+    prob_over_85_corners = 0.0
+    prob_over_95_corners = 0.0
+    prob_over_105_corners = 0.0
+    
+    for c in range(25):
+        p_corner = calculate_poisson(expected_corners_full, c)
+        if c > 8.5: prob_over_85_corners += p_corner
+        if c > 9.5: prob_over_95_corners += p_corner
+        if c > 10.5: prob_over_105_corners += p_corner
+        
+    result["over_8_5_corners"] = prob_over_85_corners * 100
+    result["over_9_5_corners"] = prob_over_95_corners * 100
+    result["over_10_5_corners"] = prob_over_105_corners * 100
+    
+    result.update({
         "ultras": {
             "Gana Local + Ambos Anotan + Más 3.5 Goles": (prob_ultra_home_btts_o35 / total) * 100,
             "Gana Visita + Ambos Anotan + Más 3.5 Goles": (prob_ultra_away_btts_o35 / total) * 100,
@@ -227,13 +292,12 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             "Gana Local sin recibir Gol + Más 2.5 Goles": (prob_ultra_home_to_nil_o25 / total) * 100,
             "Gana Visita sin recibir Gol + Más 2.5 Goles": (prob_ultra_away_to_nil_o25 / total) * 100,
         },
-        "corners": corners_prediction,
         "player_prop_home": get_player_props(home_team, home_expected),
         "player_prop_away": get_player_props(away_team, away_expected),
         "metrics": { "home_xg": round(home_expected, 2), "away_xg": round(away_expected, 2) },
         "is_ensembled": is_ensembled,
         "hermes": hermes_insight
-    }
+    })
 
 def find_value_bets(real_probs, bookmaker_odds):
     analysis = {

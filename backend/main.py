@@ -61,6 +61,15 @@ class BetRequest(BaseModel):
 class ResetBankrollRequest(BaseModel):
     new_amount: float
 
+class AresCalculateRequest(BaseModel):
+    homeTeam: str
+    awayTeam: str
+    minute: int
+    homeGoals: int
+    awayGoals: int
+    market: str
+    odds: float
+
 class SettleRequest(BaseModel):
     result: str
 
@@ -417,6 +426,59 @@ def get_daily_calendar(date: str = None):
         print(f"Error en calendario: {e}")
         return []
 
+@app.post("/api/ares/calculate")
+def calculate_ares(req: AresCalculateRequest):
+    global GLOBAL_STATS_DB
+    if not GLOBAL_STATS_DB: 
+        GLOBAL_STATS_DB = get_national_elo()
+        
+    probs = calculate_match_probabilities(
+        req.homeTeam, 
+        req.awayTeam, 
+        GLOBAL_STATS_DB, 
+        current_minute=req.minute, 
+        current_home_goals=req.homeGoals, 
+        current_away_goals=req.awayGoals,
+        historical_context=None
+    )
+    
+    market_map = {
+        "home": probs.get("home", 0),
+        "draw": probs.get("draw", 0),
+        "away": probs.get("away", 0),
+        "over_0_5": probs.get("over_0_5", 0),
+        "under_0_5": probs.get("under_0_5", 0),
+        "over_1_5": probs.get("over_1_5", 0),
+        "under_1_5": probs.get("under_1_5", 0),
+        "over_2_5": probs.get("over_2_5", 0),
+        "under_2_5": probs.get("under_2_5", 0),
+        "over_3_5": probs.get("over_3_5", 0),
+        "under_3_5": probs.get("under_3_5", 0),
+        "over_0_5_ht": probs.get("over_0_5_ht", 0),
+        "over_1_5_ht": probs.get("over_1_5_ht", 0),
+        "btts_yes": probs.get("btts_yes", 0),
+        "btts_no": probs.get("btts_no", 0),
+        "over_8_5_corners": probs.get("over_8_5_corners", 0),
+        "over_9_5_corners": probs.get("over_9_5_corners", 0),
+        "over_10_5_corners": probs.get("over_10_5_corners", 0)
+    }
+    
+    real_prob_percent = market_map.get(req.market, 0)
+    real_prob_decimal = real_prob_percent / 100.0
+    
+    edge = 0.0
+    if req.odds > 1.0:
+        edge = (real_prob_decimal * req.odds) - 1.0
+        
+    return {
+        "status": "success",
+        "market": req.market,
+        "prob": round(real_prob_percent, 2),
+        "odds": req.odds,
+        "edge": round(edge * 100, 2),
+        "is_value": edge > 0.05
+    }
+
 @app.get("/api/chronos/scan-day")
 def scan_day_for_value_bets(date: str):
     global GLOBAL_STATS_DB
@@ -433,6 +495,7 @@ def scan_day_for_value_bets(date: str):
         daily_odds = odds_connector.fetch_odds_by_date(date)
         
         value_bets = []
+        safe_bets = []
         
         # 3. Analizar matemáticamente
         for match in fixtures:
@@ -473,7 +536,22 @@ def scan_day_for_value_bets(date: str):
                         "prob": round(prob_percent, 2),
                         "odds": odds_val,
                         "edge": round(edge * 100, 2),
-                        "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown')
+                        "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
+                        "type": "🎯 Francotirador"
+                    })
+                # PLAN B (Ladrillo): Alta probabilidad y cuota jugable
+                if prob_percent >= 60.0 and odds_val >= 1.60:
+                    safe_bets.append({
+                        "fixture_id": fixture_id,
+                        "league": league_name,
+                        "home_team": home_team,
+                        "away_team": away_team,
+                        "pick": pick_name,
+                        "prob": round(prob_percent, 2),
+                        "odds": odds_val,
+                        "edge": round(edge * 100, 2),
+                        "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
+                        "type": "🧱 Ladrillo"
                     })
                     
             if odds.get('home', {}).get('price', 0) > 1.0:
@@ -491,8 +569,12 @@ def scan_day_for_value_bets(date: str):
                 
         # Ordenar por edge descendente
         value_bets.sort(key=lambda x: x["edge"], reverse=True)
+        # Ordenar Plan B por probabilidad descendente
+        safe_bets.sort(key=lambda x: x["prob"], reverse=True)
         
-        return {"status": "success", "date": date, "value_bets": value_bets}
+        final_bets = value_bets if len(value_bets) > 0 else safe_bets
+        
+        return {"status": "success", "date": date, "value_bets": final_bets}
     except Exception as e:
         print(f"Error en scan_day: {e}")
         return {"status": "error", "message": str(e)}

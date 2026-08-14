@@ -35,9 +35,9 @@ interface Match {
   };
   odds: OddsData;
   analysis: { 
-    main_line: { pick: string; prob: number; odds: number; } | null;
-    medium_risk: { pick: string; prob: number; odds: number; edge: number; kelly_percent: number; bookmaker: string; } | null;
-    dreamer: { pick: string; prob: number; fair_odds: number; } | null;
+    main_line: { pick: string; prob: number; odds: number; edge: number; kelly_percent: number; bookmaker?: string; } | null;
+    medium_risk: { pick: string; prob: number; odds: number; edge: number; kelly_percent: number; bookmaker?: string; } | null;
+    dreamer: { pick: string; prob: number; fair_odds: number; odds?: number; } | null;
     ultra: { pick: string; prob: number; fair_odds: number; } | null;
     corners_alert?: { pick: string; prob: number; fair_odds: number; } | null;
     player_prop?: { player: string; pick: string; prob: number; fair_odds: number; } | null;
@@ -283,6 +283,15 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
   const [realOdds, setRealOdds] = useState('');
   const [selectedBetType, setSelectedBetType] = useState('value_pick');
 
+  // ARES State (Live Calculator)
+  const [aresMinute, setAresMinute] = useState('70');
+  const [aresHomeGoals, setAresHomeGoals] = useState('0');
+  const [aresAwayGoals, setAresAwayGoals] = useState('0');
+  const [aresMarket, setAresMarket] = useState('over_0_5');
+  const [aresOdds, setAresOdds] = useState('');
+  const [aresResult, setAresResult] = useState<any>(null);
+  const [aresLoading, setAresLoading] = useState(false);
+
   // Save to local storage on change
   useEffect(() => {
     localStorage.setItem(`odds_home_${cMatch.id}`, oddsHome);
@@ -359,10 +368,35 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
         })
       });
       const data = await res.json();
-      setInsights(prev => ({ ...prev, hermes: data.hermes }));
+      setInsights((prev: any) => ({ ...prev, hermes: data.hermes }));
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const handleAresCalculate = async () => {
+    if (!aresOdds || isNaN(parseFloat(aresOdds))) { alert("Ingresa una cuota válida para ARES"); return; }
+    setAresLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/ares/calculate`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          homeTeam: cMatch.homeTeam,
+          awayTeam: cMatch.awayTeam,
+          minute: parseInt(aresMinute),
+          homeGoals: parseInt(aresHomeGoals),
+          awayGoals: parseInt(aresAwayGoals),
+          market: aresMarket,
+          odds: parseFloat(aresOdds)
+        })
+      });
+      const data = await res.json();
+      setAresResult(data);
+    } catch (e) {
+      console.error(e);
+    }
+    setAresLoading(false);
   };
 
   const handleExecuteBet = async () => {
@@ -544,6 +578,92 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Módulo ARES (Calculadora En Vivo) */}
+        <div style={{background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.4)', borderRadius: '16px', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 0 20px rgba(239, 68, 68, 0.1)'}}>
+          <h3 style={{color: '#fca5a5', fontSize: '1.4rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 900}}>
+            <span>⚔️</span> ARES: Calculadora Táctica En Vivo
+          </h3>
+          
+          <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem'}}>
+            <div style={{flex: 1, minWidth: '100px'}}>
+              <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Minuto Actual</label>
+              <input type="number" value={aresMinute} onChange={e => setAresMinute(e.target.value)} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #475569', color: 'white', fontWeight: 700}} />
+            </div>
+            <div style={{flex: 1, minWidth: '100px'}}>
+              <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Goles {cMatch.homeTeam}</label>
+              <input type="number" value={aresHomeGoals} onChange={e => setAresHomeGoals(e.target.value)} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #475569', color: 'white', fontWeight: 700}} />
+            </div>
+            <div style={{flex: 1, minWidth: '100px'}}>
+              <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Goles {cMatch.awayTeam}</label>
+              <input type="number" value={aresAwayGoals} onChange={e => setAresAwayGoals(e.target.value)} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #475569', color: 'white', fontWeight: 700}} />
+            </div>
+          </div>
+          
+          <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end'}}>
+            <div style={{flex: 2, minWidth: '200px'}}>
+              <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Mercado (Casino)</label>
+              <select value={aresMarket} onChange={e => setAresMarket(e.target.value)} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #475569', color: 'white', fontWeight: 700, appearance: 'none'}}>
+                <option value="home">Gana Local</option>
+                <option value="draw">Empate</option>
+                <option value="away">Gana Visita</option>
+                <option value="over_0_5">Más 0.5 Goles</option>
+                <option value="under_0_5">Menos 0.5 Goles</option>
+                <option value="over_1_5">Más 1.5 Goles</option>
+                <option value="over_2_5">Más 2.5 Goles</option>
+                <option value="over_0_5_ht">Más 0.5 Goles (1er Tiempo)</option>
+                <option value="over_1_5_ht">Más 1.5 Goles (1er Tiempo)</option>
+                <option value="btts_yes">Ambos Anotan (SÍ)</option>
+                <option value="btts_no">Ambos Anotan (NO)</option>
+                <option value="over_8_5_corners">Más 8.5 Corners Totales</option>
+                <option value="over_9_5_corners">Más 9.5 Corners Totales</option>
+                <option value="over_10_5_corners">Más 10.5 Corners Totales</option>
+              </select>
+            </div>
+            <div style={{flex: 1, minWidth: '100px'}}>
+              <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Cuota</label>
+              <input type="number" step="0.01" value={aresOdds} onChange={e => setAresOdds(e.target.value)} placeholder="Ej. 1.85" style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #ef4444', color: 'white', fontWeight: 700}} />
+            </div>
+            <button 
+              onClick={handleAresCalculate} 
+              disabled={aresLoading}
+              style={{padding: '0.8rem 1.5rem', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 800, cursor: 'pointer', flexShrink: 0}}
+            >
+              {aresLoading ? 'Calculando...' : '⚡ Disparar ARES'}
+            </button>
+          </div>
+          
+          {aresResult && (
+            <div style={{marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(0,0,0,0.4)', borderRadius: '12px', border: '1px solid #334155'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <div>
+                  <div style={{color: '#94a3b8', fontSize: '0.9rem'}}>Probabilidad Real</div>
+                  <div style={{color: '#f8fafc', fontSize: '2rem', fontWeight: 900}}>{aresResult.prob}%</div>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                  <div style={{color: '#94a3b8', fontSize: '0.9rem'}}>Cuota Casino</div>
+                  <div style={{color: '#f8fafc', fontSize: '1.5rem', fontWeight: 700}}>{aresResult.odds}</div>
+                </div>
+                <div style={{textAlign: 'right'}}>
+                  <div style={{color: '#94a3b8', fontSize: '0.9rem'}}>Valor Matemático (Edge)</div>
+                  <div style={{
+                    color: aresResult.edge > 0 ? '#10b981' : '#ef4444', 
+                    fontSize: '2rem', 
+                    fontWeight: 900,
+                    textShadow: aresResult.edge > 0 ? '0 0 15px rgba(16, 185, 129, 0.4)' : 'none'
+                  }}>
+                    {aresResult.edge > 0 ? '+' : ''}{aresResult.edge}%
+                  </div>
+                </div>
+              </div>
+              {aresResult.edge > 5 && (
+                <div style={{marginTop: '1rem', padding: '0.8rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', borderRadius: '8px', fontWeight: 800, textAlign: 'center'}}>
+                  🔥 ¡ALERTA DE VALUE BET! DISPARA AHORA 🔥
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Módulo Goles */}
@@ -957,7 +1077,7 @@ export default function Home() {
       if (data.status === 'success') {
         setOracleInsights(data.value_bets);
         if (data.value_bets.length === 0) {
-            alert("El oráculo escaneó todas las cuotas del día y no encontró ningún Value Bet con Edge mayor al 5%.");
+            alert("El oráculo escaneó todas las cuotas del día y no encontró ningún Value Bet ni opciones Ladrillo viables.");
         }
       } else {
         alert("Error del oráculo: " + data.message);
@@ -1055,13 +1175,20 @@ export default function Home() {
             {oracleInsights.length > 0 && (
               <div className="match-card" style={{padding: '1.5rem', marginBottom: '2rem', border: '1px solid #8b5cf6', background: 'rgba(139, 92, 246, 0.1)'}}>
                 <h3 style={{color: '#c4b5fd', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-                  <span>👁️</span> Predicciones del Oráculo (AVI &gt; 5%)
+                  <span>👁️</span> {oracleInsights[0]?.type?.includes('Ladrillo') ? 'Plan B del Oráculo (Mejores Ladrillos de Hoy)' : 'Predicciones del Oráculo (Value Bets puros)'}
                 </h3>
                 <div style={{display: 'flex', flexDirection: 'column', gap: '0.8rem'}}>
                   {oracleInsights.map((insight, idx) => (
                     <div key={idx} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px'}}>
                       <div>
-                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 700}}>{insight.league}</div>
+                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 700}}>
+                          {insight.type && (
+                            <span style={{color: insight.type.includes('Ladrillo') ? '#10b981' : '#8b5cf6', marginRight: '8px'}}>
+                              {insight.type}
+                            </span>
+                          )}
+                          {insight.league}
+                        </div>
                         <div style={{color: '#f8fafc', fontWeight: 700, fontSize: '1.1rem'}}>{insight.home_team} vs {insight.away_team}</div>
                         <div style={{color: '#38bdf8', fontSize: '0.9rem', marginTop: '0.2rem', display: 'flex', gap: '0.5rem'}}>
                           <span>Pick: <strong style={{color: '#f8fafc'}}>{insight.pick}</strong></span>
