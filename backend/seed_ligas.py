@@ -10,11 +10,6 @@ from data_engine import get_national_elo, save_national_elo
 from elo_updater import calculate_elo_change
 
 TOP_10_LEAGUES = {
-    "Liga MX": 262,
-    "MLS": 253,
-    "Premier League": 39,
-    "La Liga": 140,
-    "Serie A": 135,
     "Bundesliga": 78,
     "Ligue 1": 61,
     "Eredivisie": 88,
@@ -48,7 +43,7 @@ def seed_leagues():
             else:
                 print(f"   -> Error o sin datos para la temporada {season}.")
                 
-            time.sleep(1) # Pequeña pausa para no saturar la API
+            time.sleep(7) # Pausa larga para no rebasar el límite de 10 peticiones/minuto
             
         # 2. Ordenar cronológicamente (del más antiguo al más reciente)
         all_league_matches.sort(key=lambda x: x["fixture"]["timestamp"])
