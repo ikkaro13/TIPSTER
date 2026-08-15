@@ -10,11 +10,16 @@ from data_engine import get_national_elo, save_national_elo
 from elo_updater import calculate_elo_change
 
 TOP_10_LEAGUES = {
-    "Bundesliga": 78,
-    "Ligue 1": 61,
-    "Eredivisie": 88,
-    "Brasileirao": 71,
-    "Argentina": 128
+    "Eliteserien": 103,
+    "Allsvenskan": 113,
+    "J1 League": 98,
+    "Championship": 40,
+    "Primera Nacional": 129,
+    "Veikkausliiga": 244,
+    "Primeira Liga": 94,
+    "Super Lig": 203,
+    "Superettan": 114,
+    "J2 League": 99
 }
 
 SEASONS = [2023, 2024]

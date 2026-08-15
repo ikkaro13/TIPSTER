@@ -13,6 +13,7 @@ services:
       - ./backend/tipster.db:/app/tipster.db
       - ./backend/tuning_params.json:/app/tuning_params.json
       - ./backend/alt_data.json:/app/alt_data.json
+      - ./backend/portfolio_db.json:/app/portfolio_db.json
     restart: always
 
   frontend:
