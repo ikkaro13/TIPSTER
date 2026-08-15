@@ -22,6 +22,8 @@ import sys
 import athena_engine
 import api_football_engine
 import sofascore_scraper
+from autotune import run_auto_tuning
+import json
 
 class MatchResult(BaseModel):
     homeTeam: str
@@ -69,6 +71,7 @@ class AresCalculateRequest(BaseModel):
     awayGoals: int
     market: str
     odds: float
+    currentCorners: int = 0
 
 class SettleRequest(BaseModel):
     result: str
@@ -151,6 +154,15 @@ def api_place_bet(req: BetRequest):
 @app.post("/api/portfolio/reset")
 def api_reset_bankroll(req: ResetBankrollRequest):
     return reset_bankroll(req.new_amount)
+
+@app.post("/api/autotune/run")
+def trigger_auto_tuning():
+    try:
+        res = run_auto_tuning()
+        return res
+    except Exception as e:
+        print(f"Error in autotune: {e}")
+        return {"status": "error", "message": str(e)}
 
 @app.post("/api/portfolio/settle/{bet_id}")
 def settle_bet_endpoint(bet_id: str, request: SettleRequest):
@@ -303,9 +315,18 @@ def get_matches():
             
             # Usar la caché masiva en lugar de pegarle a la API individualmente por cada partido en vivo
             odds_data = daily_odds.get(fixture_id, {})
+            # Load tuning params if exists
+            tuning_params = None
+            tuning_file = os.path.join(os.path.dirname(__file__), "tuning_params.json")
+            if os.path.exists(tuning_file):
+                try:
+                    with open(tuning_file, 'r', encoding='utf-8') as f:
+                        tuning_params = json.load(f)
+                except:
+                    pass
             
             real_probs = calculate_match_probabilities(home_team, away_team, GLOBAL_STATS_DB)
-            analysis = find_value_bets(real_probs, odds_data)
+            analysis = find_value_bets(real_probs, odds_data, tuning_params)
             
             minute = status.get("elapsed", "-")
             if minute is None: minute = "-"
@@ -439,7 +460,8 @@ def calculate_ares(req: AresCalculateRequest):
         current_minute=req.minute, 
         current_home_goals=req.homeGoals, 
         current_away_goals=req.awayGoals,
-        historical_context=None
+        historical_context=None,
+        current_corners=req.currentCorners
     )
     
     market_map = {
@@ -497,6 +519,16 @@ def scan_day_for_value_bets(date: str):
         value_bets = []
         safe_bets = []
         
+        # Cargar parámetros de auto-tuning
+        tuning_params = {"markets": {}}
+        tuning_file = os.path.join(os.path.dirname(__file__), "tuning_params.json")
+        if os.path.exists(tuning_file):
+            try:
+                with open(tuning_file, 'r', encoding='utf-8') as f:
+                    tuning_params = json.load(f)
+            except:
+                pass
+        
         # 3. Analizar matemáticamente
         for match in fixtures:
             fixture_id = str(match.get("fixture", {}).get("id"))
@@ -524,9 +556,14 @@ def scan_day_for_value_bets(date: str):
                 prob = prob_percent / 100.0
                 edge = (prob * odds_val) - 1
                 
+                # Obtener penalización por mercado si existe
+                m_key = pick_name.upper()
+                edge_penalty = tuning_params.get("markets", {}).get(m_key, {}).get("edge_penalty", 0.0)
+                required_edge = 0.05 + edge_penalty
+                
                 # REGLA: Equilibrio matemático y realidad
-                # Exigimos un mínimo de 50% de probabilidad real base para evitar buscar "milagros" matemáticos.
-                if edge > 0.05 and prob_percent >= 50.0:
+                # Exigimos un mínimo de probabilidad real base para evitar buscar "milagros" matemáticos.
+                if edge > required_edge and prob_percent >= 50.0:
                     value_bets.append({
                         "fixture_id": fixture_id,
                         "league": league_name,

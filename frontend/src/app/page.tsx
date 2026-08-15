@@ -287,6 +287,7 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
   const [aresMinute, setAresMinute] = useState('70');
   const [aresHomeGoals, setAresHomeGoals] = useState('0');
   const [aresAwayGoals, setAresAwayGoals] = useState('0');
+  const [aresCurrentCorners, setAresCurrentCorners] = useState('0');
   const [aresMarket, setAresMarket] = useState('over_0_5');
   const [aresOdds, setAresOdds] = useState('');
   const [aresResult, setAresResult] = useState<any>(null);
@@ -388,7 +389,8 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
           homeGoals: parseInt(aresHomeGoals),
           awayGoals: parseInt(aresAwayGoals),
           market: aresMarket,
-          odds: parseFloat(aresOdds)
+          odds: parseFloat(aresOdds),
+          currentCorners: parseInt(aresCurrentCorners) || 0
         })
       });
       const data = await res.json();
@@ -599,6 +601,12 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
               <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Goles {cMatch.awayTeam}</label>
               <input type="number" value={aresAwayGoals} onChange={e => setAresAwayGoals(e.target.value)} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #475569', color: 'white', fontWeight: 700}} />
             </div>
+            {aresMarket.includes('corners') && (
+              <div style={{flex: 1, minWidth: '100px'}}>
+                <label style={{display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem'}}>Corners Actuales</label>
+                <input type="number" value={aresCurrentCorners} onChange={e => setAresCurrentCorners(e.target.value)} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', background: '#1e293b', border: '1px solid #f59e0b', color: 'white', fontWeight: 700}} />
+              </div>
+            )}
           </div>
           
           <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end'}}>
@@ -950,6 +958,8 @@ export default function Home() {
   const [editingBetId, setEditingBetId] = useState<string | null>(null);
   const [editOddsValue, setEditOddsValue] = useState<string>('');
 
+  const [autotuneReport, setAutotuneReport] = useState<any>(null);
+
   const fetchMatches = async () => {
     try {
       const res = await fetch(`${API_BASE}/api/matches`);
@@ -1038,6 +1048,20 @@ export default function Home() {
             fetchPortfolio();
         } else {
             alert(`Error en Autopsia: ${data.message || 'Desconocido'}`);
+        }
+      } catch (e) { console.error(e); }
+    }
+  };
+
+  const handleAutotune = async () => {
+    if (confirm("¿Entrenar ATHENA? Analizará todas las apuestas ganadas/perdidas y re-calibrará los parámetros matemáticos globales.")) {
+      try {
+        const res = await fetch(`${API_BASE}/api/autotune/run`, { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+            setAutotuneReport(data.report);
+        } else {
+            alert(`Error en Entrenamiento: ${data.message || 'Desconocido'}`);
         }
       } catch (e) { console.error(e); }
     }
@@ -1294,6 +1318,12 @@ export default function Home() {
               <h3 className="section-title" style={{marginBottom: 0, fontSize: '1.5rem'}}>Historial de Inversiones (Ledger)</h3>
               <div style={{display: 'flex', gap: '1rem'}}>
                 <button 
+                  onClick={handleAutotune}
+                  style={{background: 'linear-gradient(90deg, #8b5cf6, #d946ef)', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: 'var(--radius-pill)', cursor: 'pointer', fontWeight: 800, boxShadow: '0 0 15px rgba(139, 92, 246, 0.4)', transition: 'var(--transition)'}}
+                >
+                  🧠 Entrenar ATHENA
+                </button>
+                <button 
                   onClick={handleAutopsy}
                   style={{background: 'linear-gradient(90deg, var(--cyan), #3b82f6)', color: 'white', border: 'none', padding: '0.6rem 1.5rem', borderRadius: 'var(--radius-pill)', cursor: 'pointer', fontWeight: 800, boxShadow: '0 0 15px var(--cyan-glow)', transition: 'var(--transition)'}}
                 >
@@ -1380,6 +1410,45 @@ export default function Home() {
             )}
           </div>
         )}
+          {/* Modal Autotune Report */}
+          {autotuneReport && (
+            <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000}}>
+              <div style={{background: 'var(--card-bg)', padding: '2rem', borderRadius: '16px', maxWidth: '600px', width: '90%', border: '1px solid #8b5cf6', boxShadow: '0 0 30px rgba(139, 92, 246, 0.3)'}}>
+                <h2 style={{marginTop: 0, color: '#d946ef', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                  <span>🧠</span> Reporte de Entrenamiento (ATHENA)
+                </h2>
+                <p style={{color: 'var(--text-muted)', marginBottom: '1.5rem'}}>
+                  El algoritmo ha calibrado el <strong>Edge</strong> requerido basado en tu historial de ROI.
+                </p>
+                
+                <div style={{maxHeight: '400px', overflowY: 'auto', marginBottom: '1.5rem'}}>
+                  {autotuneReport.map((r: any, idx: number) => (
+                    <div key={idx} style={{background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                      <div>
+                        <div style={{fontWeight: 800, color: '#f8fafc'}}>{r.market}</div>
+                        <div style={{fontSize: '0.85rem', color: 'var(--text-muted)'}}>Muestra: {r.sample_size} apuestas</div>
+                      </div>
+                      <div style={{textAlign: 'right'}}>
+                        <div style={{color: r.roi > 0 ? 'var(--primary)' : r.roi < 0 ? 'var(--danger)' : '#fff', fontWeight: 700}}>ROI: {r.roi}%</div>
+                        {r.edge_penalty !== 0 && (
+                          <div style={{fontSize: '0.85rem', color: r.edge_penalty > 0 ? '#f59e0b' : 'var(--primary)', fontWeight: 800}}>
+                            Penalización Edge: {(r.edge_penalty * 100).toFixed(1)}%
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {autotuneReport.length === 0 && (
+                    <div style={{textAlign: 'center', color: '#94a3b8', padding: '1rem'}}>No hay suficientes datos procesados.</div>
+                  )}
+                </div>
+                
+                <button onClick={() => setAutotuneReport(null)} style={{width: '100%', padding: '0.8rem', background: '#8b5cf6', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 800, cursor: 'pointer'}}>
+                  Entendido
+                </button>
+              </div>
+            </div>
+          )}
       </main>
     </>
   );

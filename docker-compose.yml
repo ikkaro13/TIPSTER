@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: athena_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mapeamos la base de datos y archivos críticos al host para que sean persistentes
+      - ./backend/tipster.db:/app/tipster.db
+      - ./backend/tuning_params.json:/app/tuning_params.json
+      - ./backend/alt_data.json:/app/alt_data.json
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: argos_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # Definimos a dónde apunta el frontend para hablar con el backend
+      # Al estar en la nube, localhost se refiere al servidor o podemos usar el nombre del servicio 'backend' si ruteamos internamente.
+      # Usaremos /api que puede ser manejado por NextJS si hacemos proxies, pero para mayor facilidad mapearemos la ruta.
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: always

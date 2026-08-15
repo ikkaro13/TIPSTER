@@ -37,7 +37,7 @@ def elo_to_expected_goals(home_elo, away_elo, home_advantage_points):
     away_xg = total_goals_avg * (1 - win_expectancy)
     return home_xg, away_xg
 
-def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=None):
+def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=None, current_corners=0):
     home_elo = elo_db.get(home_team, 1750)
     away_elo = elo_db.get(away_team, 1750)
     
@@ -274,11 +274,12 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     prob_over_95_corners = 0.0
     prob_over_105_corners = 0.0
     
-    for c in range(25):
-        p_corner = calculate_poisson(expected_corners_full, c)
-        if c > 8.5: prob_over_85_corners += p_corner
-        if c > 9.5: prob_over_95_corners += p_corner
-        if c > 10.5: prob_over_105_corners += p_corner
+    for rem_c in range(25):
+        p_corner = calculate_poisson(expected_corners_rem, rem_c)
+        total_c = current_corners + rem_c
+        if total_c > 8.5: prob_over_85_corners += p_corner
+        if total_c > 9.5: prob_over_95_corners += p_corner
+        if total_c > 10.5: prob_over_105_corners += p_corner
         
     result["over_8_5_corners"] = prob_over_85_corners * 100
     result["over_9_5_corners"] = prob_over_95_corners * 100
@@ -298,8 +299,10 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "is_ensembled": is_ensembled,
         "hermes": hermes_insight
     })
+    
+    return result
 
-def find_value_bets(real_probs, bookmaker_odds):
+def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
     analysis = {
         "main_line": None,
         "medium_risk": None,
@@ -373,7 +376,18 @@ def find_value_bets(real_probs, bookmaker_odds):
         
         if my_prob_decimal > bookie_prob_decimal:
             edge_percent = (my_prob_decimal - bookie_prob_decimal) * 100
-            if edge_percent > best_edge and edge_percent > 1.0:
+            
+            # Apply auto-tuning edge penalty
+            edge_penalty = 0.0
+            if tuning_params:
+                m_key = name.upper()
+                # Some markets are stored differently in DB vs analytics naming, but let's try direct map
+                # or just use the generic edge penalty logic from tuning_params.
+                edge_penalty = tuning_params.get("markets", {}).get(m_key, {}).get("edge_penalty", 0.0) * 100
+                
+            required_edge = 1.0 + edge_penalty
+            
+            if edge_percent > best_edge and edge_percent > required_edge:
                 best_edge = edge_percent; best_val_pick = name; best_val_prob = my_prob_percent; best_val_price = price; best_val_bookie = bookie
                 
     if best_val_pick:
