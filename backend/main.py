@@ -23,6 +23,7 @@ import athena_engine
 import api_football_engine
 import sofascore_scraper
 from autotune import run_auto_tuning
+from train_model import train_models
 import json
 
 class MatchResult(BaseModel):
@@ -158,7 +159,12 @@ def api_reset_bankroll(req: ResetBankrollRequest):
 @app.post("/api/autotune/run")
 def trigger_auto_tuning():
     try:
+        # 1. Ajustar hiperparámetros según feedback de Plutus
         res = run_auto_tuning()
+        
+        # 2. Entrenar los 3 modelos de Machine Learning (Random Forest)
+        train_models()
+        
         return res
     except Exception as e:
         print(f"Error in autotune: {e}")

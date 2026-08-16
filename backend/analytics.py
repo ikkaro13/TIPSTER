@@ -7,15 +7,24 @@ from engine.hermes import Hermes
 
 
 CORNERS_DB = get_corners_data()
-ML_MODEL = None
-MODEL_PATH = "model.pkl"
+ML_MODEL_1X2 = None
+ML_MODEL_OU = None
+ML_MODEL_BTTS = None
 
-if os.path.exists(MODEL_PATH):
-    try:
-        ML_MODEL = joblib.load(MODEL_PATH)
-        print("[TipsterAI] Modelo Random Forest cargado exitosamente.")
-    except Exception as e:
-        print(f"Error cargando modelo ML: {e}")
+MODEL_1X2_PATH = "model_1x2.pkl"
+MODEL_OU_PATH = "model_ou.pkl"
+MODEL_BTTS_PATH = "model_btts.pkl"
+
+try:
+    if os.path.exists(MODEL_1X2_PATH):
+        ML_MODEL_1X2 = joblib.load(MODEL_1X2_PATH)
+    if os.path.exists(MODEL_OU_PATH):
+        ML_MODEL_OU = joblib.load(MODEL_OU_PATH)
+    if os.path.exists(MODEL_BTTS_PATH):
+        ML_MODEL_BTTS = joblib.load(MODEL_BTTS_PATH)
+    print("[TipsterAI] Modelos Inteligentes (1X2, OU, BTTS) cargados exitosamente.")
+except Exception as e:
+    print(f"Error cargando modelos ML: {e}")
 
 def calculate_poisson(expected_goals, actual_goals):
     if expected_goals <= 0:
@@ -136,19 +145,28 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
 
     # Ensamblaje con IA (Random Forest) si el modelo está disponible
     is_ensembled = False
-    if ML_MODEL and home_team in elo_db and away_team in elo_db:
+    if home_team in elo_db and away_team in elo_db:
         h_elo = elo_db[home_team]
         a_elo = elo_db[away_team]
         elo_diff = (h_elo + 50) - a_elo
         
-        # Predict_proba devuelve [[prob_away, prob_draw, prob_home]]
-        ml_probs = ML_MODEL.predict_proba([[h_elo, a_elo, elo_diff]])[0]
-        
-        # Mezclamos 50% Poisson / 50% Machine Learning
-        prob_away_win = (prob_away_win * 0.5) + (ml_probs[0] * 0.5)
-        prob_draw = (prob_draw * 0.5) + (ml_probs[1] * 0.5)
-        prob_home_win = (prob_home_win * 0.5) + (ml_probs[2] * 0.5)
-        is_ensembled = True
+        if ML_MODEL_1X2:
+            # Predict_proba devuelve [[prob_away, prob_draw, prob_home]]
+            ml_probs_1x2 = ML_MODEL_1X2.predict_proba([[h_elo, a_elo, elo_diff]])[0]
+            prob_away_win = (prob_away_win * 0.5) + (ml_probs_1x2[0] * 0.5)
+            prob_draw = (prob_draw * 0.5) + (ml_probs_1x2[1] * 0.5)
+            prob_home_win = (prob_home_win * 0.5) + (ml_probs_1x2[2] * 0.5)
+            is_ensembled = True
+            
+        if ML_MODEL_OU:
+            ml_probs_ou = ML_MODEL_OU.predict_proba([[h_elo, a_elo, elo_diff]])[0]
+            prob_under_25 = (prob_under_25 * 0.5) + (ml_probs_ou[0] * 0.5)
+            prob_over_25 = (prob_over_25 * 0.5) + (ml_probs_ou[1] * 0.5)
+            
+        if ML_MODEL_BTTS:
+            ml_probs_btts = ML_MODEL_BTTS.predict_proba([[h_elo, a_elo, elo_diff]])[0]
+            prob_btts_no = (prob_btts_no * 0.5) + (ml_probs_btts[0] * 0.5)
+            prob_btts_yes = (prob_btts_yes * 0.5) + (ml_probs_btts[1] * 0.5)
     
     # Normalizar para asegurar que la suma es 100%
     total = prob_home_win + prob_draw + prob_away_win
@@ -156,9 +174,9 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     
     # Evaluar contexto con el Oráculo de Hermes (Motor de Reglas)
     ml_winner = None
-    if is_ensembled:
-        if ml_probs[2] > ml_probs[0] and ml_probs[2] > ml_probs[1]: ml_winner = home_team
-        elif ml_probs[0] > ml_probs[2] and ml_probs[0] > ml_probs[1]: ml_winner = away_team
+    if is_ensembled and ML_MODEL_1X2:
+        if ml_probs_1x2[2] > ml_probs_1x2[0] and ml_probs_1x2[2] > ml_probs_1x2[1]: ml_winner = home_team
+        elif ml_probs_1x2[0] > ml_probs_1x2[2] and ml_probs_1x2[0] > ml_probs_1x2[1]: ml_winner = away_team
         else: ml_winner = "Empate"
 
     poisson_winner = None

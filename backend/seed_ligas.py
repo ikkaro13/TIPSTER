@@ -6,7 +6,7 @@ import time
 sys.path.append(os.path.dirname(__file__))
 
 from api_football_engine import make_api_request
-from data_engine import get_national_elo, save_national_elo
+from data_engine import get_national_elo, save_national_elo, save_historical_match
 from elo_updater import calculate_elo_change
 
 TOP_10_LEAGUES = {
@@ -70,6 +70,27 @@ def seed_leagues():
                 r2 = db.get(away_team, 1500)
                 
                 new_r1, new_r2 = calculate_elo_change(r1, r2, home_goals, away_goals)
+                
+                # Guardar el partido historico para Machine Learning
+                total_goals = home_goals + away_goals
+                btts = 1 if home_goals > 0 and away_goals > 0 else 0
+                outcome = 2 if home_goals > away_goals else 0 if away_goals > home_goals else 1
+                
+                match_data = {
+                    "id": str(match["fixture"]["id"]),
+                    "league_id": league_id,
+                    "home_team": home_team,
+                    "away_team": away_team,
+                    "home_elo": r1,
+                    "away_elo": r2,
+                    "elo_diff": r1 - r2,
+                    "home_goals": home_goals,
+                    "away_goals": away_goals,
+                    "total_goals": total_goals,
+                    "btts": btts,
+                    "outcome": outcome
+                }
+                save_historical_match(match_data)
                 
                 db[home_team] = new_r1
                 db[away_team] = new_r2
