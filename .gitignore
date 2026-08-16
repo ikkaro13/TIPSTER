@@ -20,3 +20,6 @@ node_modules/
 out/
 build/
 .DS_Store
+
+# Archivos de datos locales
+backend/portfolio_db.json
