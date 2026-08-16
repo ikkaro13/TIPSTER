@@ -10,16 +10,16 @@ from data_engine import get_national_elo, save_national_elo
 from elo_updater import calculate_elo_change
 
 TOP_10_LEAGUES = {
-    "Eliteserien": 103,
-    "Allsvenskan": 113,
-    "J1 League": 98,
-    "Championship": 40,
-    "Primera Nacional": 129,
-    "Veikkausliiga": 244,
-    "Primeira Liga": 94,
-    "Super Lig": 203,
     "Superettan": 114,
-    "J2 League": 99
+    "K League 1": 292,
+    "Serie B": 136,
+    "Segunda Division": 141,
+    "Saudi Pro League": 307,
+    "Eerste Divisie": 89,
+    "Liga Expansion MX": 263,
+    "Scottish Premiership": 179,
+    "A-League": 188,
+    "Pro League Belgica": 144
 }
 
 SEASONS = [2023, 2024]
