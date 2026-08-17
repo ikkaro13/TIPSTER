@@ -77,6 +77,7 @@ def get_live_stats(mock=False, match_id=None):
             if total_score > best_score and total_score >= 0.55: # Umbral de confianza del 55%
                 best_score = total_score
                 best_match_id = e.get('id')
+                target_event = e
                 
         sofascore_event_id = best_match_id
                 
