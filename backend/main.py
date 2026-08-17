@@ -119,10 +119,63 @@ def live_analysis(req: LiveMatchRequest):
     analysis = find_value_bets(real_probs, req.currentOdds)
     return {"probs": real_probs, "analysis": analysis}
 
+def athena_live_monitor_loop():
+    print("[ATHENA-DAEMON] Vigilante autónomo iniciado en segundo plano.")
+    while True:
+        try:
+            time.sleep(60)
+            
+            live_matches = api_football_engine.get_live_fixtures()
+            if not live_matches:
+                continue
+                
+            for match in live_matches:
+                match_id = str(match.get("fixture", {}).get("id", ""))
+                if not match_id: continue
+                
+                status_short = match.get("fixture", {}).get("status", {}).get("short", "")
+                if status_short not in ["1H", "2H", "HT", "ET", "P", "LIVE"]:
+                    continue
+                    
+                live_data = sofascore_scraper.get_live_stats(mock=False, match_id=match_id)
+                if not live_data: continue
+                
+                gpi = athena_engine.calculate_gpi(live_data['stats'])
+                prev_gpi = gpi - 6.5 
+                athena_state = athena_engine.evaluate_athena_state(
+                    minute=live_data['minute'], 
+                    gpi=gpi, 
+                    prev_gpi=prev_gpi
+                )
+                
+                if (gpi >= 75) or (athena_state['state'] == 'VALUE CANDIDATE'):
+                    alert_id = f"{match_id}_{live_data['minute']}_{athena_state['state']}"
+                    texto_apuesta = "OVER 0.5 HT o PRÓXIMO GOL" if live_data['minute'] < 40 else "PRÓXIMO GOL"
+                    
+                    msg = (
+                        f"🚨 <b>ALERTA ATHENA LIVE</b> 🚨\n\n"
+                        f"Partido ID: <code>{match_id}</code>\n"
+                        f"Minuto: {live_data['minute']}'\n"
+                        f"<b>GPI (Goal Pressure Index):</b> {gpi}\n"
+                        f"<b>Momentum:</b> {athena_state['momentum']}\n\n"
+                        f"🔥 <i>RECOMENDACIÓN: {texto_apuesta}. Presión ofensiva crítica detectada.</i>"
+                    )
+                    send_telegram_alert(msg, alert_id)
+                    
+        except Exception as e:
+            print(f"[ATHENA-DAEMON] Error crítico: {e}")
+            time.sleep(60)
+
+
 @app.on_event("startup")
 def startup_event():
     global GLOBAL_STATS_DB
     GLOBAL_STATS_DB = get_national_elo()
+    
+    # Iniciar Daemon autónomo de ATHENA
+    import threading
+    daemon_thread = threading.Thread(target=athena_live_monitor_loop, daemon=True)
+    daemon_thread.start()
 
 @app.get("/")
 def read_root():
@@ -232,23 +285,7 @@ def get_athena_live_data(match_id: str):
     # Solo dispara por GPI alto o estado de candidato, no por simple acumulación lenta de xG
     athena_state['goal_alert'] = (gpi >= 75) or (athena_state['state'] == 'VALUE CANDIDATE')
     
-    # --- ALERTA TELEGRAM ---
-    if athena_state['goal_alert']:
-        alert_id = f"{match_id}_{live_data['minute']}_{athena_state['state']}"
-        
-        texto_apuesta = "PRÓXIMO GOL"
-        if live_data['minute'] < 40:
-            texto_apuesta = "OVER 0.5 HT o PRÓXIMO GOL"
-            
-        msg = (
-            f"🚨 <b>ALERTA ATHENA LIVE</b> 🚨\n\n"
-            f"Partido ID: <code>{match_id}</code>\n"
-            f"Minuto: {live_data['minute']}'\n"
-            f"<b>GPI (Goal Pressure Index):</b> {gpi}\n"
-            f"<b>Momentum:</b> {athena_state['momentum']}\n\n"
-            f"🔥 <i>RECOMENDACIÓN: {texto_apuesta}. Presión ofensiva crítica detectada.</i>"
-        )
-        send_telegram_alert(msg, alert_id)
+    # [Aviso] Las alertas de Telegram ahora son gestionadas por el daemon autónomo en segundo plano.
     
     return {
         "match_id": match_id,
