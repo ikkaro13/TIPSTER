@@ -53,9 +53,7 @@ def get_live_stats(mock=False, match_id=None):
             
         events = res.json().get('events', [])
         
-        # Fuzzy Match Mejorado (Puntuación por solapamiento de palabras)
-        home_words = set(home_name.lower().split())
-        away_words = set(away_name.lower().split())
+        import difflib
         
         best_match_id = None
         best_score = 0
@@ -64,20 +62,19 @@ def get_live_stats(mock=False, match_id=None):
             shome = e.get('homeTeam', {}).get('name', '').lower()
             saway = e.get('awayTeam', {}).get('name', '').lower()
             
-            shome_words = set(shome.split())
-            saway_words = set(saway.split())
+            # Ratio directo
+            r_home = difflib.SequenceMatcher(None, home_name.lower(), shome).ratio()
+            r_away = difflib.SequenceMatcher(None, away_name.lower(), saway).ratio()
+            score_direct = (r_home + r_away) / 2
             
-            # Score is based on how many words intersect between home/home and away/away
-            score_home = len(home_words.intersection(shome_words))
-            score_away = len(away_words.intersection(saway_words))
+            # Ratio cruzado
+            r_cross_home = difflib.SequenceMatcher(None, home_name.lower(), saway).ratio()
+            r_cross_away = difflib.SequenceMatcher(None, away_name.lower(), shome).ratio()
+            score_cross = (r_cross_home + r_cross_away) / 2
             
-            # Cross-check just in case home/away are flipped
-            cross_score_home = len(home_words.intersection(saway_words))
-            cross_score_away = len(away_words.intersection(shome_words))
+            total_score = max(score_direct, score_cross)
             
-            total_score = max(score_home + score_away, cross_score_home + cross_score_away)
-            
-            if total_score > best_score and total_score >= 2: # At least 2 words must match
+            if total_score > best_score and total_score >= 0.55: # Umbral de confianza del 55%
                 best_score = total_score
                 best_match_id = e.get('id')
                 
