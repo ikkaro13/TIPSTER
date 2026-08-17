@@ -49,9 +49,11 @@ def get_live_stats(mock=False, match_id=None):
         print(f"[SofaScraper] Buscando: {home_name} vs {away_name}")
         res = requests.get('https://api.sofascore.com/api/v1/sport/football/events/live', headers=HEADERS, verify=False, timeout=5)
         if res.status_code != 200:
+            print(f"[SofaScraper] Falla de conexión con SofaScore. HTTP {res.status_code}")
             return None
             
         events = res.json().get('events', [])
+        print(f"[SofaScraper] Encontrados {len(events)} eventos en vivo en SofaScore.")
         
         import difflib
         
@@ -82,8 +84,10 @@ def get_live_stats(mock=False, match_id=None):
         sofascore_event_id = best_match_id
                 
         if not sofascore_event_id:
-            print(f"[SofaScraper] Evento no encontrado en SofaScore para: {home_name}")
+            print(f"[SofaScraper] Evento no encontrado en SofaScore para: {home_name}. El mejor score fue {best_score}")
             return None
+            
+        print(f"[SofaScraper] Match enganchado exitosamente con SofaScore ID {sofascore_event_id}")
             
         # 3. Obtener estadísticas del evento en SofaScore
         stats_url = f"https://api.sofascore.com/api/v1/event/{sofascore_event_id}/statistics"
