@@ -7,4 +7,4 @@ scipy
 requests
 joblib
 pydantic
-python-dateutil
+python-dateutilcloudscraper

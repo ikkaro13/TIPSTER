@@ -1,6 +1,11 @@
 import requests
 import json
 import urllib3
+import time
+try:
+    import cloudscraper
+except ImportError:
+    cloudscraper = None
 
 urllib3.disable_warnings()
 
@@ -46,10 +51,19 @@ def get_live_stats(mock=False, match_id=None):
         if minute is None: minute = 0
         
         # 2. Buscar evento en vivo en SofaScore
-        print(flush=True, f"[SofaScraper] Buscando: {home_name} vs {away_name}")
-        res = requests.get('https://api.sofascore.com/api/v1/sport/football/events/live', headers=HEADERS, verify=False, timeout=5)
+        print(f"[SofaScraper] Buscando: {home_name} vs {away_name}", flush=True)
+        
+        # Intentar usar cloudscraper para saltar el bloqueo 403 de Cloudflare en Datacenters
+        scraper = cloudscraper.create_scraper() if cloudscraper else requests
+        
+        try:
+            res = scraper.get('https://api.sofascore.com/api/v1/sport/football/events/live', headers=HEADERS, timeout=10)
+        except Exception as e:
+            print(f"[SofaScraper] Error de red: {e}", flush=True)
+            return None
+            
         if res.status_code != 200:
-            print(flush=True, f"[SofaScraper] Falla de conexión con SofaScore. HTTP {res.status_code}")
+            print(f"[SofaScraper] Falla de conexión con SofaScore. HTTP {res.status_code}", flush=True)
             return None
             
         events = res.json().get('events', [])
@@ -87,11 +101,14 @@ def get_live_stats(mock=False, match_id=None):
             print(flush=True, f"[SofaScraper] Evento no encontrado en SofaScore para: {home_name}. El mejor score fue {best_score}")
             return None
             
-        print(flush=True, f"[SofaScraper] Match enganchado exitosamente con SofaScore ID {sofascore_event_id}")
+        print(f"[SofaScraper] Match enganchado exitosamente con SofaScore ID {sofascore_event_id}", flush=True)
             
         # 3. Obtener estadísticas del evento en SofaScore
         stats_url = f"https://api.sofascore.com/api/v1/event/{sofascore_event_id}/statistics"
-        sres = requests.get(stats_url, headers=HEADERS, verify=False, timeout=5)
+        try:
+            sres = scraper.get(stats_url, headers=HEADERS, timeout=10)
+        except:
+            sres = None
         
         # Objeto de estadísticas para ATHENA
         stats_data = {
@@ -102,7 +119,7 @@ def get_live_stats(mock=False, match_id=None):
             "possession": 50
         }
         
-        if sres.status_code == 200:
+        if sres and sres.status_code == 200:
             sjson = sres.json()
             st = sjson.get('statistics', [])
             if len(st) > 0:
