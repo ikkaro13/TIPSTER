@@ -9,17 +9,56 @@ from api_football_engine import make_api_request
 from data_engine import get_national_elo, save_national_elo, save_historical_match
 from elo_updater import calculate_elo_change
 
-TOP_10_LEAGUES = {
-    "Superettan": 114,
-    "K League 1": 292,
+ALL_TRACKED_LEAGUES = {
+    # 🏆 TOP 5 EUROPA
+    "Premier League": 39,
+    "La Liga": 140,
+    "Serie A": 135,
+    "Bundesliga": 78,
+    "Ligue 1": 61,
+    
+    # 🌎 LAS AMÉRICAS
+    "Liga MX": 262,
+    "MLS": 253,
+    "Brasileirao": 71,
+    "Primera Div Argentina": 128,
+    "Primera A Colombia": 239,
+    "Liga Expansion MX": 263,
+    "Primera Nacional Arg": 129,
+    
+    # 🛡️ EUROPA RENTABLE (TIER 2 y Ligas Goleadoras)
+    "Championship": 40,
     "Serie B": 136,
     "Segunda Division": 141,
-    "Saudi Pro League": 307,
+    "Eredivisie": 88,
     "Eerste Divisie": 89,
-    "Liga Expansion MX": 263,
+    "Primeira Liga": 94,
+    "Super Lig": 203,
     "Scottish Premiership": 179,
+    "Pro League Belgica": 144,
+    
+    # ❄️ NÓRDICOS Y BÁLTICOS (Alta predictibilidad / Mercados ineficientes)
+    "Eliteserien": 103,
+    "Allsvenskan": 113,
+    "Superettan": 114,
+    "Veikkausliiga": 244,
+    "Parva Liga Bulgaria": 172,
+    "Ekstraklasa Polonia": 106,
+    "SuperLiga Rumania": 283,
+    
+    # 🌏 ASIA Y EXÓTICAS
+    "J1 League": 98,
+    "J2 League": 99,
+    "K League 1": 292,
+    "Saudi Pro League": 307,
     "A-League": 188,
-    "Pro League Belgica": 144
+    
+    # 💎 JOYAS OCULTAS (Clima Extremo, Altitud y Ventaja de Localidad)
+    "Liga Prof Bolivia": 230,     # La Paz a 3,600m = Ventaja local brutal que las casas suelen subestimar
+    "Liga 1 Peru": 281,           # Geografía extrema (Selva/Andes) = Alta localía
+    "Super League Suiza": 207,    # Históricamente altísimo promedio de Goles (Over 2.5)
+    "Superliga Dinamarca": 119,   # Muy estable estadísticamente
+    "Super League Grecia": 197    # Estadios muy hostiles = Altísima ventaja local
 }
 
 SEASONS = [2023, 2024]
@@ -32,7 +71,7 @@ def seed_leagues():
     
     matches_processed = 0
     
-    for league_name, league_id in TOP_10_LEAGUES.items():
+    for league_name, league_id in ALL_TRACKED_LEAGUES.items():
         print(f"\n🌍 Procesando {league_name} (ID: {league_id})...")
         
         all_league_matches = []
