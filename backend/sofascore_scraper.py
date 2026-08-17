@@ -53,13 +53,12 @@ def get_live_stats(mock=False, match_id=None):
         # 2. Buscar evento en vivo en SofaScore
         print(f"[SofaScraper] Buscando: {home_name} vs {away_name}", flush=True)
         
-        # Intentar usar cloudscraper para saltar el bloqueo 403 de Cloudflare en Datacenters
-        scraper = cloudscraper.create_scraper() if cloudscraper else requests
-        
+        # Intentar usar curl_cffi para saltar el bloqueo 403 de Cloudflare en Datacenters
         try:
-            res = scraper.get('https://api.sofascore.com/api/v1/sport/football/events/live', headers=HEADERS, timeout=10)
+            from curl_cffi import requests as cffi_requests
+            res = cffi_requests.get('https://api.sofascore.com/api/v1/sport/football/events/live', headers=HEADERS, impersonate="chrome110", timeout=10)
         except Exception as e:
-            print(f"[SofaScraper] Error de red: {e}", flush=True)
+            print(f"[SofaScraper] Error de red o bloqueo con cffi: {e}")
             return None
             
         if res.status_code != 200:
@@ -106,7 +105,8 @@ def get_live_stats(mock=False, match_id=None):
         # 3. Obtener estadísticas del evento en SofaScore
         stats_url = f"https://api.sofascore.com/api/v1/event/{sofascore_event_id}/statistics"
         try:
-            sres = scraper.get(stats_url, headers=HEADERS, timeout=10)
+            from curl_cffi import requests as cffi_requests
+            sres = cffi_requests.get(stats_url, headers=HEADERS, impersonate="chrome110", timeout=10)
         except:
             sres = None
         
