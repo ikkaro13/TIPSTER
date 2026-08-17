@@ -137,7 +137,30 @@ def athena_live_monitor_loop():
                 if status_short not in ["1H", "2H", "HT", "ET", "P", "LIVE"]:
                     continue
                     
+                # Usar el scraper de SofaScore para sacar stats de ataque avanzados
                 live_data = sofascore_scraper.get_live_stats(mock=False, match_id=match_id)
+                
+                # FALLBACK: Si SofaScore bloquea el servidor (403), rescatamos los minutos y goles desde API-Football
+                if live_data is None:
+                    fixtures = api_football_engine.get_live_fixtures()
+                    target = next((f for f in fixtures if str(f.get('fixture', {}).get('id')) == str(match_id)), None)
+                    if target:
+                        status = target.get('fixture', {}).get('status', {})
+                        minute = status.get('elapsed', 0)
+                        goals = target.get('goals', {})
+                        home_goals = goals.get('home', 0)
+                        away_goals = goals.get('away', 0)
+                        live_data = {
+                            "minute": minute if minute else 0,
+                            "score": f"{home_goals} - {away_goals}",
+                            "stats": {
+                                "dangerous_attacks": 0,
+                                "shots_on_target": 0,
+                                "shots_off_target": 0,
+                                "corners": 0,
+                                "possession": 50
+                            }
+                        }
                 if not live_data: continue
                 
                 gpi = athena_engine.calculate_gpi(live_data['stats'])
@@ -259,6 +282,28 @@ def get_athena_live_data(match_id: str):
     
     live_data = sofascore_scraper.get_live_stats(mock=is_mock, match_id=match_id)
     
+    # FALLBACK: Si SofaScore bloquea el servidor (403), rescatamos los minutos y goles desde API-Football
+    if live_data is None:
+        fixtures = api_football_engine.get_live_fixtures()
+        target = next((f for f in fixtures if str(f.get('fixture', {}).get('id')) == str(match_id)), None)
+        if target:
+            status = target.get('fixture', {}).get('status', {})
+            minute = status.get('elapsed', 0)
+            goals = target.get('goals', {})
+            home_goals = goals.get('home', 0)
+            away_goals = goals.get('away', 0)
+            live_data = {
+                "minute": minute if minute else 0,
+                "score": f"{home_goals} - {away_goals}",
+                "stats": {
+                    "dangerous_attacks": 0,
+                    "shots_on_target": 0,
+                    "shots_off_target": 0,
+                    "corners": 0,
+                    "possession": 50
+                }
+            }
+            
     if not live_data:
         return {
             "match_id": match_id,
