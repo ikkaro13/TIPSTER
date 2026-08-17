@@ -42,7 +42,7 @@ def get_live_stats(mock=False, match_id=None):
         target_fixture = next((f for f in fixture_list if str(f['fixture']['id']) == str(match_id)), None)
         
         if not target_fixture:
-            print(flush=True, f"[SofaScraper] Error: Fixture {match_id} no encontrado en el catálogo de API-Football.")
+            print(f"[SofaScraper] Error: Fixture {match_id} no encontrado en el catálogo de API-Football.")
             return None
             
         home_name = target_fixture['teams']['home']['name']
@@ -67,7 +67,7 @@ def get_live_stats(mock=False, match_id=None):
             return None
             
         events = res.json().get('events', [])
-        print(flush=True, f"[SofaScraper] Encontrados {len(events)} eventos en vivo en SofaScore.")
+        print(f"[SofaScraper] Encontrados {len(events)} eventos en vivo en SofaScore.")
         
         import difflib
         
@@ -98,7 +98,7 @@ def get_live_stats(mock=False, match_id=None):
         sofascore_event_id = best_match_id
                 
         if not sofascore_event_id:
-            print(flush=True, f"[SofaScraper] Evento no encontrado en SofaScore para: {home_name}. El mejor score fue {best_score}")
+            print(f"[SofaScraper] Evento no encontrado en SofaScore para: {home_name}. El mejor score fue {best_score}")
             return None
             
         print(f"[SofaScraper] Match enganchado exitosamente con SofaScore ID {sofascore_event_id}", flush=True)
@@ -179,5 +179,5 @@ def get_live_stats(mock=False, match_id=None):
         }
         
     except Exception as e:
-        print(flush=True, f"[SofaScraper] Error: {e}")
+        print(f"[SofaScraper] Error: {e}")
         return None
