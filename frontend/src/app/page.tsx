@@ -956,9 +956,11 @@ export default function Home() {
   const [oracleLoading, setOracleLoading] = useState(false);
   
   const [editingBetId, setEditingBetId] = useState<string | null>(null);
-  const [editOddsValue, setEditOddsValue] = useState<string>('');
-
+  const [editOddsValue, setEditOddsValue] = useState<number>(0);
   const [autotuneReport, setAutotuneReport] = useState<any>(null);
+  
+  // Nuevo estado para ARGOS
+  const [argosActive, setArgosActive] = useState<boolean>(false);
 
   const fetchMatches = async () => {
     try {
@@ -982,6 +984,22 @@ export default function Home() {
       const res = await fetch(`${API_BASE}/api/portfolio`);
       const data = await res.json();
       setPortfolio(data);
+    } catch (e) { console.error(e); }
+  };
+  
+  const fetchArgosStatus = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/argos/status`);
+      const data = await res.json();
+      setArgosActive(data.argos_active);
+    } catch (e) { console.error(e); }
+  };
+
+  const toggleArgos = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/argos/toggle`, { method: 'POST' });
+      const data = await res.json();
+      setArgosActive(data.argos_active);
     } catch (e) { console.error(e); }
   };
 
@@ -1027,11 +1045,11 @@ export default function Home() {
   };
 
   const handleUpdateOdds = async (betId: string) => {
-    if (!editOddsValue || isNaN(parseFloat(editOddsValue))) return;
+    if (!editOddsValue || isNaN(editOddsValue)) return;
     try {
       await fetch(`${API_BASE}/api/portfolio/bets/${betId}/odds`, {
         method: "PUT", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ odds: parseFloat(editOddsValue) })
+        body: JSON.stringify({ odds: editOddsValue })
       });
       setEditingBetId(null);
       fetchPortfolio();
@@ -1121,8 +1139,9 @@ export default function Home() {
 
   useEffect(() => {
     fetchMatches();
-    fetchPortfolio();
     fetchCalendar();
+    fetchPortfolio();
+    fetchArgosStatus();
   }, []);
 
   return (
@@ -1134,6 +1153,23 @@ export default function Home() {
             <span>ATHENA ENGINE</span>
           </div>
           <div style={{display: 'flex', gap: '1.5rem', alignItems: 'center'}}>
+            <button 
+              onClick={toggleArgos}
+              style={{
+                background: argosActive ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255,255,255,0.05)',
+                border: argosActive ? '1px solid #8b5cf6' : '1px solid rgba(255,255,255,0.1)',
+                color: argosActive ? '#c4b5fd' : 'gray',
+                padding: '0.5rem 1rem',
+                borderRadius: 'var(--radius-pill)',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontWeight: 800,
+                transition: 'var(--transition)',
+                boxShadow: argosActive ? '0 0 10px rgba(139, 92, 246, 0.4)' : 'none'
+              }}
+            >
+              👁️ ARGOS: {argosActive ? 'ON' : 'OFF'}
+            </button>
             <button onClick={() => { fetchMatches(); fetchCalendar(); fetchPortfolio(); }} style={{background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-pill)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, transition: 'var(--transition)'}} onMouseOver={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'} onMouseOut={e => e.currentTarget.style.background='rgba(255,255,255,0.05)'}>
               🔄 Actualizar
             </button>

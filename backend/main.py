@@ -120,11 +120,22 @@ def live_analysis(req: LiveMatchRequest):
     return {"probs": real_probs, "analysis": analysis}
 
 def athena_live_monitor_loop():
-    print("[ATHENA-DAEMON] Vigilante autónomo iniciado en segundo plano.")
+    """
+    Vigilante en segundo plano: 
+    Busca partidos en vivo, escanea métricas, y envía alertas a Telegram sin depender de la UI.
+    """
+    global GLOBAL_STATS_DB
+    
+    print("[ATHENA-DAEMON] Vigilante autónomo iniciado en segundo plano.", flush=True)
+    
     while True:
         try:
             time.sleep(60)
             
+            # Si ARGOS está apagado desde la UI, no gastamos tokens
+            if not ARGOS_DAEMON_ACTIVE:
+                continue
+                
             live_matches = api_football_engine.get_live_fixtures()
             if not live_matches:
                 continue
@@ -231,6 +242,18 @@ def api_place_bet(req: BetRequest):
 @app.post("/api/portfolio/reset")
 def api_reset_bankroll(req: ResetBankrollRequest):
     return reset_bankroll(req.new_amount)
+
+@app.post("/api/argos/toggle")
+def toggle_argos():
+    global ARGOS_DAEMON_ACTIVE
+    ARGOS_DAEMON_ACTIVE = not ARGOS_DAEMON_ACTIVE
+    estado = "ON" if ARGOS_DAEMON_ACTIVE else "OFF"
+    print(f"[ARGOS] Daemon cambiado a estado: {estado}", flush=True)
+    return {"status": "success", "argos_active": ARGOS_DAEMON_ACTIVE}
+
+@app.get("/api/argos/status")
+def get_argos_status():
+    return {"argos_active": ARGOS_DAEMON_ACTIVE}
 
 @app.post("/api/autotune/run")
 def trigger_auto_tuning():
