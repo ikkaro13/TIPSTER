@@ -120,7 +120,7 @@ def live_analysis(req: LiveMatchRequest):
     return {"probs": real_probs, "analysis": analysis}
 
 def athena_live_monitor_loop():
-    print("[ATHENA-DAEMON] Vigilante autónomo iniciado en segundo plano.")
+    print(flush=True, "[ATHENA-DAEMON] Vigilante autónomo iniciado en segundo plano.")
     while True:
         try:
             time.sleep(60)
@@ -163,7 +163,7 @@ def athena_live_monitor_loop():
                     send_telegram_alert(msg, alert_id)
                     
         except Exception as e:
-            print(f"[ATHENA-DAEMON] Error crítico: {e}")
+            print(flush=True, f"[ATHENA-DAEMON] Error crítico: {e}")
             time.sleep(60)
 
 
@@ -220,7 +220,7 @@ def trigger_auto_tuning():
         
         return res
     except Exception as e:
-        print(f"Error in autotune: {e}")
+        print(flush=True, f"Error in autotune: {e}")
         return {"status": "error", "message": str(e)}
 
 @app.post("/api/portfolio/settle/{bet_id}")
@@ -319,7 +319,7 @@ def get_matches():
             get_matches.bulk_odds_cache = {"date": "", "timestamp": 0, "data": {}}
             
         if get_matches.bulk_odds_cache["date"] != current_date_str or (time.time() - get_matches.bulk_odds_cache["timestamp"]) > 900: # Caché de 15 min
-            print("[ARGOS] Obteniendo bulk odds para ahorrar tokens...")
+            print(flush=True, "[ARGOS] Obteniendo bulk odds para ahorrar tokens...")
             bulk_data = odds_connector.fetch_odds_by_date(current_date_str)
             if bulk_data:
                 get_matches.bulk_odds_cache = {"date": current_date_str, "timestamp": time.time(), "data": bulk_data}
@@ -351,7 +351,7 @@ def get_matches():
                 # Simulamos que un 30% del tiempo detectamos una caída brusca
                 if random.random() < 0.3:
                     smart_money = True
-                    print("[ATHENA] 🚨 ALERTA INSTITUCIONAL: Dinero Inteligente Detectado en Mock Match")
+                    print(flush=True, "[ATHENA] 🚨 ALERTA INSTITUCIONAL: Dinero Inteligente Detectado en Mock Match")
             
             # Arbitrage (Surebet) Detection Logic
             arbitrage_alert = {"active": False, "roi_percent": 0.0}
@@ -397,7 +397,7 @@ def get_matches():
             })
             
         if len(processed_matches) == 0:
-            print("Inyectando partido simulado de ATHENA LIVE (Cuenca vs Manta)")
+            print(flush=True, "Inyectando partido simulado de ATHENA LIVE (Cuenca vs Manta)")
             processed_matches.append({
                 "id": "mock_12345",
                 "league": "Liga Pro Ecuador (Simulación ATHENA)",
@@ -427,7 +427,7 @@ def get_matches():
             
         return processed_matches
     except Exception as e:
-        print(f"Excepcion de conexión: {e}")
+        print(flush=True, f"Excepcion de conexión: {e}")
         traceback.print_exc()
         return []
 
@@ -473,7 +473,7 @@ def get_daily_calendar(date: str = None):
         calendar_matches.sort(key=lambda x: x["timestamp"])
         
         if len(calendar_matches) == 0:
-            print("Inyectando partido simulado en el Calendario")
+            print(flush=True, "Inyectando partido simulado en el Calendario")
             calendar_matches.append({
                 "id": "mock_12345",
                 "league": "Liga Pro Ecuador (Simulación ATHENA)",
@@ -487,7 +487,7 @@ def get_daily_calendar(date: str = None):
             
         return calendar_matches
     except Exception as e:
-        print(f"Error en calendario: {e}")
+        print(flush=True, f"Error en calendario: {e}")
         return []
 
 @app.post("/api/ares/calculate")
@@ -682,7 +682,7 @@ def scan_day_for_value_bets(date: str):
         
         return {"status": "success", "date": date, "value_bets": final_bets}
     except Exception as e:
-        print(f"Error en scan_day: {e}")
+        print(flush=True, f"Error en scan_day: {e}")
         return {"status": "error", "message": str(e)}
 
 @app.post("/api/prematch-insight")
@@ -695,7 +695,7 @@ def get_prematch_insight(req: PrematchInsightRequest):
     historical_service = HistoricalContextService()
     hist_context = None
     if req.match_id and req.match_id != "-1":
-        print(f"[ATHENA] Construyendo Memoria Histórica para partido: {req.match_id}")
+        print(flush=True, f"[ATHENA] Construyendo Memoria Histórica para partido: {req.match_id}")
         hist_context = historical_service.build_context(req.match_id)
     
     # 0 porque es pre-match (minute=0, goals=0)
