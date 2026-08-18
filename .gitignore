@@ -23,6 +23,7 @@ build/
 
 # Archivos de datos locales
 backend/portfolio_db.json
+backend/tipster.db
 
 # Respaldos
 *.zip
