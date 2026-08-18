@@ -70,6 +70,7 @@ def seed_leagues():
     db = get_national_elo()
     
     matches_processed = 0
+    TEAM_FORM = {} # team_name -> [puntos_historicos_recientes] (max 5)
     
     for league_name, league_id in ALL_TRACKED_LEAGUES.items():
         print(f"\n🌍 Procesando {league_name} (ID: {league_id})...")
@@ -115,6 +116,13 @@ def seed_leagues():
                 btts = 1 if home_goals > 0 and away_goals > 0 else 0
                 outcome = 2 if home_goals > away_goals else 0 if away_goals > home_goals else 1
                 
+                # Momentum Cálculo ANTES del partido
+                if home_team not in TEAM_FORM: TEAM_FORM[home_team] = []
+                if away_team not in TEAM_FORM: TEAM_FORM[away_team] = []
+                
+                home_momentum = sum(TEAM_FORM[home_team])
+                away_momentum = sum(TEAM_FORM[away_team])
+                
                 match_data = {
                     "id": str(match["fixture"]["id"]),
                     "league_id": league_id,
@@ -127,9 +135,26 @@ def seed_leagues():
                     "away_goals": away_goals,
                     "total_goals": total_goals,
                     "btts": btts,
-                    "outcome": outcome
+                    "outcome": outcome,
+                    "home_momentum": home_momentum,
+                    "away_momentum": away_momentum
                 }
                 save_historical_match(match_data)
+                
+                # Actualizar Momentum DESPUÉS del partido
+                if outcome == 2:
+                    TEAM_FORM[home_team].append(3)
+                    TEAM_FORM[away_team].append(0)
+                elif outcome == 0:
+                    TEAM_FORM[home_team].append(0)
+                    TEAM_FORM[away_team].append(3)
+                else:
+                    TEAM_FORM[home_team].append(1)
+                    TEAM_FORM[away_team].append(1)
+                    
+                # Mantener solo los últimos 5 resultados
+                if len(TEAM_FORM[home_team]) > 5: TEAM_FORM[home_team].pop(0)
+                if len(TEAM_FORM[away_team]) > 5: TEAM_FORM[away_team].pop(0)
                 
                 db[home_team] = new_r1
                 db[away_team] = new_r2

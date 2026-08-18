@@ -150,23 +150,41 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         a_elo = elo_db[away_team]
         elo_diff = (h_elo + 50) - a_elo
         
+        # Obtener Momentum desde SQLite
+        try:
+            import data_engine
+            h_momentum = data_engine.get_team_momentum(home_team)
+            a_momentum = data_engine.get_team_momentum(away_team)
+        except:
+            h_momentum = 0
+            a_momentum = 0
+            
         if ML_MODEL_1X2:
             # Predict_proba devuelve [[prob_away, prob_draw, prob_home]]
-            ml_probs_1x2 = ML_MODEL_1X2.predict_proba([[h_elo, a_elo, elo_diff]])[0]
-            prob_away_win = (prob_away_win * 0.5) + (ml_probs_1x2[0] * 0.5)
-            prob_draw = (prob_draw * 0.5) + (ml_probs_1x2[1] * 0.5)
-            prob_home_win = (prob_home_win * 0.5) + (ml_probs_1x2[2] * 0.5)
-            is_ensembled = True
+            try:
+                ml_probs_1x2 = ML_MODEL_1X2.predict_proba([[h_elo, a_elo, elo_diff, h_momentum, a_momentum]])[0]
+                prob_away_win = (prob_away_win * 0.5) + (ml_probs_1x2[0] * 0.5)
+                prob_draw = (prob_draw * 0.5) + (ml_probs_1x2[1] * 0.5)
+                prob_home_win = (prob_home_win * 0.5) + (ml_probs_1x2[2] * 0.5)
+                is_ensembled = True
+            except Exception as e:
+                print("Error predicting 1X2:", e)
             
         if ML_MODEL_OU:
-            ml_probs_ou = ML_MODEL_OU.predict_proba([[h_elo, a_elo, elo_diff]])[0]
-            prob_under_25 = (prob_under_25 * 0.5) + (ml_probs_ou[0] * 0.5)
-            prob_over_25 = (prob_over_25 * 0.5) + (ml_probs_ou[1] * 0.5)
+            try:
+                ml_probs_ou = ML_MODEL_OU.predict_proba([[h_elo, a_elo, elo_diff, h_momentum, a_momentum]])[0]
+                prob_under_25 = (prob_under_25 * 0.5) + (ml_probs_ou[0] * 0.5)
+                prob_over_25 = (prob_over_25 * 0.5) + (ml_probs_ou[1] * 0.5)
+            except Exception as e:
+                pass
             
         if ML_MODEL_BTTS:
-            ml_probs_btts = ML_MODEL_BTTS.predict_proba([[h_elo, a_elo, elo_diff]])[0]
-            prob_btts_no = (prob_btts_no * 0.5) + (ml_probs_btts[0] * 0.5)
-            prob_btts_yes = (prob_btts_yes * 0.5) + (ml_probs_btts[1] * 0.5)
+            try:
+                ml_probs_btts = ML_MODEL_BTTS.predict_proba([[h_elo, a_elo, elo_diff, h_momentum, a_momentum]])[0]
+                prob_btts_no = (prob_btts_no * 0.5) + (ml_probs_btts[0] * 0.5)
+                prob_btts_yes = (prob_btts_yes * 0.5) + (ml_probs_btts[1] * 0.5)
+            except Exception as e:
+                pass
     
     # Normalizar para asegurar que la suma es 100%
     total = prob_home_win + prob_draw + prob_away_win

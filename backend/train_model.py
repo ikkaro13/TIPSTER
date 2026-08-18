@@ -44,6 +44,8 @@ def generate_synthetic_data(num_matches=5000):
             "home_elo": home_elo,
             "away_elo": away_elo,
             "elo_diff": elo_diff,
+            "home_momentum": random.randint(0, 15),
+            "away_momentum": random.randint(0, 15),
             "outcome": outcome,
             "over_2_5": over_2_5,
             "btts": btts
@@ -57,12 +59,16 @@ def get_real_data():
         
     try:
         conn = sqlite3.connect(DB_FILE)
-        df = pd.read_sql_query("SELECT home_elo, away_elo, elo_diff, total_goals, btts, outcome FROM historical_matches", conn)
+        df = pd.read_sql_query("SELECT home_elo, away_elo, elo_diff, home_momentum, away_momentum, total_goals, btts, outcome FROM historical_matches", conn)
         conn.close()
         
         if len(df) < 50: # Si hay muy pocos partidos, usar synthetic
             return None
             
+        # Reemplazar nulos con 0 para ligas viejas sin momentum
+        df["home_momentum"] = df["home_momentum"].fillna(0)
+        df["away_momentum"] = df["away_momentum"].fillna(0)
+        
         df["over_2_5"] = df["total_goals"].apply(lambda x: 1 if x > 2.5 else 0)
         return df
     except Exception as e:
@@ -79,7 +85,7 @@ def train_models():
         print("⚠️ No hay suficientes datos reales. Usando simulador sintético.")
         df = generate_synthetic_data()
     
-    X = df[["home_elo", "away_elo", "elo_diff"]]
+    X = df[["home_elo", "away_elo", "elo_diff", "home_momentum", "away_momentum"]]
     
     # Modelo 1: 1X2 (Ganador)
     y_1x2 = df["outcome"]
