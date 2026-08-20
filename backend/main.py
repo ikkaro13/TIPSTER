@@ -97,6 +97,7 @@ API_KEY = "42cbf57204514f65c3ba5cbf2b440a0f"
 GLOBAL_STATS_DB = None
 ODDS_CACHE = {"timestamp": 0, "data": []}
 CACHE_TTL = 3600 # 1 hora de caché
+ARGOS_DAEMON_ACTIVE = False
 
 @app.post("/api/update-result")
 def update_result(result: MatchResult):
