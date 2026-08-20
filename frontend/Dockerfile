@@ -8,7 +8,7 @@ RUN npm install
 
 # Copiar el código y compilar (build)
 COPY . .
-RUN npm run build
+RUN NODE_OPTIONS="--max-old-space-size=512" npm run build
 
 # Imagen de producción ligera
 FROM node:20-alpine AS runner
