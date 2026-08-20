@@ -201,60 +201,10 @@ const MatchCard = ({ initialMatch, onPlaceBet }: { initialMatch: Match, onPlaceB
           )}
         </div>
 
-        {/* TIER: DATOS ALTERNATIVOS (CORNERS) */}
-        <div style={{background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(56, 189, 248, 0.02)'}}>
-          <div style={{color: '#38bdf8', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🔵 ALTERNATIVO (CORNERS)</div>
-          {match.analysis?.corners_alert ? (
-            <div>
-              <div style={{fontSize: '1.25rem', fontWeight: 700, color: '#f8fafc'}}>{match.analysis.corners_alert.pick}</div>
-              <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Prob: <span style={{color: '#38bdf8', fontWeight: 700}}>{match.analysis.corners_alert.prob}%</span></span>
-                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Fair Odds: {match.analysis.corners_alert.fair_odds.toFixed(2)}</span>
               </div>
-              <button 
-                onClick={() => onPlaceBet(match.id, `${match.homeTeam} vs ${match.awayTeam}: ${match.analysis.corners_alert?.pick}`, match.analysis.corners_alert?.fair_odds, 1)}
-                style={{marginTop: '1rem', width: '100%', padding: '0.6rem', background: '#38bdf8', color: '#111827', border: 'none', borderRadius: '6px', fontWeight: 800, cursor: 'pointer', transition: '0.2s', boxShadow: '0 0 10px rgba(56, 189, 248, 0.3)'}}
-              >
-                + Rastrear Apuesta
-              </button>
-            </div>
-          ) : (
-            <div style={{color: '#475569', fontStyle: 'italic', fontSize: '0.9rem', marginTop: '1rem', fontWeight: 500}}>Sin predicción sólida.</div>
-          )}
-        </div>
-
-        {/* TIER: PLAYER PROPS */}
-        <div style={{background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(139, 92, 246, 0.02)'}}>
-          <div style={{color: '#a78bfa', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🎯 PLAYER PROPS</div>
-          {match.analysis?.player_prop ? (
-            <div>
-              <div style={{fontSize: '1.1rem', fontWeight: 800, color: '#a78bfa'}}>{match.analysis.player_prop.player}</div>
-              <div style={{fontSize: '1.1rem', fontWeight: 600, color: '#f8fafc', marginTop: '0.3rem'}}>{match.analysis.player_prop.pick}</div>
-              <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Edge IA: <span style={{color: '#a78bfa', fontWeight: 700}}>{match.analysis.player_prop.prob}%</span></span>
-                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Fair Odds: {match.analysis.player_prop.fair_odds.toFixed(2)}</span>
-              </div>
-            </div>
-          ) : (
-            <div style={{color: '#475569', fontStyle: 'italic', fontSize: '0.9rem', marginTop: '1rem', fontWeight: 500}}>Datos insuficientes para estrellas.</div>
-          )}
-        </div>
-
-        <div style={{background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'inset 0 0 20px rgba(239, 68, 68, 0.02)'}}>
-          <div style={{color: '#ef4444', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '1px', marginBottom: '1rem'}}>🔴 SOÑADORA (MARCADOR)</div>
-          {match.analysis?.dreamer && (
-            <div>
-              <div style={{fontSize: '1.5rem', fontWeight: 800, color: '#f8fafc'}}>{match.analysis.dreamer.pick}</div>
-              <div style={{display: 'flex', flexDirection: 'column', marginTop: '0.8rem', gap: '0.2rem'}}>
-                <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>ROI Histórico: <span style={{color: '#ef4444', fontWeight: 700}}>+{match.analysis.dreamer.prob}%</span></span>
-                {match.analysis.dreamer.odds !== undefined && match.analysis.dreamer.odds > 0 && <span style={{color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500}}>Cuota: {match.analysis.dreamer.odds.toFixed(2)}</span>}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
       </div>
       )}
+
     </div>
   );
 }
