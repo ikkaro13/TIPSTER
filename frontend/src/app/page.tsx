@@ -941,7 +941,7 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
 export default function Home() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('radar'); // 'radar', 'portfolio', 'calendar', 'match-detail'
+  const [activeTab, setActiveTab] = useState('portfolio'); // 'radar', 'portfolio', 'calendar', 'match-detail'
   const [selectedMatch, setSelectedMatch] = useState<any>(null);
   
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
@@ -1134,12 +1134,12 @@ export default function Home() {
     if (activeTab === 'calendar') {
       fetchCalendar();
       setOracleInsights([]);
+    } else if (activeTab === 'radar') {
+      fetchMatches();
     }
   }, [calendarDate, activeTab]);
 
   useEffect(() => {
-    fetchMatches();
-    fetchCalendar();
     fetchPortfolio();
     fetchArgosStatus();
   }, []);
