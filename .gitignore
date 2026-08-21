@@ -2,28 +2,25 @@
 venv/
 env/
 .env
-
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-env/
-venv/
 pip-log.txt
 pip-delete-this-directory.txt
-
 # Node / Next.js
 node_modules/
 .next/
 out/
 build/
 .DS_Store
-
 # Archivos de datos locales
 backend/portfolio_db.json
 backend/tipster.db
-
 # Respaldos
 *.zip
+# Caches
+*_cache_persistent.json
+backend/*_cache_persistent.json
