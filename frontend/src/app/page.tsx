@@ -1235,42 +1235,60 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody>
-                    {calendarMatches.map(cMatch => (
-                      <tr key={cMatch.id} style={{cursor: 'default'}}>
-                        <td className="mono-font" style={{color: 'var(--cyan)', fontWeight: 800, fontSize: '1.1rem'}}>{cMatch.startTime}</td>
-                        <td>
-                          <div style={{color: '#f8fafc', fontWeight: 700, letterSpacing: '0.5px'}}>{cMatch.league}</div>
-                          <div style={{color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem', textTransform: 'uppercase'}}>{cMatch.round}</div>
-                        </td>
-                        <td>
-                          <div style={{display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.1rem', fontWeight: 700, color: '#e2e8f0'}}>
-                            <span>{cMatch.homeTeam}</span>
-                            <span style={{color: 'var(--text-dim)', fontSize: '0.9rem'}}>vs</span>
-                            <span>{cMatch.awayTeam}</span>
-                          </div>
-                        </td>
-                        <td style={{textAlign: 'center'}}>
-                          <span style={{
-                            background: cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.03)',
-                            color: cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'var(--primary)' : 'var(--text-muted)',
-                            padding: '0.4rem 1rem', borderRadius: 'var(--radius-pill)', fontSize: '0.8rem', fontWeight: 800, border: '1px solid ' + (cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'rgba(16, 185, 129, 0.3)' : 'transparent')
-                          }}>{cMatch.status}</span>
-                        </td>
-                        <td style={{textAlign: 'right'}}>
-                          <button style={{
-                            background: 'transparent', border: '1px solid var(--cyan)',
-                            color: 'var(--cyan)', padding: '0.6rem 1.2rem', borderRadius: 'var(--radius-pill)', fontWeight: 800,
-                            cursor: 'pointer', transition: 'var(--transition)'
-                          }}
-                          onMouseOver={(e) => { e.currentTarget.style.background = 'var(--cyan-glow)'; e.currentTarget.style.boxShadow = '0 0 15px var(--cyan-glow)'; }}
-                          onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
-                          onClick={() => { setSelectedMatch(cMatch); setActiveTab('match-detail'); }}
-                          >
-                            ⚡ Analizar
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {(() => {
+                      const grouped = calendarMatches.reduce((acc, m) => {
+                        const c = m.country || 'Otras Ligas';
+                        if (!acc[c]) acc[c] = [];
+                        acc[c].push(m);
+                        return acc;
+                      }, {} as Record<string, any[]>);
+                      
+                      return Object.entries(grouped).map(([country, matchesArray]) => (
+                        <React.Fragment key={country}>
+                          <tr>
+                            <td colSpan={5} style={{ background: 'rgba(255,255,255,0.05)', color: '#c4b5fd', fontWeight: 800, padding: '0.8rem 1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                              📍 {country}
+                            </td>
+                          </tr>
+                          {matchesArray.map((cMatch: any) => (
+                            <tr key={cMatch.id} style={{cursor: 'default'}}>
+                              <td className="mono-font" style={{color: 'var(--cyan)', fontWeight: 800, fontSize: '1.1rem'}}>{cMatch.startTime}</td>
+                              <td>
+                                <div style={{color: '#f8fafc', fontWeight: 700, letterSpacing: '0.5px'}}>{cMatch.league}</div>
+                                <div style={{color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem', textTransform: 'uppercase'}}>{cMatch.round}</div>
+                              </td>
+                              <td>
+                                <div style={{display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.1rem', fontWeight: 700, color: '#e2e8f0'}}>
+                                  <span>{cMatch.homeTeam}</span>
+                                  <span style={{color: 'var(--text-dim)', fontSize: '0.9rem'}}>vs</span>
+                                  <span>{cMatch.awayTeam}</span>
+                                </div>
+                              </td>
+                              <td style={{textAlign: 'center'}}>
+                                <span style={{
+                                  background: cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.03)',
+                                  color: cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'var(--primary)' : 'var(--text-muted)',
+                                  padding: '0.4rem 1rem', borderRadius: 'var(--radius-pill)', fontSize: '0.8rem', fontWeight: 800, border: '1px solid ' + (cMatch.status.includes('Play') || cMatch.status.includes('Half') ? 'rgba(16, 185, 129, 0.3)' : 'transparent')
+                                }}>{cMatch.status}</span>
+                              </td>
+                              <td style={{textAlign: 'right'}}>
+                                <button style={{
+                                  background: 'transparent', border: '1px solid var(--cyan)',
+                                  color: 'var(--cyan)', padding: '0.6rem 1.2rem', borderRadius: 'var(--radius-pill)', fontWeight: 800,
+                                  cursor: 'pointer', transition: 'var(--transition)'
+                                }}
+                                onMouseOver={(e) => { e.currentTarget.style.background = 'var(--cyan-glow)'; e.currentTarget.style.boxShadow = '0 0 15px var(--cyan-glow)'; }}
+                                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
+                                onClick={() => { setSelectedMatch(cMatch); setActiveTab('match-detail'); }}
+                                >
+                                  ⚡ Analizar
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      ));
+                    })()}
                   </tbody>
                 </table>
               </div>

@@ -53,19 +53,52 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     hosts = ["Mexico", "Canada", "USA", "United States"]
     home_advantage_points = 100 if home_team in hosts else 0
     
-    # Si tenemos contexto histórico real, calculamos xG basados en goles promedio y forma
+    # Fallback inicial usando Elo (Plan B base)
+    home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
+
+    # Si tenemos contexto histórico real (Bóveda de Stats)
     if historical_context and historical_context.get("home") and historical_context.get("away"):
         home_stats = historical_context["home"]
         away_stats = historical_context["away"]
         
-        # Algoritmo de xG basado en Historial
-        # xG Local = (Goles Favor Local + Goles Contra Visita) / 2 + Ventaja Local(0.2)
-        home_expected_full = (home_stats["avg_goals_scored"] + away_stats["avg_goals_conceded"]) / 2.0 + 0.2
-        # xG Visita = (Goles Favor Visita + Goles Contra Local) / 2
-        away_expected_full = (away_stats["avg_goals_scored"] + home_stats["avg_goals_conceded"]) / 2.0
-    else:
-        # Fallback a la estimación basada en Elo
-        home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
+        h_matches = max(home_stats.get("matches_played", 1), 1)
+        a_matches = max(away_stats.get("matches_played", 1), 1)
+        
+        # 1. Clean Sheets (La visita anota menos si el local es un muro)
+        h_clean_sheet_rate = home_stats.get("clean_sheets_total", 0) / h_matches
+        a_clean_sheet_rate = away_stats.get("clean_sheets_total", 0) / a_matches
+        
+        # 2. Failed to score (El equipo anota menos si es pólvora mojada)
+        h_failed_rate = home_stats.get("failed_to_score_total", 0) / h_matches
+        a_failed_rate = away_stats.get("failed_to_score_total", 0) / a_matches
+        
+        # Ajustamos los Expected Goals base de Elo
+        # Si la defensa rival es un muro de 50%, corto mis goles a la mitad.
+        home_expected_full = home_expected_full * (1.0 - (h_failed_rate * 0.5)) * (1.0 - (a_clean_sheet_rate * 0.5))
+        away_expected_full = away_expected_full * (1.0 - (a_failed_rate * 0.5)) * (1.0 - (h_clean_sheet_rate * 0.5))
+        
+        # 3. Momentum (Form)
+        def get_form_multiplier(form_str):
+            if not form_str: return 1.0
+            form_str = form_str[-5:]
+            pts = form_str.count('W')*3 + form_str.count('D')*1
+            max_pts = len(form_str)*3
+            if max_pts == 0: return 1.0
+            ratio = pts / max_pts
+            return 0.85 + (ratio * 0.3) # Multiplicador entre 0.85 y 1.15
+        
+        home_expected_full *= get_form_multiplier(home_stats.get("form", ""))
+        away_expected_full *= get_form_multiplier(away_stats.get("form", ""))
+        
+        # 4. Tendencias de Goles (Over/Under)
+        h_over_rate = home_stats.get("over_25", 0) / h_matches
+        a_over_rate = away_stats.get("over_25", 0) / a_matches
+        if h_over_rate > 0.6 and a_over_rate > 0.6:
+            home_expected_full *= 1.1
+            away_expected_full *= 1.1
+        elif h_over_rate < 0.4 and a_over_rate < 0.4:
+            home_expected_full *= 0.9
+            away_expected_full *= 0.9
     
     # --------------------------------------------
     # TIME DECAY (Decaimiento Temporal para En Vivo)

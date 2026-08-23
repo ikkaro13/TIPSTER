@@ -529,6 +529,7 @@ def get_daily_calendar(date: str = None):
             calendar_matches.append({
                 "id": str(fixture.get("id")),
                 "league": league.get("name", "API-Football League"),
+                "country": league.get("country", "Unknown"),
                 "round": league.get("round", ""),
                 "homeTeam": home_team,
                 "awayTeam": away_team,
@@ -538,8 +539,8 @@ def get_daily_calendar(date: str = None):
             })
             
             
-        # Ordenar por hora de juego (timestamp)
-        calendar_matches.sort(key=lambda x: x["timestamp"])
+        # Ordenar por país, y luego por hora de juego (timestamp)
+        calendar_matches.sort(key=lambda x: (x.get("country", ""), x["timestamp"]))
         
         if len(calendar_matches) == 0:
             print("Inyectando partido simulado en el Calendario")
@@ -565,6 +566,32 @@ def calculate_ares(req: AresCalculateRequest):
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
         
+    # Cargar Bóveda Híbrida
+    stats_db = {}
+    stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
+    if os.path.exists(stats_file):
+        try:
+            with open(stats_file, 'r', encoding='utf-8') as f:
+                stats_db = json.load(f)
+        except:
+            pass
+            
+    # Buscar IDs por nombre
+    h_stats = None
+    a_stats = None
+    for tid, tdata in stats_db.items():
+        if tdata.get("name") == req.homeTeam:
+            h_stats = tdata
+        if tdata.get("name") == req.awayTeam:
+            a_stats = tdata
+            
+    h_ctx = None
+    if h_stats and a_stats:
+        h_ctx = {
+            "home": h_stats,
+            "away": a_stats
+        }
+        
     probs = calculate_match_probabilities(
         req.homeTeam, 
         req.awayTeam, 
@@ -572,7 +599,7 @@ def calculate_ares(req: AresCalculateRequest):
         current_minute=req.minute, 
         current_home_goals=req.homeGoals, 
         current_away_goals=req.awayGoals,
-        historical_context=None,
+        historical_context=h_ctx,
         current_corners=req.currentCorners
     )
     
@@ -641,6 +668,16 @@ def scan_day_for_value_bets(date: str):
             except:
                 pass
         
+        # Cargar Boveda de Estadísticas (Motor Hibrido)
+        stats_db = {}
+        stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
+        if os.path.exists(stats_file):
+            try:
+                with open(stats_file, 'r', encoding='utf-8') as f:
+                    stats_db = json.load(f)
+            except:
+                pass
+        
         # 3. Analizar matemáticamente
         for match in fixtures:
             fixture_id = str(match.get("fixture", {}).get("id"))
@@ -650,14 +687,20 @@ def scan_day_for_value_bets(date: str):
             teams = match.get("teams", {})
             home_team = teams.get("home", {}).get("name", "Unknown")
             away_team = teams.get("away", {}).get("name", "Unknown")
+            home_id = str(teams.get("home", {}).get("id", ""))
+            away_id = str(teams.get("away", {}).get("id", ""))
             league_name = match.get("league", {}).get("name", "Unknown")
             
-            # FILTRO RELAJADO: Si no tenemos ELO real, usaremos el ELO base (1500) para no descartar ligas nuevas.
-            # if home_team not in GLOBAL_STATS_DB or away_team not in GLOBAL_STATS_DB:
-            #     continue
+            # Construir contexto
+            h_ctx = None
+            if home_id in stats_db and away_id in stats_db:
+                h_ctx = {
+                    "home": stats_db[home_id],
+                    "away": stats_db[away_id]
+                }
             
             probs = calculate_match_probabilities(
-                home_team, away_team, GLOBAL_STATS_DB, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=None
+                home_team, away_team, GLOBAL_STATS_DB, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=h_ctx
             )
             
             odds = daily_odds[fixture_id]
@@ -685,7 +728,9 @@ def scan_day_for_value_bets(date: str):
                         "odds": odds_val,
                         "edge": round(edge * 100, 2),
                         "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
-                        "type": "🎯 Francotirador"
+                        "type": "🎯 Francotirador",
+                        "exact_score": probs.get("exact_score", "?-?"),
+                        "exact_score_prob": round(probs.get("exact_score_prob", 0), 1)
                     })
                 # PLAN B (Ladrillo): Alta probabilidad y cuota jugable
                 if prob_percent >= 60.0 and odds_val >= 1.60:
@@ -699,7 +744,9 @@ def scan_day_for_value_bets(date: str):
                         "odds": odds_val,
                         "edge": round(edge * 100, 2),
                         "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
-                        "type": "🧱 Ladrillo"
+                        "type": "🧱 Ladrillo",
+                        "exact_score": probs.get("exact_score", "?-?"),
+                        "exact_score_prob": round(probs.get("exact_score_prob", 0), 1)
                     })
                     
             if odds.get('home', {}).get('price', 0) > 1.0:
@@ -748,6 +795,25 @@ def scan_day_for_value_bets(date: str):
             })
             
         final_bets = value_bets if len(value_bets) > 0 else safe_bets
+        
+        # --- SHADOW LEDGER ---
+        shadow_file = os.path.join(os.path.dirname(__file__), "athena_shadow_ledger.json")
+        shadow_data = []
+        if os.path.exists(shadow_file):
+            with open(shadow_file, "r", encoding="utf-8") as f:
+                try:
+                    shadow_data = json.load(f)
+                except:
+                    pass
+        
+        # Inyectar la fecha y los picks
+        for bet in final_bets:
+            bet['logged_at'] = datetime.now(timezone.utc).isoformat()
+            shadow_data.append(bet)
+            
+        with open(shadow_file, "w", encoding="utf-8") as f:
+            json.dump(shadow_data, f, ensure_ascii=False, indent=4)
+        # ---------------------
         
         return {"status": "success", "date": date, "value_bets": final_bets}
     except Exception as e:
