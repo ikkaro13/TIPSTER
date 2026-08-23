@@ -1432,5 +1432,411 @@
         "clean_sheet_rate": 0.17647058823529413,
         "failed_rate": 0.2647058823529412,
         "form": "LLWLL"
+    },
+    "207": {
+        "name": "Utrecht",
+        "league": 88,
+        "clean_sheet_rate": 0.2647058823529412,
+        "failed_rate": 0.17647058823529413,
+        "form": "WWLDD"
+    },
+    "209": {
+        "name": "Feyenoord",
+        "league": 88,
+        "clean_sheet_rate": 0.29411764705882354,
+        "failed_rate": 0.14705882352941177,
+        "form": "WWLWL"
+    },
+    "210": {
+        "name": "Heerenveen",
+        "league": 88,
+        "clean_sheet_rate": 0.17142857142857143,
+        "failed_rate": 0.2857142857142857,
+        "form": "WLLWL"
+    },
+    "409": {
+        "name": "Dordrecht",
+        "league": 88,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 0.25,
+        "form": "DWWL"
+    },
+    "410": {
+        "name": "GO Ahead Eagles",
+        "league": 88,
+        "clean_sheet_rate": 0.2647058823529412,
+        "failed_rate": 0.20588235294117646,
+        "form": "DLDWL"
+    },
+    "413": {
+        "name": "NEC Nijmegen",
+        "league": 88,
+        "clean_sheet_rate": 0.2857142857142857,
+        "failed_rate": 0.2571428571428571,
+        "form": "DWWWL"
+    },
+    "415": {
+        "name": "Twente",
+        "league": 88,
+        "clean_sheet_rate": 0.3055555555555556,
+        "failed_rate": 0.05555555555555555,
+        "form": "WLLWL"
+    },
+    "417": {
+        "name": "Waalwijk",
+        "league": 88,
+        "clean_sheet_rate": 0.11764705882352941,
+        "failed_rate": 0.3235294117647059,
+        "form": "LLWLW"
+    },
+    "419": {
+        "name": "Almere City FC",
+        "league": 88,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.5,
+        "form": "LDLDD"
+    },
+    "420": {
+        "name": "Cambuur",
+        "league": 88,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.5,
+        "form": "LD"
+    },
+    "421": {
+        "name": "Den Bosch",
+        "league": 88,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 0.25,
+        "form": "WDDL"
+    },
+    "426": {
+        "name": "Sparta Rotterdam",
+        "league": 88,
+        "clean_sheet_rate": 0.17647058823529413,
+        "failed_rate": 0.2647058823529412,
+        "form": "DLWDL"
+    },
+    "427": {
+        "name": "Telstar",
+        "league": 88,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 0.16666666666666666,
+        "form": "WDWDW"
+    },
+    "436": {
+        "name": "Racing Club",
+        "league": 128,
+        "clean_sheet_rate": 0.4074074074074074,
+        "failed_rate": 0.2962962962962963,
+        "form": "WWLLW"
+    },
+    "438": {
+        "name": "Velez Sarsfield",
+        "league": 128,
+        "clean_sheet_rate": 0.5925925925925926,
+        "failed_rate": 0.18518518518518517,
+        "form": "DDWLW"
+    },
+    "439": {
+        "name": "Godoy Cruz",
+        "league": 128,
+        "clean_sheet_rate": 0.25925925925925924,
+        "failed_rate": 0.25925925925925924,
+        "form": "LDLWW"
+    },
+    "440": {
+        "name": "Belgrano Cordoba",
+        "league": 128,
+        "clean_sheet_rate": 0.25925925925925924,
+        "failed_rate": 0.2962962962962963,
+        "form": "DLWDL"
+    },
+    "441": {
+        "name": "Union Santa Fe",
+        "league": 128,
+        "clean_sheet_rate": 0.4444444444444444,
+        "failed_rate": 0.37037037037037035,
+        "form": "LLLWD"
+    },
+    "442": {
+        "name": "Defensa Y Justicia",
+        "league": 128,
+        "clean_sheet_rate": 0.2962962962962963,
+        "failed_rate": 0.37037037037037035,
+        "form": "DDWDD"
+    },
+    "445": {
+        "name": "Huracan",
+        "league": 128,
+        "clean_sheet_rate": 0.5555555555555556,
+        "failed_rate": 0.37037037037037035,
+        "form": "LDLWL"
+    },
+    "446": {
+        "name": "Lanus",
+        "league": 128,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.37037037037037035,
+        "form": "DDWWD"
+    },
+    "449": {
+        "name": "Banfield",
+        "league": 128,
+        "clean_sheet_rate": 0.18518518518518517,
+        "failed_rate": 0.3333333333333333,
+        "form": "LDLLD"
+    },
+    "450": {
+        "name": "Estudiantes L.P.",
+        "league": 128,
+        "clean_sheet_rate": 0.18518518518518517,
+        "failed_rate": 0.25925925925925924,
+        "form": "DLWDD"
+    },
+    "451": {
+        "name": "Boca Juniors",
+        "league": 128,
+        "clean_sheet_rate": 0.4074074074074074,
+        "failed_rate": 0.37037037037037035,
+        "form": "WDWWD"
+    },
+    "452": {
+        "name": "Tigre",
+        "league": 128,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.4074074074074074,
+        "form": "WDDLW"
+    },
+    "453": {
+        "name": "Independiente",
+        "league": 128,
+        "clean_sheet_rate": 0.5555555555555556,
+        "failed_rate": 0.4074074074074074,
+        "form": "WLWWD"
+    },
+    "455": {
+        "name": "Atletico Tucuman",
+        "league": 128,
+        "clean_sheet_rate": 0.4074074074074074,
+        "failed_rate": 0.25925925925925924,
+        "form": "WLDLW"
+    },
+    "456": {
+        "name": "Talleres Cordoba",
+        "league": 128,
+        "clean_sheet_rate": 0.4074074074074074,
+        "failed_rate": 0.2222222222222222,
+        "form": "WWWWL"
+    },
+    "457": {
+        "name": "Newells Old Boys",
+        "league": 128,
+        "clean_sheet_rate": 0.2962962962962963,
+        "failed_rate": 0.5185185185185185,
+        "form": "LWDLW"
+    },
+    "458": {
+        "name": "Argentinos JRS",
+        "league": 128,
+        "clean_sheet_rate": 0.37037037037037035,
+        "failed_rate": 0.5185185185185185,
+        "form": "LLLWD"
+    },
+    "460": {
+        "name": "San Lorenzo",
+        "league": 128,
+        "clean_sheet_rate": 0.25925925925925924,
+        "failed_rate": 0.4074074074074074,
+        "form": "LLDLL"
+    },
+    "473": {
+        "name": "Independ. Rivadavia",
+        "league": 128,
+        "clean_sheet_rate": 0.4074074074074074,
+        "failed_rate": 0.3333333333333333,
+        "form": "WWWWD"
+    },
+    "474": {
+        "name": "Sarmiento Junin",
+        "league": 128,
+        "clean_sheet_rate": 0.37037037037037035,
+        "failed_rate": 0.4074074074074074,
+        "form": "LWLDD"
+    },
+    "476": {
+        "name": "Deportivo Riestra",
+        "league": 128,
+        "clean_sheet_rate": 0.4444444444444444,
+        "failed_rate": 0.3333333333333333,
+        "form": "DDLDD"
+    },
+    "478": {
+        "name": "Instituto Cordoba",
+        "league": 128,
+        "clean_sheet_rate": 0.25925925925925924,
+        "failed_rate": 0.3333333333333333,
+        "form": "WDWLL"
+    },
+    "1064": {
+        "name": "Platense",
+        "league": 128,
+        "clean_sheet_rate": 0.5185185185185185,
+        "failed_rate": 0.4444444444444444,
+        "form": "WLWLW"
+    },
+    "1065": {
+        "name": "Central Cordoba de Santiago",
+        "league": 128,
+        "clean_sheet_rate": 0.2222222222222222,
+        "failed_rate": 0.4074074074074074,
+        "form": "WLLWL"
+    },
+    "2432": {
+        "name": "Barracas Central",
+        "league": 128,
+        "clean_sheet_rate": 0.2962962962962963,
+        "failed_rate": 0.5185185185185185,
+        "form": "DWDDD"
+    },
+    "211": {
+        "name": "Benfica",
+        "league": 94,
+        "clean_sheet_rate": 0.4411764705882353,
+        "failed_rate": 0.058823529411764705,
+        "form": "WWWDD"
+    },
+    "212": {
+        "name": "FC Porto",
+        "league": 94,
+        "clean_sheet_rate": 0.47058823529411764,
+        "failed_rate": 0.11764705882352941,
+        "form": "WLWWW"
+    },
+    "215": {
+        "name": "Moreirense",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.23529411764705882,
+        "form": "LDLDW"
+    },
+    "217": {
+        "name": "SC Braga",
+        "league": 94,
+        "clean_sheet_rate": 0.4411764705882353,
+        "failed_rate": 0.08823529411764706,
+        "form": "WDDLD"
+    },
+    "222": {
+        "name": "Boavista",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.5,
+        "form": "WLWLL"
+    },
+    "224": {
+        "name": "Vitória SC",
+        "league": 94,
+        "clean_sheet_rate": 0.38235294117647056,
+        "failed_rate": 0.2647058823529412,
+        "form": "LWWLL"
+    },
+    "225": {
+        "name": "Nacional",
+        "league": 94,
+        "clean_sheet_rate": 0.23529411764705882,
+        "failed_rate": 0.4411764705882353,
+        "form": "LDLDL"
+    },
+    "226": {
+        "name": "Rio Ave",
+        "league": 94,
+        "clean_sheet_rate": 0.14705882352941177,
+        "failed_rate": 0.29411764705882354,
+        "form": "DLWDD"
+    },
+    "227": {
+        "name": "Santa Clara",
+        "league": 94,
+        "clean_sheet_rate": 0.3235294117647059,
+        "failed_rate": 0.3235294117647059,
+        "form": "DWDWW"
+    },
+    "228": {
+        "name": "Sporting CP",
+        "league": 94,
+        "clean_sheet_rate": 0.4411764705882353,
+        "failed_rate": 0.058823529411764705,
+        "form": "WWWDW"
+    },
+    "230": {
+        "name": "Estoril",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.3235294117647059,
+        "form": "LWLDW"
+    },
+    "231": {
+        "name": "Farense",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.47058823529411764,
+        "form": "LLWWL"
+    },
+    "240": {
+        "name": "Arouca",
+        "league": 94,
+        "clean_sheet_rate": 0.23529411764705882,
+        "failed_rate": 0.2647058823529412,
+        "form": "WLDDW"
+    },
+    "242": {
+        "name": "Famalicao",
+        "league": 94,
+        "clean_sheet_rate": 0.38235294117647056,
+        "failed_rate": 0.20588235294117646,
+        "form": "LDLLW"
+    },
+    "762": {
+        "name": "GIL Vicente",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.38235294117647056,
+        "form": "WWLDD"
+    },
+    "810": {
+        "name": "Vizela",
+        "league": 94,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.5,
+        "form": "LD"
+    },
+    "4716": {
+        "name": "Casa Pia",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.2647058823529412,
+        "form": "DLDWL"
+    },
+    "15130": {
+        "name": "Estrela",
+        "league": 94,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.5294117647058824,
+        "form": "LWLLL"
+    },
+    "21595": {
+        "name": "AVS",
+        "league": 94,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.3333333333333333,
+        "form": "LWLWD"
+    },
+    "247": {
+        "name": "Celtic",
+        "league": 179,
+        "clean_sheet_rate": 0.5526315789473685,
+        "failed_rate": 0.07894736842105263,
+        "form": "WDWWD"
     }
 }
