@@ -1244,7 +1244,7 @@ export default function Home() {
                       }, {} as Record<string, any[]>);
                       
                       return Object.entries(grouped).map(([country, matchesArray]) => (
-                        <React.Fragment key={country}>
+                        <tbody key={country}>
                           <tr>
                             <td colSpan={5} style={{ background: 'rgba(255,255,255,0.05)', color: '#c4b5fd', fontWeight: 800, padding: '0.8rem 1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
                               📍 {country}
