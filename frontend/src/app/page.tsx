@@ -1284,12 +1284,12 @@ export default function Home() {
                                   ⚡ Analizar
                                 </button>
                               </td>
-                            </tr>
-                          ))}
-                        </React.Fragment>
-                      ));
-                    })()}
-                  </tbody>
+                              </tr>
+                            ))}
+                          </tbody>
+                        ));
+                      })()}
+                    </tbody>
                 </table>
               </div>
             )}
