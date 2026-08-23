@@ -897,6 +897,7 @@ export default function Home() {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [calendarMatches, setCalendarMatches] = useState<any[]>([]);
   const [calendarLoading, setCalendarLoading] = useState(false);
+  const [collapsedCountries, setCollapsedCountries] = useState<Record<string, boolean>>({});
   const [calendarDate, setCalendarDate] = useState(() => {
     const today = new Date();
     today.setHours(today.getHours() - 6);
@@ -1234,7 +1235,6 @@ export default function Home() {
                       <th style={{textAlign: 'right'}}>ACCIÓN</th>
                     </tr>
                   </thead>
-                  <tbody>
                     {(() => {
                       const grouped = calendarMatches.reduce((acc, m) => {
                         const c = m.country || 'Otras Ligas';
@@ -1246,11 +1246,16 @@ export default function Home() {
                       return Object.entries(grouped).map(([country, matchesArray]) => (
                         <tbody key={country}>
                           <tr>
-                            <td colSpan={5} style={{ background: 'rgba(255,255,255,0.05)', color: '#c4b5fd', fontWeight: 800, padding: '0.8rem 1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                              📍 {country}
+                            <td colSpan={5} 
+                                onClick={() => setCollapsedCountries(prev => ({...prev, [country]: !prev[country]}))}
+                                style={{ cursor: 'pointer', background: 'rgba(255,255,255,0.05)', color: '#c4b5fd', fontWeight: 800, padding: '0.8rem 1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                <span>📍 {country}</span>
+                                <span>{collapsedCountries[country] ? '▼' : '▲'}</span>
+                              </div>
                             </td>
                           </tr>
-                          {matchesArray.map((cMatch: any) => (
+                          {!collapsedCountries[country] && matchesArray.map((cMatch: any) => (
                             <tr key={cMatch.id} style={{cursor: 'default'}}>
                               <td className="mono-font" style={{color: 'var(--cyan)', fontWeight: 800, fontSize: '1.1rem'}}>{cMatch.startTime}</td>
                               <td>
@@ -1289,7 +1294,6 @@ export default function Home() {
                           </tbody>
                         ));
                       })()}
-                    </tbody>
                 </table>
               </div>
             )}
