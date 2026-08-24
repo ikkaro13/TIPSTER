@@ -1838,5 +1838,432 @@
         "clean_sheet_rate": 0.5526315789473685,
         "failed_rate": 0.07894736842105263,
         "form": "WDWWD"
+    },
+    "434": {
+        "name": "Gimnasia L.P.",
+        "league": 128,
+        "clean_sheet_rate": 0.37037037037037035,
+        "failed_rate": 0.4444444444444444,
+        "form": "LWLLL"
+    },
+    "435": {
+        "name": "River Plate",
+        "league": 128,
+        "clean_sheet_rate": 0.4074074074074074,
+        "failed_rate": 0.3333333333333333,
+        "form": "LWDWL"
+    },
+    "437": {
+        "name": "Rosario Central",
+        "league": 128,
+        "clean_sheet_rate": 0.25925925925925924,
+        "failed_rate": 0.3333333333333333,
+        "form": "DWLLW"
+    },
+    "549": {
+        "name": "Beşiktaş",
+        "league": 203,
+        "clean_sheet_rate": 0.3055555555555556,
+        "failed_rate": 0.1111111111111111,
+        "form": "WWDLW"
+    },
+    "564": {
+        "name": "Başakşehir",
+        "league": 203,
+        "clean_sheet_rate": 0.2777777777777778,
+        "failed_rate": 0.2222222222222222,
+        "form": "WLWLL"
+    },
+    "607": {
+        "name": "Konyaspor",
+        "league": 203,
+        "clean_sheet_rate": 0.2222222222222222,
+        "failed_rate": 0.2222222222222222,
+        "form": "WLWLL"
+    },
+    "611": {
+        "name": "Fenerbahçe",
+        "league": 203,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.1111111111111111,
+        "form": "LWWLW"
+    },
+    "645": {
+        "name": "Galatasaray",
+        "league": 203,
+        "clean_sheet_rate": 0.4166666666666667,
+        "failed_rate": 0.027777777777777776,
+        "form": "WWWWW"
+    },
+    "994": {
+        "name": "Göztepe",
+        "league": 203,
+        "clean_sheet_rate": 0.2222222222222222,
+        "failed_rate": 0.19444444444444445,
+        "form": "WDLLW"
+    },
+    "996": {
+        "name": "Alanyaspor",
+        "league": 203,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.25,
+        "form": "DWDWW"
+    },
+    "998": {
+        "name": "Trabzonspor",
+        "league": 203,
+        "clean_sheet_rate": 0.3888888888888889,
+        "failed_rate": 0.16666666666666666,
+        "form": "DLDDW"
+    },
+    "1001": {
+        "name": "Kayserispor",
+        "league": 203,
+        "clean_sheet_rate": 0.2777777777777778,
+        "failed_rate": 0.3055555555555556,
+        "form": "DWLDL"
+    },
+    "1002": {
+        "name": "Sivasspor",
+        "league": 203,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.4166666666666667,
+        "form": "WLDLL"
+    },
+    "1004": {
+        "name": "Kasımpaşa",
+        "league": 203,
+        "clean_sheet_rate": 0.19444444444444445,
+        "failed_rate": 0.19444444444444445,
+        "form": "DWLDL"
+    },
+    "1005": {
+        "name": "Antalyaspor",
+        "league": 203,
+        "clean_sheet_rate": 0.19444444444444445,
+        "failed_rate": 0.4166666666666667,
+        "form": "WLDLL"
+    },
+    "1007": {
+        "name": "Rizespor",
+        "league": 203,
+        "clean_sheet_rate": 0.1111111111111111,
+        "failed_rate": 0.3055555555555556,
+        "form": "WLWWW"
+    },
+    "3563": {
+        "name": "Adana Demirspor",
+        "league": 203,
+        "clean_sheet_rate": 0.05555555555555555,
+        "failed_rate": 0.4166666666666667,
+        "form": "LLLWD"
+    },
+    "3573": {
+        "name": "Gaziantep FK",
+        "league": 203,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.25,
+        "form": "LLDDD"
+    },
+    "3575": {
+        "name": "Hatayspor",
+        "league": 203,
+        "clean_sheet_rate": 0.08333333333333333,
+        "failed_rate": 0.2777777777777778,
+        "form": "LDWWL"
+    },
+    "3583": {
+        "name": "Bodrum FK",
+        "league": 203,
+        "clean_sheet_rate": 0.3888888888888889,
+        "failed_rate": 0.5,
+        "form": "LDDDL"
+    },
+    "3588": {
+        "name": "Eyüpspor",
+        "league": 203,
+        "clean_sheet_rate": 0.3055555555555556,
+        "failed_rate": 0.16666666666666666,
+        "form": "LLLLW"
+    },
+    "3603": {
+        "name": "Samsunspor",
+        "league": 203,
+        "clean_sheet_rate": 0.3888888888888889,
+        "failed_rate": 0.2777777777777778,
+        "form": "WWWDW"
+    },
+    "260": {
+        "name": "OH Leuven",
+        "league": 144,
+        "clean_sheet_rate": 0.275,
+        "failed_rate": 0.375,
+        "form": "DLLLL"
+    },
+    "261": {
+        "name": "KVC Westerlo",
+        "league": 144,
+        "clean_sheet_rate": 0.175,
+        "failed_rate": 0.175,
+        "form": "DWLWD"
+    },
+    "263": {
+        "name": "Beerschot VA",
+        "league": 144,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.4166666666666667,
+        "form": "LLWLW"
+    },
+    "266": {
+        "name": "KV Mechelen",
+        "league": 144,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.2,
+        "form": "DWDDD"
+    },
+    "554": {
+        "name": "Anderlecht",
+        "league": 144,
+        "clean_sheet_rate": 0.425,
+        "failed_rate": 0.325,
+        "form": "WWLLL"
+    },
+    "569": {
+        "name": "Club Brugge KV",
+        "league": 144,
+        "clean_sheet_rate": 0.325,
+        "failed_rate": 0.075,
+        "form": "DWWWD"
+    },
+    "631": {
+        "name": "Gent",
+        "league": 144,
+        "clean_sheet_rate": 0.35,
+        "failed_rate": 0.35,
+        "form": "LLLLL"
+    },
+    "733": {
+        "name": "Standard Liege",
+        "league": 144,
+        "clean_sheet_rate": 0.375,
+        "failed_rate": 0.5,
+        "form": "DLDDD"
+    },
+    "734": {
+        "name": "Kortrijk",
+        "league": 144,
+        "clean_sheet_rate": 0.1388888888888889,
+        "failed_rate": 0.3333333333333333,
+        "form": "WWLWD"
+    },
+    "735": {
+        "name": "St. Truiden",
+        "league": 144,
+        "clean_sheet_rate": 0.1388888888888889,
+        "failed_rate": 0.16666666666666666,
+        "form": "LWLWD"
+    },
+    "736": {
+        "name": "Charleroi",
+        "league": 144,
+        "clean_sheet_rate": 0.2682926829268293,
+        "failed_rate": 0.2682926829268293,
+        "form": "WWDWW"
+    },
+    "740": {
+        "name": "Antwerp",
+        "league": 144,
+        "clean_sheet_rate": 0.24390243902439024,
+        "failed_rate": 0.24390243902439024,
+        "form": "LWLDL"
+    },
+    "741": {
+        "name": "Cercle Brugge",
+        "league": 144,
+        "clean_sheet_rate": 0.18421052631578946,
+        "failed_rate": 0.2894736842105263,
+        "form": "WLLWW"
+    },
+    "742": {
+        "name": "Genk",
+        "league": 144,
+        "clean_sheet_rate": 0.325,
+        "failed_rate": 0.2,
+        "form": "LLLWW"
+    },
+    "1393": {
+        "name": "Union St. Gilloise",
+        "league": 144,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 0.225,
+        "form": "DWWWW"
+    },
+    "6215": {
+        "name": "Dender",
+        "league": 144,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.3,
+        "form": "LLWDD"
+    },
+    "6222": {
+        "name": "Patro Eisden",
+        "league": 144,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.0,
+        "form": "LL"
+    },
+    "319": {
+        "name": "Brann",
+        "league": 103,
+        "clean_sheet_rate": 0.36666666666666664,
+        "failed_rate": 0.1,
+        "form": "WWWLD"
+    },
+    "320": {
+        "name": "Kristiansund BK",
+        "league": 103,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.4,
+        "form": "LDLWL"
+    },
+    "321": {
+        "name": "Lillestrom",
+        "league": 103,
+        "clean_sheet_rate": 0.1,
+        "failed_rate": 0.36666666666666664,
+        "form": "WLLLL"
+    },
+    "324": {
+        "name": "Stromsgodset",
+        "league": 103,
+        "clean_sheet_rate": 0.3,
+        "failed_rate": 0.36666666666666664,
+        "form": "WLWLW"
+    },
+    "330": {
+        "name": "ODD Ballklubb",
+        "league": 103,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.4,
+        "form": "LLLLL"
+    },
+    "331": {
+        "name": "Rosenborg",
+        "league": 103,
+        "clean_sheet_rate": 0.3,
+        "failed_rate": 0.1,
+        "form": "WWWDW"
+    },
+    "332": {
+        "name": "Sandefjord",
+        "league": 103,
+        "clean_sheet_rate": 0.13333333333333333,
+        "failed_rate": 0.23333333333333334,
+        "form": "WLWWL"
+    },
+    "333": {
+        "name": "Sarpsborg 08 FF",
+        "league": 103,
+        "clean_sheet_rate": 0.1,
+        "failed_rate": 0.2,
+        "form": "LWDDW"
+    },
+    "759": {
+        "name": "Viking",
+        "league": 103,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.06666666666666667,
+        "form": "WWWWD"
+    },
+    "2143": {
+        "name": "KFUM Oslo",
+        "league": 103,
+        "clean_sheet_rate": 0.3,
+        "failed_rate": 0.26666666666666666,
+        "form": "LLLLW"
+    },
+    "2149": {
+        "name": "Fredrikstad",
+        "league": 103,
+        "clean_sheet_rate": 0.43333333333333335,
+        "failed_rate": 0.26666666666666666,
+        "form": "LDDWW"
+    },
+    "2159": {
+        "name": "Ham-Kam",
+        "league": 103,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.43333333333333335,
+        "form": "WDLLL"
+    },
+    "7012": {
+        "name": "Moss",
+        "league": 103,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 1.0,
+        "form": "DL"
+    },
+    "551": {
+        "name": "FC Basel 1893",
+        "league": 207,
+        "clean_sheet_rate": 0.3157894736842105,
+        "failed_rate": 0.07894736842105263,
+        "form": "WWWLW"
+    },
+    "565": {
+        "name": "BSC Young Boys",
+        "league": 207,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.2894736842105263,
+        "form": "LDWWD"
+    },
+    "606": {
+        "name": "FC Lugano",
+        "league": 207,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.21052631578947367,
+        "form": "WLLDD"
+    },
+    "630": {
+        "name": "FC Sion",
+        "league": 207,
+        "clean_sheet_rate": 0.10526315789473684,
+        "failed_rate": 0.2894736842105263,
+        "form": "WDDWL"
+    },
+    "644": {
+        "name": "FC Luzern",
+        "league": 207,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.10526315789473684,
+        "form": "LDLLL"
+    },
+    "783": {
+        "name": "FC Zurich",
+        "league": 207,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.15789473684210525,
+        "form": "LWWLL"
+    },
+    "1011": {
+        "name": "FC ST. Gallen",
+        "league": 207,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.23684210526315788,
+        "form": "DLDWL"
+    },
+    "1013": {
+        "name": "Grasshoppers",
+        "league": 207,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.25,
+        "form": "WLWWL"
+    },
+    "1014": {
+        "name": "Lausanne",
+        "league": 207,
+        "clean_sheet_rate": 0.2631578947368421,
+        "failed_rate": 0.21052631578947367,
+        "form": "WDLDD"
     }
 }
