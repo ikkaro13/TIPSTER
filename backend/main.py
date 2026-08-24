@@ -826,12 +826,38 @@ def get_prematch_insight(req: PrematchInsightRequest):
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
         
-    # Obtener memoria histórica real si el match_id es válido
-    historical_service = HistoricalContextService()
+    # Cargar Bóveda Híbrida
+    stats_db = {}
+    stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
+    if os.path.exists(stats_file):
+        try:
+            with open(stats_file, 'r', encoding='utf-8') as f:
+                stats_db = json.load(f)
+        except:
+            pass
+            
+    # Buscar IDs por nombre
+    h_stats = None
+    a_stats = None
+    for tid, tdata in stats_db.items():
+        if tdata.get("name") == req.homeTeam:
+            h_stats = tdata
+        if tdata.get("name") == req.awayTeam:
+            a_stats = tdata
+            
     hist_context = None
-    if req.match_id and req.match_id != "-1":
-        print(f"[ATHENA] Construyendo Memoria Histórica para partido: {req.match_id}")
-        hist_context = historical_service.build_context(req.match_id)
+    if h_stats and a_stats:
+        print(f"[ATHENA] Memoria Híbrida activada para: {req.homeTeam} vs {req.awayTeam}")
+        hist_context = {
+            "home": h_stats,
+            "away": a_stats
+        }
+    else:
+        # Fallback a la API de Football (aunque es más lenta y no tiene stats avanzadas)
+        historical_service = HistoricalContextService()
+        if req.match_id and req.match_id != "-1":
+            print(f"[ATHENA] Construyendo Memoria Histórica para partido: {req.match_id}")
+            hist_context = historical_service.build_context(req.match_id)
     
     # 0 porque es pre-match (minute=0, goals=0)
     real_probs = calculate_match_probabilities(

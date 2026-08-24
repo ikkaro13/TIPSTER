@@ -65,12 +65,12 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         a_matches = max(away_stats.get("matches_played", 1), 1)
         
         # 1. Clean Sheets (La visita anota menos si el local es un muro)
-        h_clean_sheet_rate = home_stats.get("clean_sheets_total", 0) / h_matches
-        a_clean_sheet_rate = away_stats.get("clean_sheets_total", 0) / a_matches
+        h_clean_sheet_rate = home_stats.get("clean_sheet_rate", home_stats.get("clean_sheets", home_stats.get("clean_sheets_total", 0)) / h_matches)
+        a_clean_sheet_rate = away_stats.get("clean_sheet_rate", away_stats.get("clean_sheets", away_stats.get("clean_sheets_total", 0)) / a_matches)
         
         # 2. Failed to score (El equipo anota menos si es pólvora mojada)
-        h_failed_rate = home_stats.get("failed_to_score_total", 0) / h_matches
-        a_failed_rate = away_stats.get("failed_to_score_total", 0) / a_matches
+        h_failed_rate = home_stats.get("failed_rate", home_stats.get("failed_to_score", home_stats.get("failed_to_score_total", 0)) / h_matches)
+        a_failed_rate = away_stats.get("failed_rate", away_stats.get("failed_to_score", away_stats.get("failed_to_score_total", 0)) / a_matches)
         
         # Ajustamos los Expected Goals base de Elo
         # Si la defensa rival es un muro de 50%, corto mis goles a la mitad.
