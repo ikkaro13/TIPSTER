@@ -2265,5 +2265,481 @@
         "clean_sheet_rate": 0.2631578947368421,
         "failed_rate": 0.21052631578947367,
         "form": "WDLDD"
+    },
+    "2746": {
+        "name": "Gangwon FC",
+        "league": 292,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.18421052631578946,
+        "form": "WWLLW"
+    },
+    "2747": {
+        "name": "Daegu FC",
+        "league": 292,
+        "clean_sheet_rate": 0.175,
+        "failed_rate": 0.325,
+        "form": "DLLLW"
+    },
+    "2749": {
+        "name": "Seoul E-Land FC",
+        "league": 292,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.0,
+        "form": "LL"
+    },
+    "2750": {
+        "name": "Daejeon Citizen",
+        "league": 292,
+        "clean_sheet_rate": 0.23684210526315788,
+        "failed_rate": 0.2894736842105263,
+        "form": "WWDWW"
+    },
+    "2753": {
+        "name": "Asan Mugunghwa",
+        "league": 292,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.0,
+        "form": "WL"
+    },
+    "2756": {
+        "name": "Suwon City FC",
+        "league": 292,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.23684210526315788,
+        "form": "DLLWL"
+    },
+    "2759": {
+        "name": "Gwangju FC",
+        "league": 292,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.34210526315789475,
+        "form": "DLDDD"
+    },
+    "2761": {
+        "name": "Jeju United FC",
+        "league": 292,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.2894736842105263,
+        "form": "WWDDL"
+    },
+    "2762": {
+        "name": "Jeonbuk Motors",
+        "league": 292,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.35,
+        "form": "DWDWW"
+    },
+    "2763": {
+        "name": "Incheon United",
+        "league": 292,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.34210526315789475,
+        "form": "LWDLW"
+    },
+    "2764": {
+        "name": "Pohang Steelers",
+        "league": 292,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.18421052631578946,
+        "form": "DLDLL"
+    },
+    "2766": {
+        "name": "FC Seoul",
+        "league": 292,
+        "clean_sheet_rate": 0.3684210526315789,
+        "failed_rate": 0.21052631578947367,
+        "form": "LWDDW"
+    },
+    "2767": {
+        "name": "Ulsan Hyundai FC",
+        "league": 292,
+        "clean_sheet_rate": 0.3684210526315789,
+        "failed_rate": 0.18421052631578946,
+        "form": "DWWDW"
+    },
+    "2768": {
+        "name": "Gimcheon Sangmu FC",
+        "league": 292,
+        "clean_sheet_rate": 0.4473684210526316,
+        "failed_rate": 0.2631578947368421,
+        "form": "DLWWL"
+    },
+    "363": {
+        "name": "Hammarby FF",
+        "league": 113,
+        "clean_sheet_rate": 0.4666666666666667,
+        "failed_rate": 0.26666666666666666,
+        "form": "WWWDL"
+    },
+    "364": {
+        "name": "Djurgardens IF",
+        "league": 113,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.26666666666666666,
+        "form": "DLWLW"
+    },
+    "366": {
+        "name": "IFK Goteborg",
+        "league": 113,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.23333333333333334,
+        "form": "WLLDL"
+    },
+    "367": {
+        "name": "BK Hacken",
+        "league": 113,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.23333333333333334,
+        "form": "WWLLL"
+    },
+    "370": {
+        "name": "Sirius",
+        "league": 113,
+        "clean_sheet_rate": 0.13333333333333333,
+        "failed_rate": 0.3333333333333333,
+        "form": "WLLDL"
+    },
+    "371": {
+        "name": "IF Brommapojkarna",
+        "league": 113,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.2,
+        "form": "WDLLL"
+    },
+    "372": {
+        "name": "IF Elfsborg",
+        "league": 113,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.16666666666666666,
+        "form": "LLLWD"
+    },
+    "374": {
+        "name": "Kalmar FF",
+        "league": 113,
+        "clean_sheet_rate": 0.06666666666666667,
+        "failed_rate": 0.23333333333333334,
+        "form": "DLWDW"
+    },
+    "375": {
+        "name": "Malmo FF",
+        "league": 113,
+        "clean_sheet_rate": 0.4666666666666667,
+        "failed_rate": 0.1,
+        "form": "DDWDW"
+    },
+    "377": {
+        "name": "AIK Stockholm",
+        "league": 113,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.2,
+        "form": "LWWLW"
+    },
+    "378": {
+        "name": "IFK Norrkoping",
+        "league": 113,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.16666666666666666,
+        "form": "LDWWL"
+    },
+    "766": {
+        "name": "Halmstad",
+        "league": 113,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.3333333333333333,
+        "form": "LWWWL"
+    },
+    "2163": {
+        "name": "IFK Varnamo",
+        "league": 113,
+        "clean_sheet_rate": 0.3125,
+        "failed_rate": 0.3125,
+        "form": "LWDDW"
+    },
+    "2170": {
+        "name": "Gais",
+        "league": 113,
+        "clean_sheet_rate": 0.3,
+        "failed_rate": 0.4,
+        "form": "LDDWW"
+    },
+    "2176": {
+        "name": "Landskrona BoIS",
+        "league": 113,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.5,
+        "form": "DL"
+    },
+    "2240": {
+        "name": "Mjallby AIF",
+        "league": 113,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.16666666666666666,
+        "form": "WWDDW"
+    },
+    "2241": {
+        "name": "Vasteras SK FK",
+        "league": 113,
+        "clean_sheet_rate": 0.13333333333333333,
+        "failed_rate": 0.36666666666666664,
+        "form": "LDLLW"
+    },
+    "365": {
+        "name": "Orebro SK",
+        "league": 114,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.3333333333333333,
+        "form": "DWLWD"
+    },
+    "369": {
+        "name": "Trelleborg",
+        "league": 114,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.26666666666666666,
+        "form": "WLWLW"
+    },
+    "373": {
+        "name": "GIF Sundsvall",
+        "league": 114,
+        "clean_sheet_rate": 0.3125,
+        "failed_rate": 0.375,
+        "form": "DWWWW"
+    },
+    "376": {
+        "name": "Ostersunds FK",
+        "league": 114,
+        "clean_sheet_rate": 0.21875,
+        "failed_rate": 0.3125,
+        "form": "LLDWW"
+    },
+    "811": {
+        "name": "Helsingborg",
+        "league": 114,
+        "clean_sheet_rate": 0.36666666666666664,
+        "failed_rate": 0.3,
+        "form": "LWDLL"
+    },
+    "813": {
+        "name": "Gefle IF",
+        "league": 114,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.3333333333333333,
+        "form": "WDLWL"
+    },
+    "2166": {
+        "name": "Orgryte IS",
+        "league": 114,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.16666666666666666,
+        "form": "LWDWW"
+    },
+    "2171": {
+        "name": "Varbergs BoIS FC",
+        "league": 114,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.2,
+        "form": "DWDWW"
+    },
+    "2172": {
+        "name": "Degerfors IF",
+        "league": 114,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.03333333333333333,
+        "form": "WLDDL"
+    },
+    "2174": {
+        "name": "Osters IF",
+        "league": 114,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.2,
+        "form": "DLWWW"
+    },
+    "2175": {
+        "name": "IK brage",
+        "league": 114,
+        "clean_sheet_rate": 0.36666666666666664,
+        "failed_rate": 0.3,
+        "form": "LWLLD"
+    },
+    "6687": {
+        "name": "Lund",
+        "league": 114,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.5,
+        "form": "LL"
+    },
+    "6697": {
+        "name": "Sandviken",
+        "league": 114,
+        "clean_sheet_rate": 0.26666666666666666,
+        "failed_rate": 0.2,
+        "form": "WLDLL"
+    },
+    "6698": {
+        "name": "Skövde AIK",
+        "league": 114,
+        "clean_sheet_rate": 0.23333333333333334,
+        "failed_rate": 0.36666666666666664,
+        "form": "LDDLD"
+    },
+    "6706": {
+        "name": "Utsikten",
+        "league": 114,
+        "clean_sheet_rate": 0.23333333333333334,
+        "failed_rate": 0.3,
+        "form": "WDWLW"
+    },
+    "11674": {
+        "name": "Oddevold",
+        "league": 114,
+        "clean_sheet_rate": 0.2,
+        "failed_rate": 0.3333333333333333,
+        "form": "DDDWL"
+    },
+    "12585": {
+        "name": "Stockholm Internazionale",
+        "league": 114,
+        "clean_sheet_rate": 0.0,
+        "failed_rate": 0.5,
+        "form": "LL"
+    },
+    "279": {
+        "name": "Consadole Sapporo",
+        "league": 98,
+        "clean_sheet_rate": 0.23684210526315788,
+        "failed_rate": 0.3157894736842105,
+        "form": "WDDLW"
+    },
+    "280": {
+        "name": "Jubilo Iwata",
+        "league": 98,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.39473684210526316,
+        "form": "LLLWL"
+    },
+    "281": {
+        "name": "Kashiwa Reysol",
+        "league": 98,
+        "clean_sheet_rate": 0.18421052631578946,
+        "failed_rate": 0.3157894736842105,
+        "form": "LLDDL"
+    },
+    "282": {
+        "name": "Sanfrecce Hiroshima",
+        "league": 98,
+        "clean_sheet_rate": 0.3157894736842105,
+        "failed_rate": 0.07894736842105263,
+        "form": "LLLWL"
+    },
+    "284": {
+        "name": "Shonan Bellmare",
+        "league": 98,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.21052631578947367,
+        "form": "WWDLL"
+    },
+    "287": {
+        "name": "Urawa",
+        "league": 98,
+        "clean_sheet_rate": 0.3157894736842105,
+        "failed_rate": 0.2894736842105263,
+        "form": "DWDLD"
+    },
+    "288": {
+        "name": "Nagoya Grampus",
+        "league": 98,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.34210526315789475,
+        "form": "LLDLW"
+    },
+    "289": {
+        "name": "Vissel Kobe",
+        "league": 98,
+        "clean_sheet_rate": 0.34210526315789475,
+        "failed_rate": 0.23684210526315788,
+        "form": "LWDDW"
+    },
+    "290": {
+        "name": "Kashima",
+        "league": 98,
+        "clean_sheet_rate": 0.39473684210526316,
+        "failed_rate": 0.23684210526315788,
+        "form": "WDDWW"
+    },
+    "291": {
+        "name": "Cerezo Osaka",
+        "league": 98,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.18421052631578946,
+        "form": "LDWLL"
+    },
+    "292": {
+        "name": "FC Tokyo",
+        "league": 98,
+        "clean_sheet_rate": 0.2631578947368421,
+        "failed_rate": 0.23684210526315788,
+        "form": "WLLLW"
+    },
+    "293": {
+        "name": "Gamba Osaka",
+        "league": 98,
+        "clean_sheet_rate": 0.34210526315789475,
+        "failed_rate": 0.2894736842105263,
+        "form": "DWWWW"
+    },
+    "294": {
+        "name": "Kawasaki Frontale",
+        "league": 98,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.21052631578947367,
+        "form": "LDDWW"
+    },
+    "295": {
+        "name": "Sagan Tosu",
+        "league": 98,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.39473684210526316,
+        "form": "LWLWW"
+    },
+    "296": {
+        "name": "Yokohama F. Marinos",
+        "league": 98,
+        "clean_sheet_rate": 0.18421052631578946,
+        "failed_rate": 0.21052631578947367,
+        "form": "DWWWL"
+    },
+    "302": {
+        "name": "Kyoto Sanga",
+        "league": 98,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.3684210526315789,
+        "form": "WDDLD"
+    },
+    "303": {
+        "name": "Machida Zelvia",
+        "league": 98,
+        "clean_sheet_rate": 0.47368421052631576,
+        "failed_rate": 0.23684210526315788,
+        "form": "DLWWL"
+    },
+    "306": {
+        "name": "Tokyo Verdy",
+        "league": 98,
+        "clean_sheet_rate": 0.3157894736842105,
+        "failed_rate": 0.2894736842105263,
+        "form": "WWDLD"
+    },
+    "311": {
+        "name": "Albirex Niigata",
+        "league": 98,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.2894736842105263,
+        "form": "DLDLD"
+    },
+    "316": {
+        "name": "Avispa Fukuoka",
+        "league": 98,
+        "clean_sheet_rate": 0.39473684210526316,
+        "failed_rate": 0.39473684210526316,
+        "form": "DWLWL"
     }
 }
