@@ -67,8 +67,18 @@ class RecentFormRule(Rule):
         if not hist or not hist.get('home') or not hist.get('away'):
             return RuleResult(rule="Recent Form", winner=None, score=0, message="Sin datos históricos recientes")
             
-        home_pts = hist['home'].get('form_points', 0)
-        away_pts = hist['away'].get('form_points', 0)
+        home_form_str = hist['home'].get('form', '')
+        away_form_str = hist['away'].get('form', '')
+        
+        if home_form_str:
+            home_pts = home_form_str.count('W')*3 + home_form_str.count('D')*1
+        else:
+            home_pts = hist['home'].get('form_points', 0)
+            
+        if away_form_str:
+            away_pts = away_form_str.count('W')*3 + away_form_str.count('D')*1
+        else:
+            away_pts = hist['away'].get('form_points', 0)
         
         diff = home_pts - away_pts
         if diff >= 6:
@@ -91,8 +101,8 @@ class GoalsScoredRule(Rule):
         if not hist or not hist.get('home') or not hist.get('away'):
             return RuleResult(rule="Offensive Power", winner=None, score=0, message="Sin datos de goles")
             
-        home_goals = hist['home'].get('avg_goals_scored', 0)
-        away_goals = hist['away'].get('avg_goals_scored', 0)
+        home_goals = hist['home'].get('avg_goals_scored', context.get('home_xg', 0.0))
+        away_goals = hist['away'].get('avg_goals_scored', context.get('away_xg', 0.0))
         
         if home_goals >= 2.0 and home_goals > away_goals + 0.5:
             return RuleResult(rule="Offensive Power", winner=home_team, score=5, message="Ataque Demoledor (>2 goles/partido)")
