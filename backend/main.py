@@ -698,6 +698,10 @@ def scan_day_for_value_bets(date: str):
                     "home": stats_db[home_id],
                     "away": stats_db[away_id]
                 }
+            else:
+                # Si no tenemos los datos híbridos, ignoramos el partido para el Radar
+                # Así aseguramos que Telegram solo mande balas de máxima precisión.
+                continue
             
             probs = calculate_match_probabilities(
                 home_team, away_team, GLOBAL_STATS_DB, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=h_ctx

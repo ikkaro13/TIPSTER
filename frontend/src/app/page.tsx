@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -424,10 +424,10 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
       </button>
 
       {/* Header Dashboard */}
-      <div style={{background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9))', border: '1px solid #334155', borderRadius: '16px', padding: '2rem', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'}}>
+      <div style={{background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9))', border: '1px solid #334155', borderRadius: '16px', padding: '2rem', marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'}}>
         <div>
           <div style={{color: '#38bdf8', fontWeight: 800, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem'}}>{cMatch.league} • {cMatch.round} • {cMatch.startTime}</div>
-          <div style={{display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '2rem', fontWeight: 900, color: '#f8fafc'}}>
+          <div style={{display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem', fontSize: '1.6rem', fontWeight: 900, color: '#f8fafc'}}>
             <span>{cMatch.homeTeam}</span>
             <span style={{color: '#475569', fontSize: '1.2rem', fontWeight: 700}}>VS</span>
             <span>{cMatch.awayTeam}</span>
@@ -444,7 +444,7 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
       </div>
 
       {/* Grilla de Módulos */}
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem'}}>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1.5rem'}}>
         
         {/* Módulo 1X2 */}
         <div style={{background: 'rgba(15, 23, 42, 0.6)', border: '1px solid #334155', borderRadius: '16px', padding: '1.5rem'}}>

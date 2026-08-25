@@ -584,5 +584,20 @@
         "exact_score": "1 - 1",
         "exact_score_prob": 13.9,
         "logged_at": "2026-08-25T03:00:17.007596+00:00"
+    },
+    {
+        "fixture_id": "1497669",
+        "league": "Superettan",
+        "home_team": "Orebro SK",
+        "away_team": "Varbergs BoIS FC",
+        "pick": "Under 2.5",
+        "prob": 71.94,
+        "odds": 2.0,
+        "edge": 43.87,
+        "bookie": "Unknown",
+        "type": "🎯 Francotirador",
+        "exact_score": "0 - 0",
+        "exact_score_prob": 17.5,
+        "logged_at": "2026-08-25T04:46:38.391739+00:00"
     }
 ]
