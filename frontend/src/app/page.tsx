@@ -889,6 +889,26 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
 };
 
 export default function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [pinInput, setPinInput] = useState('');
+  
+  useEffect(() => {
+    if (localStorage.getItem('athena_pin') === '7777') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handlePinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pinInput === '7777') {
+      localStorage.setItem('athena_pin', '7777');
+      setIsAuthenticated(true);
+    } else {
+      alert('PIN Incorrecto');
+      setPinInput('');
+    }
+  };
+
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('portfolio'); // 'radar', 'portfolio', 'calendar', 'match-detail'
@@ -1090,14 +1110,44 @@ export default function Home() {
     }
   }, [calendarDate, activeTab]);
 
-  useEffect(() => {
-    fetchPortfolio();
-    fetchArgosStatus();
-  }, []);
+      useEffect(() => {
+      fetchPortfolio();
+      fetchArgosStatus();
+    }, []);
+
+  if (!isAuthenticated) {
+    return (
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#0f172a', color: 'white'}}>
+        <form onSubmit={handlePinSubmit} style={{background: 'rgba(255,255,255,0.05)', padding: '2.5rem', borderRadius: '16px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', width: '100%', maxWidth: '400px'}}>
+          <div style={{display: 'flex', justifyContent: 'center', marginBottom: '1.5rem'}}>
+             <img src="/logo.png" alt="ATHENA Logo" style={{height: '60px', objectFit: 'contain', filter: 'drop-shadow(0px 0px 8px rgba(6, 182, 212, 0.5))'}} />
+          </div>
+          <h2 style={{marginBottom: '0.5rem', color: '#f8fafc', letterSpacing: '2px', fontWeight: 900}}>ACCESO RESTRINGIDO</h2>
+          <p style={{marginBottom: '2rem', color: '#94a3b8', fontSize: '0.9rem'}}>Ingrese su PIN de seguridad.</p>
+          <input 
+            type="password" 
+            value={pinInput}
+            onChange={(e) => setPinInput(e.target.value)}
+            placeholder="****"
+            maxLength={4}
+            style={{
+              width: '100%', padding: '1rem', fontSize: '2rem', textAlign: 'center', letterSpacing: '1rem', 
+              borderRadius: '12px', border: '2px solid #334155', background: '#0f172a', color: 'white', marginBottom: '1.5rem',
+              outline: 'none', transition: '0.3s'
+            }}
+            autoFocus
+          />
+          <button type="submit" style={{width: '100%', padding: '1rem', background: 'linear-gradient(90deg, #38bdf8 0%, #3b82f6 100%)', color: '#0f172a', border: 'none', borderRadius: '12px', fontWeight: 900, cursor: 'pointer', fontSize: '1.1rem', letterSpacing: '1px', textTransform: 'uppercase', transition: '0.3s'}}>
+            Desbloquear
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <header className="app-header">
+      <>
+        <header className="app-header">
         <div className="header-content">
           <div className="logo">
             <img src="/logo.png" alt="ATHENA Logo" style={{height: '40px', objectFit: 'contain', filter: 'drop-shadow(0px 0px 8px rgba(6, 182, 212, 0.5))'}} />
@@ -1487,4 +1537,6 @@ export default function Home() {
     </>
   );
 }
+
+
 
