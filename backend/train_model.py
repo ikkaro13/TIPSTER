@@ -14,8 +14,8 @@ MODEL_BTTS_PATH = os.path.join(os.path.dirname(__file__), "model_btts.pkl")
 DB_FILE = os.path.join(os.path.dirname(__file__), "tipster.db")
 
 def generate_synthetic_data(num_matches=5000):
-    """Fallback si no hay suficientes datos reales aún."""
-    print(f"Generando {num_matches} partidos históricos simulados como fallback...")
+    """Fallback si no hay suficientes datos reales aÃºn."""
+    print(f"Generando {num_matches} partidos histÃ³ricos simulados como fallback...")
     data = []
     
     for _ in range(num_matches):
@@ -80,9 +80,9 @@ def train_models():
     
     df = get_real_data()
     if df is not None:
-        print(f"✅ ¡Entrenando con {len(df)} partidos REALES de la base de datos!")
+        print(f"âœ… Â¡Entrenando con {len(df)} partidos REALES de la base de datos!")
     else:
-        print("⚠️ No hay suficientes datos reales. Usando simulador sintético.")
+        print("âš ï¸ No hay suficientes datos reales. Usando simulador sintÃ©tico.")
         df = generate_synthetic_data()
     
     X = df[["home_elo", "away_elo", "elo_diff", "home_momentum", "away_momentum"]]
@@ -92,23 +92,28 @@ def train_models():
     clf_1x2 = RandomForestClassifier(n_estimators=200, max_depth=10, random_state=42)
     clf_1x2.fit(X, y_1x2)
     joblib.dump(clf_1x2, MODEL_1X2_PATH)
-    print("✅ Modelo 1X2 (Ganador) entrenado y guardado.")
+    acc_1x2 = accuracy_score(y_1x2, clf_1x2.predict(X)) * 100
     
     # Modelo 2: Over/Under 2.5
     y_ou = df["over_2_5"]
     clf_ou = RandomForestClassifier(n_estimators=200, max_depth=10, random_state=42)
     clf_ou.fit(X, y_ou)
     joblib.dump(clf_ou, MODEL_OU_PATH)
-    print("✅ Modelo Over/Under entrenado y guardado.")
+    acc_ou = accuracy_score(y_ou, clf_ou.predict(X)) * 100
     
     # Modelo 3: BTTS
     y_btts = df["btts"]
     clf_btts = RandomForestClassifier(n_estimators=200, max_depth=10, random_state=42)
     clf_btts.fit(X, y_btts)
     joblib.dump(clf_btts, MODEL_BTTS_PATH)
-    print("✅ Modelo BTTS (Ambos Anotan) entrenado y guardado.")
+    acc_btts = accuracy_score(y_btts, clf_btts.predict(X)) * 100
     
-    print("🚀 ¡Módulo de Inteligencia Artificial actualizado con éxito!")
+    return {
+        "samples": len(df),
+        "accuracy_1x2": round(acc_1x2, 2),
+        "accuracy_ou": round(acc_ou, 2),
+        "accuracy_btts": round(acc_btts, 2)
+    }
 
 if __name__ == "__main__":
-    train_models()
+    print(train_models())

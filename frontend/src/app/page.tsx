@@ -1028,7 +1028,7 @@ export default function Home() {
         const res = await fetch(`${API_BASE}/api/autotune/run`, { method: 'POST' });
         const data = await res.json();
         if (data.status === 'success') {
-            setAutotuneReport(data.report);
+            setAutotuneReport(data);
         } else {
             alert(`Error en Entrenamiento: ${data.message || 'Desconocido'}`);
         }
@@ -1418,19 +1418,45 @@ export default function Home() {
             )}
           </div>
         )}
-          {/* Modal Autotune Report */}
+                    {/* Modal Autotune Report */}
           {autotuneReport && (
-            <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000}}>
-              <div style={{background: 'var(--card-bg)', padding: '2rem', borderRadius: '16px', maxWidth: '600px', width: '90%', border: '1px solid #8b5cf6', boxShadow: '0 0 30px rgba(139, 92, 246, 0.3)'}}>
+            <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '1rem'}}>
+              <div style={{background: 'var(--card-bg)', padding: '2rem', borderRadius: '16px', maxWidth: '600px', width: '100%', border: '1px solid #8b5cf6', boxShadow: '0 0 30px rgba(139, 92, 246, 0.3)', maxHeight: '90vh', overflowY: 'auto'}}>
                 <h2 style={{marginTop: 0, color: '#d946ef', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
                   <span>🧠</span> Reporte de Entrenamiento (ATHENA)
                 </h2>
+                
+                {/* Nueva seccion de ML Report */}
+                {autotuneReport.ml_report && (
+                  <div style={{background: 'rgba(139, 92, 246, 0.1)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(139, 92, 246, 0.3)', marginBottom: '1.5rem'}}>
+                    <h3 style={{color: '#c084fc', marginTop: 0, marginBottom: '1rem', fontSize: '1.1rem'}}>Resultados Machine Learning (Random Forest)</h3>
+                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem'}}>
+                      <div style={{background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', textAlign: 'center'}}>
+                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase'}}>Partidos Analizados</div>
+                        <div style={{color: '#f8fafc', fontSize: '1.4rem', fontWeight: 900}}>{autotuneReport.ml_report.samples}</div>
+                      </div>
+                      <div style={{background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', textAlign: 'center'}}>
+                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase'}}>Precisión 1X2</div>
+                        <div style={{color: '#10b981', fontSize: '1.4rem', fontWeight: 900}}>{autotuneReport.ml_report.accuracy_1x2}%</div>
+                      </div>
+                      <div style={{background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', textAlign: 'center'}}>
+                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase'}}>Precisión Goles (O/U)</div>
+                        <div style={{color: '#38bdf8', fontSize: '1.4rem', fontWeight: 900}}>{autotuneReport.ml_report.accuracy_ou}%</div>
+                      </div>
+                      <div style={{background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', textAlign: 'center'}}>
+                        <div style={{color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase'}}>Precisión BTTS</div>
+                        <div style={{color: '#f59e0b', fontSize: '1.4rem', fontWeight: 900}}>{autotuneReport.ml_report.accuracy_btts}%</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <p style={{color: 'var(--text-muted)', marginBottom: '1.5rem'}}>
-                  El algoritmo ha calibrado el <strong>Edge</strong> requerido basado en tu historial de ROI.
+                  Ajustes de Castigo Matemático (Edge Penalties) por historial de ROI en Plutus.
                 </p>
                 
-                <div style={{maxHeight: '400px', overflowY: 'auto', marginBottom: '1.5rem'}}>
-                  {autotuneReport.map((r: any, idx: number) => (
+                <div style={{maxHeight: '300px', overflowY: 'auto', marginBottom: '1.5rem'}}>
+                  {(autotuneReport.report || []).map((r: any, idx: number) => (
                     <div key={idx} style={{background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                       <div>
                         <div style={{fontWeight: 800, color: '#f8fafc'}}>{r.market}</div>
@@ -1446,7 +1472,7 @@ export default function Home() {
                       </div>
                     </div>
                   ))}
-                  {autotuneReport.length === 0 && (
+                  {(!autotuneReport.report || autotuneReport.report.length === 0) && (
                     <div style={{textAlign: 'center', color: '#94a3b8', padding: '1rem'}}>No hay suficientes datos procesados.</div>
                   )}
                 </div>
@@ -1461,3 +1487,4 @@ export default function Home() {
     </>
   );
 }
+

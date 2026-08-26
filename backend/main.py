@@ -1,4 +1,4 @@
-import os
+﻿import os
 import time
 import traceback
 import requests
@@ -96,7 +96,7 @@ app.add_middleware(
 API_KEY = "42cbf57204514f65c3ba5cbf2b440a0f"
 GLOBAL_STATS_DB = None
 ODDS_CACHE = {"timestamp": 0, "data": []}
-CACHE_TTL = 3600 # 1 hora de caché
+CACHE_TTL = 3600 # 1 hora de cachÃ©
 ARGOS_DAEMON_ACTIVE = False
 
 @app.post("/api/update-result")
@@ -123,17 +123,17 @@ def live_analysis(req: LiveMatchRequest):
 def athena_live_monitor_loop():
     """
     Vigilante en segundo plano: 
-    Busca partidos en vivo, escanea métricas, y envía alertas a Telegram sin depender de la UI.
+    Busca partidos en vivo, escanea mÃ©tricas, y envÃ­a alertas a Telegram sin depender de la UI.
     """
     global GLOBAL_STATS_DB
     
-    print("[ATHENA-DAEMON] Vigilante autónomo iniciado en segundo plano.", flush=True)
+    print("[ATHENA-DAEMON] Vigilante autÃ³nomo iniciado en segundo plano.", flush=True)
     
     while True:
         try:
             time.sleep(60)
             
-            # Si ARGOS está apagado desde la UI, no gastamos tokens
+            # Si ARGOS estÃ¡ apagado desde la UI, no gastamos tokens
             if not ARGOS_DAEMON_ACTIVE:
                 continue
                 
@@ -185,20 +185,20 @@ def athena_live_monitor_loop():
                 
                 if (gpi >= 75) or (athena_state['state'] == 'VALUE CANDIDATE'):
                     alert_id = f"{match_id}_{live_data['minute']}_{athena_state['state']}"
-                    texto_apuesta = "OVER 0.5 HT o PRÓXIMO GOL" if live_data['minute'] < 40 else "PRÓXIMO GOL"
+                    texto_apuesta = "OVER 0.5 HT o PRÃ“XIMO GOL" if live_data['minute'] < 40 else "PRÃ“XIMO GOL"
                     
                     msg = (
-                        f"🚨 <b>ALERTA ATHENA LIVE</b> 🚨\n\n"
+                        f"ðŸš¨ <b>ALERTA ATHENA LIVE</b> ðŸš¨\n\n"
                         f"Partido ID: <code>{match_id}</code>\n"
                         f"Minuto: {live_data['minute']}'\n"
                         f"<b>GPI (Goal Pressure Index):</b> {gpi}\n"
                         f"<b>Momentum:</b> {athena_state['momentum']}\n\n"
-                        f"🔥 <i>RECOMENDACIÓN: {texto_apuesta}. Presión ofensiva crítica detectada.</i>"
+                        f"ðŸ”¥ <i>RECOMENDACIÃ“N: {texto_apuesta}. PresiÃ³n ofensiva crÃ­tica detectada.</i>"
                     )
                     send_telegram_alert(msg, alert_id)
                     
         except Exception as e:
-            print(f"[ATHENA-DAEMON] Error crítico: {e}")
+            print(f"[ATHENA-DAEMON] Error crÃ­tico: {e}")
             time.sleep(60)
 
 
@@ -207,7 +207,7 @@ def startup_event():
     global GLOBAL_STATS_DB
     GLOBAL_STATS_DB = get_national_elo()
     
-    # Iniciar Daemon autónomo de ATHENA
+    # Iniciar Daemon autÃ³nomo de ATHENA
     import threading
     daemon_thread = threading.Thread(target=athena_live_monitor_loop, daemon=True)
     daemon_thread.start()
@@ -259,12 +259,14 @@ def get_argos_status():
 @app.post("/api/autotune/run")
 def trigger_auto_tuning():
     try:
-        # 1. Ajustar hiperparámetros según feedback de Plutus
+                # 1. Ajustar hiperparametros
         res = run_auto_tuning()
         
         # 2. Entrenar los 3 modelos de Machine Learning (Random Forest)
-        train_models()
-        
+        ml_res = train_models()
+        if ml_res:
+            res['ml_report'] = ml_res
+            
         return res
     except Exception as e:
         print(f"Error in autotune: {e}")
@@ -351,10 +353,10 @@ def get_athena_live_data(match_id: str):
     # Evaluar Inminencia de Gol
     xg_live = live_data.get('xg_live', 0)
     
-    # Solo dispara por GPI alto o estado de candidato, no por simple acumulación lenta de xG
+    # Solo dispara por GPI alto o estado de candidato, no por simple acumulaciÃ³n lenta de xG
     athena_state['goal_alert'] = (gpi >= 75) or (athena_state['state'] == 'VALUE CANDIDATE')
     
-    # [Aviso] Las alertas de Telegram ahora son gestionadas por el daemon autónomo en segundo plano.
+    # [Aviso] Las alertas de Telegram ahora son gestionadas por el daemon autÃ³nomo en segundo plano.
     
     return {
         "match_id": match_id,
@@ -364,7 +366,7 @@ def get_athena_live_data(match_id: str):
 # --------------------------------
 
 def update_best_odd(odds_dict, key, outcome_price, bookie_name):
-    """ Función auxiliar para encontrar la mejor cuota entre TODAS las casas de apuestas """
+    """ FunciÃ³n auxiliar para encontrar la mejor cuota entre TODAS las casas de apuestas """
     if outcome_price > odds_dict[key]["price"]:
         odds_dict[key] = {"price": outcome_price, "bookie": bookie_name}
 
@@ -379,15 +381,15 @@ def get_matches():
         
         mx_tz = timezone(timedelta(hours=-6))
         
-        # [OPTIMIZACIÓN DE TOKENS]
-        # Cargar cuotas del día de forma masiva para evitar N+1 requests
+        # [OPTIMIZACIÃ“N DE TOKENS]
+        # Cargar cuotas del dÃ­a de forma masiva para evitar N+1 requests
         import odds_connector
         current_date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         
         if not hasattr(get_matches, "bulk_odds_cache"):
             get_matches.bulk_odds_cache = {"date": "", "timestamp": 0, "data": {}}
             
-        if get_matches.bulk_odds_cache["date"] != current_date_str or (time.time() - get_matches.bulk_odds_cache["timestamp"]) > 900: # Caché de 15 min
+        if get_matches.bulk_odds_cache["date"] != current_date_str or (time.time() - get_matches.bulk_odds_cache["timestamp"]) > 900: # CachÃ© de 15 min
             print("[ARGOS] Obteniendo bulk odds para ahorrar tokens...")
             bulk_data = odds_connector.fetch_odds_by_date(current_date_str)
             if bulk_data:
@@ -412,20 +414,20 @@ def get_matches():
             # Smart Money Tracker Logic (Time Decay Odds Analysis)
             smart_money = False
             
-            # En un entorno de producción, aquí leeríamos el historial de cuotas 
-            # desde la DB o Caché y lo compararíamos con las cuotas actuales.
-            # Como la API gratuita restringe las peticiones, usamos una simulación
-            # de caída de cuotas institucional (>10% drop).
+            # En un entorno de producciÃ³n, aquÃ­ leerÃ­amos el historial de cuotas 
+            # desde la DB o CachÃ© y lo compararÃ­amos con las cuotas actuales.
+            # Como la API gratuita restringe las peticiones, usamos una simulaciÃ³n
+            # de caÃ­da de cuotas institucional (>10% drop).
             if fixture_id == "mock_12345":
-                # Simulamos que un 30% del tiempo detectamos una caída brusca
+                # Simulamos que un 30% del tiempo detectamos una caÃ­da brusca
                 if random.random() < 0.3:
                     smart_money = True
-                    print("[ATHENA] 🚨 ALERTA INSTITUCIONAL: Dinero Inteligente Detectado en Mock Match")
+                    print("[ATHENA] ðŸš¨ ALERTA INSTITUCIONAL: Dinero Inteligente Detectado en Mock Match")
             
             # Arbitrage (Surebet) Detection Logic
             arbitrage_alert = {"active": False, "roi_percent": 0.0}
             
-            # Usar la caché masiva en lugar de pegarle a la API individualmente por cada partido en vivo
+            # Usar la cachÃ© masiva en lugar de pegarle a la API individualmente por cada partido en vivo
             odds_data = daily_odds.get(fixture_id, {})
             # Load tuning params if exists
             tuning_params = None
@@ -469,7 +471,7 @@ def get_matches():
             print("Inyectando partido simulado de ATHENA LIVE (Cuenca vs Manta)")
             processed_matches.append({
                 "id": "mock_12345",
-                "league": "Liga Pro Ecuador (Simulación ATHENA)",
+                "league": "Liga Pro Ecuador (SimulaciÃ³n ATHENA)",
                 "homeTeam": "Deportivo Cuenca",
                 "awayTeam": "Manta FC",
                 "startTime": "AHORA",
@@ -496,7 +498,7 @@ def get_matches():
             
         return processed_matches
     except Exception as e:
-        print(f"Excepcion de conexión: {e}")
+        print(f"Excepcion de conexiÃ³n: {e}")
         traceback.print_exc()
         return []
 
@@ -506,7 +508,7 @@ def get_daily_calendar(date: str = None):
         mx_tz = timezone(timedelta(hours=-6))
         
         if date:
-            # Si el usuario mandó fecha específica
+            # Si el usuario mandÃ³ fecha especÃ­fica
             query_date = date
         else:
             query_date = datetime.now(mx_tz).strftime("%Y-%m-%d")
@@ -539,14 +541,14 @@ def get_daily_calendar(date: str = None):
             })
             
             
-        # Ordenar por país, y luego por hora de juego (timestamp)
+        # Ordenar por paÃ­s, y luego por hora de juego (timestamp)
         calendar_matches.sort(key=lambda x: (x.get("country", ""), x["timestamp"]))
         
         if len(calendar_matches) == 0:
             print("Inyectando partido simulado en el Calendario")
             calendar_matches.append({
                 "id": "mock_12345",
-                "league": "Liga Pro Ecuador (Simulación ATHENA)",
+                "league": "Liga Pro Ecuador (SimulaciÃ³n ATHENA)",
                 "round": "Final",
                 "homeTeam": "Deportivo Cuenca",
                 "awayTeam": "Manta FC",
@@ -566,7 +568,7 @@ def calculate_ares(req: AresCalculateRequest):
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
         
-    # Cargar Bóveda Híbrida
+    # Cargar BÃ³veda HÃ­brida
     stats_db = {}
     stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
     if os.path.exists(stats_file):
@@ -647,7 +649,7 @@ def scan_day_for_value_bets(date: str):
         GLOBAL_STATS_DB = get_national_elo()
         
     try:
-        # 1. Obtener todos los partidos del día
+        # 1. Obtener todos los partidos del dÃ­a
         fixtures = api_football_engine.get_daily_fixtures(date, timezone_str="America/Mexico_City")
         if not fixtures:
             return {"status": "success", "date": date, "value_bets": []}
@@ -658,7 +660,7 @@ def scan_day_for_value_bets(date: str):
         value_bets = []
         safe_bets = []
         
-        # Cargar parámetros de auto-tuning
+        # Cargar parÃ¡metros de auto-tuning
         tuning_params = {"markets": {}}
         tuning_file = os.path.join(os.path.dirname(__file__), "tuning_params.json")
         if os.path.exists(tuning_file):
@@ -668,7 +670,7 @@ def scan_day_for_value_bets(date: str):
             except:
                 pass
         
-        # Cargar Boveda de Estadísticas (Motor Hibrido)
+        # Cargar Boveda de EstadÃ­sticas (Motor Hibrido)
         stats_db = {}
         stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
         if os.path.exists(stats_file):
@@ -678,7 +680,7 @@ def scan_day_for_value_bets(date: str):
             except:
                 pass
         
-        # 3. Analizar matemáticamente
+        # 3. Analizar matemÃ¡ticamente
         for match in fixtures:
             fixture_id = str(match.get("fixture", {}).get("id"))
             if fixture_id not in daily_odds:
@@ -699,8 +701,8 @@ def scan_day_for_value_bets(date: str):
                     "away": stats_db[away_id]
                 }
             else:
-                # Si no tenemos los datos híbridos, ignoramos el partido para el Radar
-                # Así aseguramos que Telegram solo mande balas de máxima precisión.
+                # Si no tenemos los datos hÃ­bridos, ignoramos el partido para el Radar
+                # AsÃ­ aseguramos que Telegram solo mande balas de mÃ¡xima precisiÃ³n.
                 continue
             
             probs = calculate_match_probabilities(
@@ -714,13 +716,13 @@ def scan_day_for_value_bets(date: str):
                 prob = prob_percent / 100.0
                 edge = (prob * odds_val) - 1
                 
-                # Obtener penalización por mercado si existe
+                # Obtener penalizaciÃ³n por mercado si existe
                 m_key = pick_name.upper()
                 edge_penalty = tuning_params.get("markets", {}).get(m_key, {}).get("edge_penalty", 0.0)
                 required_edge = 0.05 + edge_penalty
                 
-                # REGLA: Equilibrio matemático y realidad
-                # Exigimos un mínimo de probabilidad real base para evitar buscar "milagros" matemáticos.
+                # REGLA: Equilibrio matemÃ¡tico y realidad
+                # Exigimos un mÃ­nimo de probabilidad real base para evitar buscar "milagros" matemÃ¡ticos.
                 if edge > required_edge and prob_percent >= 50.0:
                     value_bets.append({
                         "fixture_id": fixture_id,
@@ -732,7 +734,7 @@ def scan_day_for_value_bets(date: str):
                         "odds": odds_val,
                         "edge": round(edge * 100, 2),
                         "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
-                        "type": "🎯 Francotirador",
+                        "type": "ðŸŽ¯ Francotirador",
                         "exact_score": probs.get("exact_score", "?-?"),
                         "exact_score_prob": round(probs.get("exact_score_prob", 0), 1)
                     })
@@ -748,7 +750,7 @@ def scan_day_for_value_bets(date: str):
                         "odds": odds_val,
                         "edge": round(edge * 100, 2),
                         "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
-                        "type": "🧱 Ladrillo",
+                        "type": "ðŸ§± Ladrillo",
                         "exact_score": probs.get("exact_score", "?-?"),
                         "exact_score_prob": round(probs.get("exact_score_prob", 0), 1)
                     })
@@ -771,35 +773,7 @@ def scan_day_for_value_bets(date: str):
         # Ordenar Plan B por probabilidad descendente
         safe_bets.sort(key=lambda x: x["prob"], reverse=True)
         
-        # MOCK DE EMERGENCIA: Si no hay NADA que mostrar, inyectamos partidos de demostración
-        if len(value_bets) == 0 and len(safe_bets) == 0:
-            safe_bets.append({
-                "fixture_id": "999999",
-                "league": "Simulador (Falta DB)",
-                "home_team": "Atlas",
-                "away_team": "Tigres UANL",
-                "pick": "Under 2.5",
-                "prob": 68.5,
-                "odds": 1.65,
-                "edge": 13.0,
-                "bookie": "Mock",
-                "type": "🧱 Ladrillo"
-            })
-            value_bets.append({
-                "fixture_id": "888888",
-                "league": "Simulador (Falta DB)",
-                "home_team": "Cruz Azul",
-                "away_team": "Pumas",
-                "pick": "Away",
-                "prob": 55.0,
-                "odds": 2.10,
-                "edge": 15.5,
-                "bookie": "Mock",
-                "type": "🎯 Francotirador"
-            })
-            
         final_bets = value_bets if len(value_bets) > 0 else safe_bets
-        
         # --- SHADOW LEDGER ---
         shadow_file = os.path.join(os.path.dirname(__file__), "athena_shadow_ledger.json")
         shadow_data = []
@@ -830,7 +804,7 @@ def get_prematch_insight(req: PrematchInsightRequest):
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
         
-    # Cargar Bóveda Híbrida
+    # Cargar BÃ³veda HÃ­brida
     stats_db = {}
     stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
     if os.path.exists(stats_file):
@@ -851,16 +825,16 @@ def get_prematch_insight(req: PrematchInsightRequest):
             
     hist_context = None
     if h_stats and a_stats:
-        print(f"[ATHENA] Memoria Híbrida activada para: {req.homeTeam} vs {req.awayTeam}")
+        print(f"[ATHENA] Memoria HÃ­brida activada para: {req.homeTeam} vs {req.awayTeam}")
         hist_context = {
             "home": h_stats,
             "away": a_stats
         }
     else:
-        # Fallback a la API de Football (aunque es más lenta y no tiene stats avanzadas)
+        # Fallback a la API de Football (aunque es mÃ¡s lenta y no tiene stats avanzadas)
         historical_service = HistoricalContextService()
         if req.match_id and req.match_id != "-1":
-            print(f"[ATHENA] Construyendo Memoria Histórica para partido: {req.match_id}")
+            print(f"[ATHENA] Construyendo Memoria HistÃ³rica para partido: {req.match_id}")
             hist_context = historical_service.build_context(req.match_id)
     
     # 0 porque es pre-match (minute=0, goals=0)
@@ -879,3 +853,5 @@ def get_prematch_insight(req: PrematchInsightRequest):
         "awayTeam": req.awayTeam,
         "probs": real_probs
     }
+
+
