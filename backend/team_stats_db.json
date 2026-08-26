@@ -2741,5 +2741,495 @@
         "clean_sheet_rate": 0.39473684210526316,
         "failed_rate": 0.39473684210526316,
         "form": "DWLWL"
+    },
+    "1595": {
+        "name": "Seattle Sounders",
+        "league": 253,
+        "clean_sheet_rate": 0.3684210526315789,
+        "failed_rate": 0.2631578947368421,
+        "form": "DDDWL"
+    },
+    "1596": {
+        "name": "San Jose Earthquakes",
+        "league": 253,
+        "clean_sheet_rate": 0.058823529411764705,
+        "failed_rate": 0.29411764705882354,
+        "form": "LLWLL"
+    },
+    "1597": {
+        "name": "FC Dallas",
+        "league": 253,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.17647058823529413,
+        "form": "WLLDW"
+    },
+    "1598": {
+        "name": "Orlando City SC",
+        "league": 253,
+        "clean_sheet_rate": 0.3076923076923077,
+        "failed_rate": 0.2564102564102564,
+        "form": "WDDWL"
+    },
+    "1599": {
+        "name": "Philadelphia Union",
+        "league": 253,
+        "clean_sheet_rate": 0.23529411764705882,
+        "failed_rate": 0.14705882352941177,
+        "form": "WDLLL"
+    },
+    "1600": {
+        "name": "Houston Dynamo",
+        "league": 253,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.25,
+        "form": "WLWDD"
+    },
+    "1601": {
+        "name": "Toronto FC",
+        "league": 253,
+        "clean_sheet_rate": 0.23529411764705882,
+        "failed_rate": 0.2647058823529412,
+        "form": "LLDLL"
+    },
+    "1602": {
+        "name": "New York Red Bulls",
+        "league": 253,
+        "clean_sheet_rate": 0.2564102564102564,
+        "failed_rate": 0.1794871794871795,
+        "form": "WDWWL"
+    },
+    "1603": {
+        "name": "Vancouver Whitecaps",
+        "league": 253,
+        "clean_sheet_rate": 0.23684210526315788,
+        "failed_rate": 0.21052631578947367,
+        "form": "LWLWL"
+    },
+    "1604": {
+        "name": "New York City FC",
+        "league": 253,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.2894736842105263,
+        "form": "LLWDL"
+    },
+    "1605": {
+        "name": "Los Angeles Galaxy",
+        "league": 253,
+        "clean_sheet_rate": 0.23076923076923078,
+        "failed_rate": 0.10256410256410256,
+        "form": "WWWWW"
+    },
+    "1606": {
+        "name": "Real Salt Lake",
+        "league": 253,
+        "clean_sheet_rate": 0.2777777777777778,
+        "failed_rate": 0.2222222222222222,
+        "form": "DWWDD"
+    },
+    "1607": {
+        "name": "Chicago Fire",
+        "league": 253,
+        "clean_sheet_rate": 0.11764705882352941,
+        "failed_rate": 0.3235294117647059,
+        "form": "LLDLL"
+    },
+    "1608": {
+        "name": "Atlanta United FC",
+        "league": 253,
+        "clean_sheet_rate": 0.1282051282051282,
+        "failed_rate": 0.23076923076923078,
+        "form": "DLWWL"
+    },
+    "1609": {
+        "name": "New England Revolution",
+        "league": 253,
+        "clean_sheet_rate": 0.14705882352941177,
+        "failed_rate": 0.29411764705882354,
+        "form": "WLLLL"
+    },
+    "1610": {
+        "name": "Colorado Rapids",
+        "league": 253,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.1388888888888889,
+        "form": "LLLLL"
+    },
+    "1611": {
+        "name": "Sporting Kansas City",
+        "league": 253,
+        "clean_sheet_rate": 0.08823529411764706,
+        "failed_rate": 0.17647058823529413,
+        "form": "WLLLL"
+    },
+    "1612": {
+        "name": "Minnesota United FC",
+        "league": 253,
+        "clean_sheet_rate": 0.21621621621621623,
+        "failed_rate": 0.16216216216216217,
+        "form": "WWDDL"
+    },
+    "1613": {
+        "name": "Columbus Crew",
+        "league": 253,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.16666666666666666,
+        "form": "WWWLD"
+    },
+    "1614": {
+        "name": "CF Montreal",
+        "league": 253,
+        "clean_sheet_rate": 0.22857142857142856,
+        "failed_rate": 0.2857142857142857,
+        "form": "WWLWD"
+    },
+    "1615": {
+        "name": "DC United",
+        "league": 253,
+        "clean_sheet_rate": 0.058823529411764705,
+        "failed_rate": 0.23529411764705882,
+        "form": "LDWWL"
+    },
+    "1616": {
+        "name": "Los Angeles FC",
+        "league": 253,
+        "clean_sheet_rate": 0.34210526315789475,
+        "failed_rate": 0.15789473684210525,
+        "form": "WWLWL"
+    },
+    "1617": {
+        "name": "Portland Timbers",
+        "league": 253,
+        "clean_sheet_rate": 0.17142857142857143,
+        "failed_rate": 0.17142857142857143,
+        "form": "DLDDL"
+    },
+    "2242": {
+        "name": "FC Cincinnati",
+        "league": 253,
+        "clean_sheet_rate": 0.24324324324324326,
+        "failed_rate": 0.1891891891891892,
+        "form": "LWWLD"
+    },
+    "9568": {
+        "name": "Inter Miami",
+        "league": 253,
+        "clean_sheet_rate": 0.16216216216216217,
+        "failed_rate": 0.05405405405405406,
+        "form": "WWWLL"
+    },
+    "9569": {
+        "name": "Nashville SC",
+        "league": 253,
+        "clean_sheet_rate": 0.2647058823529412,
+        "failed_rate": 0.3235294117647059,
+        "form": "DLLLW"
+    },
+    "16489": {
+        "name": "Austin",
+        "league": 253,
+        "clean_sheet_rate": 0.23529411764705882,
+        "failed_rate": 0.29411764705882354,
+        "form": "LDWLW"
+    },
+    "18310": {
+        "name": "Charlotte",
+        "league": 253,
+        "clean_sheet_rate": 0.35135135135135137,
+        "failed_rate": 0.2702702702702703,
+        "form": "WWLDD"
+    },
+    "20787": {
+        "name": "St. Louis City",
+        "league": 253,
+        "clean_sheet_rate": 0.20588235294117646,
+        "failed_rate": 0.23529411764705882,
+        "form": "WWLWL"
+    },
+    "1125": {
+        "name": "Millonarios",
+        "league": 239,
+        "clean_sheet_rate": 0.4,
+        "failed_rate": 0.22,
+        "form": "WWDDD"
+    },
+    "1126": {
+        "name": "Deportivo Pasto",
+        "league": 239,
+        "clean_sheet_rate": 0.36363636363636365,
+        "failed_rate": 0.3409090909090909,
+        "form": "LWWLD"
+    },
+    "1127": {
+        "name": "Deportivo Cali",
+        "league": 239,
+        "clean_sheet_rate": 0.23684210526315788,
+        "failed_rate": 0.3157894736842105,
+        "form": "WWLLL"
+    },
+    "1128": {
+        "name": "Independiente Medellin",
+        "league": 239,
+        "clean_sheet_rate": 0.34210526315789475,
+        "failed_rate": 0.2631578947368421,
+        "form": "WWWDW"
+    },
+    "1129": {
+        "name": "Envigado",
+        "league": 239,
+        "clean_sheet_rate": 0.23684210526315788,
+        "failed_rate": 0.5,
+        "form": "LDLWL"
+    },
+    "1131": {
+        "name": "Bucaramanga",
+        "league": 239,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 0.34782608695652173,
+        "form": "LLDWW"
+    },
+    "1132": {
+        "name": "Chico",
+        "league": 239,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.3157894736842105,
+        "form": "WLDWL"
+    },
+    "1133": {
+        "name": "Jaguares",
+        "league": 239,
+        "clean_sheet_rate": 0.3157894736842105,
+        "failed_rate": 0.5,
+        "form": "LLWDL"
+    },
+    "1134": {
+        "name": "Internacional de Bogota",
+        "league": 239,
+        "clean_sheet_rate": 0.4090909090909091,
+        "failed_rate": 0.36363636363636365,
+        "form": "LWLDL"
+    },
+    "1135": {
+        "name": "Junior",
+        "league": 239,
+        "clean_sheet_rate": 0.38,
+        "failed_rate": 0.38,
+        "form": "LDLWL"
+    },
+    "1136": {
+        "name": "Once Caldas",
+        "league": 239,
+        "clean_sheet_rate": 0.36,
+        "failed_rate": 0.36,
+        "form": "DDWWL"
+    },
+    "1137": {
+        "name": "Atletico Nacional",
+        "league": 239,
+        "clean_sheet_rate": 0.34782608695652173,
+        "failed_rate": 0.2391304347826087,
+        "form": "DWWDW"
+    },
+    "1138": {
+        "name": "America de Cali",
+        "league": 239,
+        "clean_sheet_rate": 0.36363636363636365,
+        "failed_rate": 0.3181818181818182,
+        "form": "DLWLW"
+    },
+    "1139": {
+        "name": "Santa Fe",
+        "league": 239,
+        "clean_sheet_rate": 0.40384615384615385,
+        "failed_rate": 0.3076923076923077,
+        "form": "LLLDL"
+    },
+    "1140": {
+        "name": "Patriotas",
+        "league": 239,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.47368421052631576,
+        "form": "DWLWL"
+    },
+    "1141": {
+        "name": "Alianza Valledupar",
+        "league": 239,
+        "clean_sheet_rate": 0.15789473684210525,
+        "failed_rate": 0.5263157894736842,
+        "form": "DLWDL"
+    },
+    "1142": {
+        "name": "Deportes Tolima",
+        "league": 239,
+        "clean_sheet_rate": 0.38461538461538464,
+        "failed_rate": 0.17307692307692307,
+        "form": "LLWDL"
+    },
+    "1144": {
+        "name": "Águilas Doradas",
+        "league": 239,
+        "clean_sheet_rate": 0.2631578947368421,
+        "failed_rate": 0.3684210526315789,
+        "form": "LLLLW"
+    },
+    "1147": {
+        "name": "Fortaleza FC",
+        "league": 239,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.2894736842105263,
+        "form": "LWWLL"
+    },
+    "1462": {
+        "name": "Deportivo Pereira",
+        "league": 239,
+        "clean_sheet_rate": 0.3409090909090909,
+        "failed_rate": 0.25,
+        "form": "WWDDW"
+    },
+    "395": {
+        "name": "Vejle",
+        "league": 119,
+        "clean_sheet_rate": 0.15625,
+        "failed_rate": 0.25,
+        "form": "WDWWL"
+    },
+    "396": {
+        "name": "Sonderjyske",
+        "league": 119,
+        "clean_sheet_rate": 0.09375,
+        "failed_rate": 0.21875,
+        "form": "DDLWW"
+    },
+    "397": {
+        "name": "FC Midtjylland",
+        "league": 119,
+        "clean_sheet_rate": 0.21875,
+        "failed_rate": 0.125,
+        "form": "WWDWW"
+    },
+    "398": {
+        "name": "FC Nordsjaelland",
+        "league": 119,
+        "clean_sheet_rate": 0.15625,
+        "failed_rate": 0.21875,
+        "form": "LLDWL"
+    },
+    "400": {
+        "name": "FC Copenhagen",
+        "league": 119,
+        "clean_sheet_rate": 0.34375,
+        "failed_rate": 0.0625,
+        "form": "WWDWW"
+    },
+    "401": {
+        "name": "Randers FC",
+        "league": 119,
+        "clean_sheet_rate": 0.18181818181818182,
+        "failed_rate": 0.18181818181818182,
+        "form": "WWLLL"
+    },
+    "402": {
+        "name": "Aalborg",
+        "league": 119,
+        "clean_sheet_rate": 0.125,
+        "failed_rate": 0.4375,
+        "form": "LDLLL"
+    },
+    "406": {
+        "name": "Aarhus",
+        "league": 119,
+        "clean_sheet_rate": 0.21875,
+        "failed_rate": 0.125,
+        "form": "LLLLL"
+    },
+    "407": {
+        "name": "Brondby",
+        "league": 119,
+        "clean_sheet_rate": 0.28125,
+        "failed_rate": 0.1875,
+        "form": "DLDLW"
+    },
+    "625": {
+        "name": "Lyngby",
+        "league": 119,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.375,
+        "form": "WDLLW"
+    },
+    "2070": {
+        "name": "Viborg",
+        "league": 119,
+        "clean_sheet_rate": 0.21875,
+        "failed_rate": 0.125,
+        "form": "DDWLW"
+    },
+    "2073": {
+        "name": "Silkeborg",
+        "league": 119,
+        "clean_sheet_rate": 0.18181818181818182,
+        "failed_rate": 0.12121212121212122,
+        "form": "DWWLW"
+    },
+    "587": {
+        "name": "Mariehamn",
+        "league": 244,
+        "clean_sheet_rate": 0.14814814814814814,
+        "failed_rate": 0.4074074074074074,
+        "form": "LLWLW"
+    },
+    "649": {
+        "name": "HJK Helsinki",
+        "league": 244,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.2222222222222222,
+        "form": "DDLLL"
+    },
+    "650": {
+        "name": "VPS",
+        "league": 244,
+        "clean_sheet_rate": 0.10714285714285714,
+        "failed_rate": 0.17857142857142858,
+        "form": "DWLWL"
+    },
+    "1166": {
+        "name": "Lahti",
+        "league": 244,
+        "clean_sheet_rate": 0.2413793103448276,
+        "failed_rate": 0.4482758620689655,
+        "form": "LDDLW"
+    },
+    "2075": {
+        "name": "FF Jaro",
+        "league": 244,
+        "clean_sheet_rate": 0.5,
+        "failed_rate": 0.5,
+        "form": "WL"
+    },
+    "2077": {
+        "name": "AC Oulu",
+        "league": 244,
+        "clean_sheet_rate": 0.2222222222222222,
+        "failed_rate": 0.18518518518518517,
+        "form": "WWLDL"
+    },
+    "2078": {
+        "name": "EIF",
+        "league": 244,
+        "clean_sheet_rate": 0.1111111111111111,
+        "failed_rate": 0.3333333333333333,
+        "form": "DWLDD"
+    },
+    "2080": {
+        "name": "Haka",
+        "league": 244,
+        "clean_sheet_rate": 0.25806451612903225,
+        "failed_rate": 0.16129032258064516,
+        "form": "LWDLD"
+    },
+    "2082": {
+        "name": "Gnistan",
+        "league": 244,
+        "clean_sheet_rate": 0.20689655172413793,
+        "failed_rate": 0.20689655172413793,
+        "form": "WDLWD"
     }
 }
