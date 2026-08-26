@@ -774,20 +774,32 @@ def scan_day_for_value_bets(date: str):
         safe_bets.sort(key=lambda x: x["prob"], reverse=True)
         
         final_bets = value_bets if len(value_bets) > 0 else safe_bets
-        # --- SHADOW LEDGER ---
+                # --- SHADOW LEDGER (DEDUPLICACIÓN CON SHA-256) ---
+        import hashlib
         shadow_file = os.path.join(os.path.dirname(__file__), "athena_shadow_ledger.json")
         shadow_data = []
+        existing_hashes = set()
         if os.path.exists(shadow_file):
             with open(shadow_file, "r", encoding="utf-8") as f:
                 try:
                     shadow_data = json.load(f)
+                    for item in shadow_data:
+                        if "record_hash" in item:
+                            existing_hashes.add(item["record_hash"])
                 except:
                     pass
         
-        # Inyectar la fecha y los picks
+        # Inyectar la fecha, hash único y los picks
         for bet in final_bets:
-            bet['logged_at'] = datetime.now(timezone.utc).isoformat()
-            shadow_data.append(bet)
+            # Generar hash único (Fixture ID + Pick)
+            hash_str = f"{bet.get('fixture_id')}_{bet.get('pick')}"
+            record_hash = hashlib.sha256(hash_str.encode('utf-8')).hexdigest()
+            
+            if record_hash not in existing_hashes:
+                bet['logged_at'] = datetime.now(timezone.utc).isoformat()
+                bet['record_hash'] = record_hash
+                shadow_data.append(bet)
+                existing_hashes.add(record_hash)
             
         with open(shadow_file, "w", encoding="utf-8") as f:
             json.dump(shadow_data, f, ensure_ascii=False, indent=4)
@@ -853,5 +865,6 @@ def get_prematch_insight(req: PrematchInsightRequest):
         "awayTeam": req.awayTeam,
         "probs": real_probs
     }
+
 
 

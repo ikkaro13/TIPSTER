@@ -1,4 +1,4 @@
-import math
+﻿import math
 import os
 import joblib
 from scraper import get_corners_data
@@ -56,21 +56,31 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     # Fallback inicial usando Elo (Plan B base)
     home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
 
-    # Si tenemos contexto histórico real (Bóveda de Stats)
+    # Si tenemos contexto histÃ³rico real (BÃ³veda de Stats)
     if historical_context and historical_context.get("home") and historical_context.get("away"):
         home_stats = historical_context["home"]
         away_stats = historical_context["away"]
         
-        h_matches = max(home_stats.get("matches_played", 1), 1)
-        a_matches = max(away_stats.get("matches_played", 1), 1)
-        
-        # 1. Clean Sheets (La visita anota menos si el local es un muro)
-        h_clean_sheet_rate = home_stats.get("clean_sheet_rate", home_stats.get("clean_sheets", home_stats.get("clean_sheets_total", 0)) / h_matches)
-        a_clean_sheet_rate = away_stats.get("clean_sheet_rate", away_stats.get("clean_sheets", away_stats.get("clean_sheets_total", 0)) / a_matches)
-        
-        # 2. Failed to score (El equipo anota menos si es pólvora mojada)
-        h_failed_rate = home_stats.get("failed_rate", home_stats.get("failed_to_score", home_stats.get("failed_to_score_total", 0)) / h_matches)
-        a_failed_rate = away_stats.get("failed_rate", away_stats.get("failed_to_score", away_stats.get("failed_to_score_total", 0)) / a_matches)
+                  h_matches = max(home_stats.get("matches_played", len(home_stats.get("form", " "))), 1)
+          a_matches = max(away_stats.get("matches_played", len(away_stats.get("form", " "))), 1)
+          
+          # --- REGULARIZACIÓN BAYESIANA (Inspirado en v0.1) ---
+          # Evita overfitting en equipos con pocos partidos (ej. recién ascendidos o inicio de temporada)
+          PRIOR_MATCHES = 5.0
+          GLOBAL_CS_RATE = 0.25  # Promedio global de porterías a cero
+          GLOBAL_FTS_RATE = 0.25 # Promedio global de partidos sin anotar
+          
+          # 1. Clean Sheets Regularizado
+          raw_h_cs = home_stats.get("clean_sheet_rate", home_stats.get("clean_sheets", home_stats.get("clean_sheets_total", 0)))
+          raw_a_cs = away_stats.get("clean_sheet_rate", away_stats.get("clean_sheets", away_stats.get("clean_sheets_total", 0)))
+          h_clean_sheet_rate = (raw_h_cs + PRIOR_MATCHES * GLOBAL_CS_RATE) / (h_matches + PRIOR_MATCHES)
+          a_clean_sheet_rate = (raw_a_cs + PRIOR_MATCHES * GLOBAL_CS_RATE) / (a_matches + PRIOR_MATCHES)
+          
+          # 2. Failed to score Regularizado
+          raw_h_fts = home_stats.get("failed_rate", home_stats.get("failed_to_score", home_stats.get("failed_to_score_total", 0)))
+          raw_a_fts = away_stats.get("failed_rate", away_stats.get("failed_to_score", away_stats.get("failed_to_score_total", 0)))
+          h_failed_rate = (raw_h_fts + PRIOR_MATCHES * GLOBAL_FTS_RATE) / (h_matches + PRIOR_MATCHES)
+          a_failed_rate = (raw_a_fts + PRIOR_MATCHES * GLOBAL_FTS_RATE) / (a_matches + PRIOR_MATCHES)
         
         # Ajustamos los Expected Goals base de Elo
         # Si la defensa rival es un muro de 50%, corto mis goles a la mitad.
@@ -137,7 +147,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
                 best_exact_score_prob = prob
                 best_exact_score = f"{home_goals} - {away_goals}"
             
-            # Básicos
+            # BÃ¡sicos
             if home_goals > away_goals: prob_home_win += prob
             elif home_goals == away_goals: prob_draw += prob
             else: prob_away_win += prob
@@ -161,7 +171,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             if (home_goals - away_goals) > 1.5: prob_home_minus_1_5 += prob
             if (away_goals - home_goals) > 1.5: prob_away_minus_1_5 += prob
                 
-            # ULTRA (Súper Parlays Dinámicos)
+            # ULTRA (SÃºper Parlays DinÃ¡micos)
             if home_goals > away_goals:
                 if away_goals > 0 and (home_goals + away_goals) > 3.5:
                     prob_ultra_home_btts_o35 += prob
@@ -176,7 +186,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
                 if home_goals > 0 and (home_goals + away_goals) > 3.5:
                     prob_ultra_draw_btts_o35 += prob
 
-    # Ensamblaje con IA (Random Forest) si el modelo está disponible
+    # Ensamblaje con IA (Random Forest) si el modelo estÃ¡ disponible
     is_ensembled = False
     if home_team in elo_db and away_team in elo_db:
         h_elo = elo_db[home_team]
@@ -223,7 +233,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     total = prob_home_win + prob_draw + prob_away_win
     if total == 0: total = 1.0 
     
-    # Evaluar contexto con el Oráculo de Hermes (Motor de Reglas)
+    # Evaluar contexto con el OrÃ¡culo de Hermes (Motor de Reglas)
     ml_winner = None
     if is_ensembled and ML_MODEL_1X2:
         if ml_probs_1x2[2] > ml_probs_1x2[0] and ml_probs_1x2[2] > ml_probs_1x2[1]: ml_winner = home_team
@@ -333,7 +343,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     # Media de corners en liga suele ser ~10. Ajustamos por poder ofensivo.
     # --------------------------------------------
     corners_base = 9.5
-    # Equipos con alto xG tienden a provocar/recibir más corners
+    # Equipos con alto xG tienden a provocar/recibir mÃ¡s corners
     corner_multiplier = (home_expected_full + away_expected_full) / 2.5
     expected_corners_full = corners_base * corner_multiplier
     
@@ -356,11 +366,11 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     
     result.update({
         "ultras": {
-            "Gana Local + Ambos Anotan + Más 3.5 Goles": (prob_ultra_home_btts_o35 / total) * 100,
-            "Gana Visita + Ambos Anotan + Más 3.5 Goles": (prob_ultra_away_btts_o35 / total) * 100,
-            "Empate + Ambos Anotan + Más 3.5 Goles (Ej: 2-2)": (prob_ultra_draw_btts_o35 / total) * 100,
-            "Gana Local sin recibir Gol + Más 2.5 Goles": (prob_ultra_home_to_nil_o25 / total) * 100,
-            "Gana Visita sin recibir Gol + Más 2.5 Goles": (prob_ultra_away_to_nil_o25 / total) * 100,
+            "Gana Local + Ambos Anotan + MÃ¡s 3.5 Goles": (prob_ultra_home_btts_o35 / total) * 100,
+            "Gana Visita + Ambos Anotan + MÃ¡s 3.5 Goles": (prob_ultra_away_btts_o35 / total) * 100,
+            "Empate + Ambos Anotan + MÃ¡s 3.5 Goles (Ej: 2-2)": (prob_ultra_draw_btts_o35 / total) * 100,
+            "Gana Local sin recibir Gol + MÃ¡s 2.5 Goles": (prob_ultra_home_to_nil_o25 / total) * 100,
+            "Gana Visita sin recibir Gol + MÃ¡s 2.5 Goles": (prob_ultra_away_to_nil_o25 / total) * 100,
         },
         "player_prop_home": get_player_props(home_team, home_expected),
         "player_prop_away": get_player_props(away_team, away_expected),
@@ -386,16 +396,16 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
         ("Ganador Local", real_probs["home"], bookmaker_odds.get("home", {"price": 0})),
         ("Empate", real_probs["draw"], bookmaker_odds.get("draw", {"price": 0})),
         ("Ganador Visita", real_probs["away"], bookmaker_odds.get("away", {"price": 0})),
-        ("Más 1.5 Goles", real_probs["over_1_5"], bookmaker_odds.get("over_1_5", {"price": 0})),
+        ("MÃ¡s 1.5 Goles", real_probs["over_1_5"], bookmaker_odds.get("over_1_5", {"price": 0})),
         ("Menos 1.5 Goles", real_probs["under_1_5"], bookmaker_odds.get("under_1_5", {"price": 0})),
-        ("Más 2.5 Goles", real_probs["over_2_5"], bookmaker_odds.get("over_2_5", {"price": 0})),
+        ("MÃ¡s 2.5 Goles", real_probs["over_2_5"], bookmaker_odds.get("over_2_5", {"price": 0})),
         ("Menos 2.5 Goles", real_probs["under_2_5"], bookmaker_odds.get("under_2_5", {"price": 0})),
-        ("Más 3.5 Goles", real_probs["over_3_5"], bookmaker_odds.get("over_3_5", {"price": 0})),
+        ("MÃ¡s 3.5 Goles", real_probs["over_3_5"], bookmaker_odds.get("over_3_5", {"price": 0})),
         ("Menos 3.5 Goles", real_probs["under_3_5"], bookmaker_odds.get("under_3_5", {"price": 0})),
-        ("Ambos Anotan (Sí)", real_probs["btts_yes"], bookmaker_odds.get("btts_yes", {"price": 0})),
+        ("Ambos Anotan (SÃ­)", real_probs["btts_yes"], bookmaker_odds.get("btts_yes", {"price": 0})),
         ("Ambos Anotan (No)", real_probs["btts_no"], bookmaker_odds.get("btts_no", {"price": 0})),
-        ("Hándicap Local -1.5", real_probs["home_minus_1_5"], bookmaker_odds.get("home_minus_1_5", {"price": 0})),
-        ("Hándicap Visita -1.5", real_probs["away_minus_1_5"], bookmaker_odds.get("away_minus_1_5", {"price": 0}))
+        ("HÃ¡ndicap Local -1.5", real_probs["home_minus_1_5"], bookmaker_odds.get("home_minus_1_5", {"price": 0})),
+        ("HÃ¡ndicap Visita -1.5", real_probs["away_minus_1_5"], bookmaker_odds.get("away_minus_1_5", {"price": 0}))
     ]
     
     # TIER 1: MAIN LINE
@@ -478,10 +488,10 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
         cuota_ultra = 100.0 / best_u_prob if best_u_prob > 0 else 0
         analysis["ultra"] = { "pick": best_u_pick, "prob": round(best_u_prob, 1), "fair_odds": round(cuota_ultra, 2) }
     else:
-        # Fallback para caché antiguo
+        # Fallback para cachÃ© antiguo
         uh = real_probs.get("ultra_home", 0); ua = real_probs.get("ultra_away", 0)
         best_u_prob = max(uh, ua)
-        best_u_pick = "Gana Local + Ambos Anotan + Más 3.5 Goles" if uh > ua else "Gana Visita + Ambos Anotan + Más 3.5 Goles"
+        best_u_pick = "Gana Local + Ambos Anotan + MÃ¡s 3.5 Goles" if uh > ua else "Gana Visita + Ambos Anotan + MÃ¡s 3.5 Goles"
         cuota_ultra = 100.0 / best_u_prob if best_u_prob > 0 else 0
         analysis["ultra"] = { "pick": best_u_pick, "prob": round(best_u_prob, 1), "fair_odds": round(cuota_ultra, 2) }
         
@@ -489,7 +499,7 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
     if real_probs.get("corners"):
         c = real_probs["corners"]
         if c["over_9_5_prob"] >= c["under_9_5_prob"]:
-            analysis["corners_alert"] = {"pick": "Más de 9.5 Corners", "prob": c["over_9_5_prob"], "fair_odds": round(100 / c["over_9_5_prob"], 2)}
+            analysis["corners_alert"] = {"pick": "MÃ¡s de 9.5 Corners", "prob": c["over_9_5_prob"], "fair_odds": round(100 / c["over_9_5_prob"], 2)}
         else:
             analysis["corners_alert"] = {"pick": "Menos de 9.5 Corners", "prob": c["under_9_5_prob"], "fair_odds": round(100 / c["under_9_5_prob"], 2)}
 
@@ -507,3 +517,4 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
         analysis["player_prop"] = best_pp
 
     return analysis
+
