@@ -3231,5 +3231,467 @@
         "clean_sheet_rate": 0.20689655172413793,
         "failed_rate": 0.20689655172413793,
         "form": "WDLWD"
+    },
+    "38": {
+        "name": "Watford",
+        "league": 40,
+        "clean_sheet_rate": 0.2608695652173913,
+        "failed_rate": 0.2391304347826087,
+        "form": "LLLLD"
+    },
+    "43": {
+        "name": "Cardiff",
+        "league": 40,
+        "clean_sheet_rate": 0.17391304347826086,
+        "failed_rate": 0.32608695652173914,
+        "form": "LLDDL"
+    },
+    "44": {
+        "name": "Burnley",
+        "league": 40,
+        "clean_sheet_rate": 0.6521739130434783,
+        "failed_rate": 0.30434782608695654,
+        "form": "WWWWW"
+    },
+    "56": {
+        "name": "Bristol City",
+        "league": 40,
+        "clean_sheet_rate": 0.20833333333333334,
+        "failed_rate": 0.2916666666666667,
+        "form": "LLDLL"
+    },
+    "58": {
+        "name": "Millwall",
+        "league": 40,
+        "clean_sheet_rate": 0.34782608695652173,
+        "failed_rate": 0.2826086956521739,
+        "form": "WLWWL"
+    },
+    "59": {
+        "name": "Preston",
+        "league": 40,
+        "clean_sheet_rate": 0.2826086956521739,
+        "failed_rate": 0.2391304347826087,
+        "form": "LLLLD"
+    },
+    "60": {
+        "name": "West Brom",
+        "league": 40,
+        "clean_sheet_rate": 0.30434782608695654,
+        "failed_rate": 0.2826086956521739,
+        "form": "WLLDW"
+    },
+    "62": {
+        "name": "Sheffield Utd",
+        "league": 40,
+        "clean_sheet_rate": 0.4897959183673469,
+        "failed_rate": 0.14285714285714285,
+        "form": "WDWWL"
+    },
+    "63": {
+        "name": "Leeds",
+        "league": 40,
+        "clean_sheet_rate": 0.5434782608695652,
+        "failed_rate": 0.15217391304347827,
+        "form": "WWWWW"
+    },
+    "64": {
+        "name": "Hull City",
+        "league": 40,
+        "clean_sheet_rate": 0.15217391304347827,
+        "failed_rate": 0.3695652173913043,
+        "form": "DLWLD"
+    },
+    "67": {
+        "name": "Blackburn",
+        "league": 40,
+        "clean_sheet_rate": 0.32608695652173914,
+        "failed_rate": 0.32608695652173914,
+        "form": "WWWWD"
+    },
+    "69": {
+        "name": "Derby",
+        "league": 40,
+        "clean_sheet_rate": 0.2608695652173913,
+        "failed_rate": 0.3695652173913043,
+        "form": "DLWWD"
+    },
+    "70": {
+        "name": "Middlesbrough",
+        "league": 40,
+        "clean_sheet_rate": 0.2826086956521739,
+        "failed_rate": 0.2826086956521739,
+        "form": "LWLDL"
+    },
+    "71": {
+        "name": "Norwich",
+        "league": 40,
+        "clean_sheet_rate": 0.17391304347826086,
+        "failed_rate": 0.2391304347826087,
+        "form": "LLLDW"
+    },
+    "72": {
+        "name": "QPR",
+        "league": 40,
+        "clean_sheet_rate": 0.21739130434782608,
+        "failed_rate": 0.2608695652173913,
+        "form": "DWLLW"
+    },
+    "74": {
+        "name": "Sheffield Wednesday",
+        "league": 40,
+        "clean_sheet_rate": 0.1956521739130435,
+        "failed_rate": 0.30434782608695654,
+        "form": "LLWDD"
+    },
+    "75": {
+        "name": "Stoke City",
+        "league": 40,
+        "clean_sheet_rate": 0.30434782608695654,
+        "failed_rate": 0.391304347826087,
+        "form": "WWLLD"
+    },
+    "76": {
+        "name": "Swansea",
+        "league": 40,
+        "clean_sheet_rate": 0.30434782608695654,
+        "failed_rate": 0.34782608695652173,
+        "form": "WWWLD"
+    },
+    "746": {
+        "name": "Sunderland",
+        "league": 40,
+        "clean_sheet_rate": 0.3469387755102041,
+        "failed_rate": 0.2653061224489796,
+        "form": "LLWDW"
+    },
+    "1338": {
+        "name": "Oxford United",
+        "league": 40,
+        "clean_sheet_rate": 0.2826086956521739,
+        "failed_rate": 0.2608695652173913,
+        "form": "WLDWD"
+    },
+    "1346": {
+        "name": "Coventry",
+        "league": 40,
+        "clean_sheet_rate": 0.2708333333333333,
+        "failed_rate": 0.20833333333333334,
+        "form": "LLWLD"
+    },
+    "1355": {
+        "name": "Portsmouth",
+        "league": 40,
+        "clean_sheet_rate": 0.21739130434782608,
+        "failed_rate": 0.30434782608695654,
+        "form": "DWWDD"
+    },
+    "1357": {
+        "name": "Plymouth",
+        "league": 40,
+        "clean_sheet_rate": 0.06521739130434782,
+        "failed_rate": 0.41304347826086957,
+        "form": "WLWWL"
+    },
+    "1359": {
+        "name": "Luton",
+        "league": 40,
+        "clean_sheet_rate": 0.2391304347826087,
+        "failed_rate": 0.32608695652173914,
+        "form": "LWWWL"
+    },
+    "545": {
+        "name": "Eibar",
+        "league": 141,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.3333333333333333,
+        "form": "LWWWL"
+    },
+    "713": {
+        "name": "Cordoba",
+        "league": 141,
+        "clean_sheet_rate": 0.21428571428571427,
+        "failed_rate": 0.21428571428571427,
+        "form": "WLLLD"
+    },
+    "715": {
+        "name": "Granada CF",
+        "league": 141,
+        "clean_sheet_rate": 0.2857142857142857,
+        "failed_rate": 0.19047619047619047,
+        "form": "LLWWL"
+    },
+    "718": {
+        "name": "Oviedo",
+        "league": 141,
+        "clean_sheet_rate": 0.34782608695652173,
+        "failed_rate": 0.2391304347826087,
+        "form": "WWDLW"
+    },
+    "719": {
+        "name": "Tenerife",
+        "league": 141,
+        "clean_sheet_rate": 0.21428571428571427,
+        "failed_rate": 0.47619047619047616,
+        "form": "DDLLL"
+    },
+    "722": {
+        "name": "Albacete",
+        "league": 141,
+        "clean_sheet_rate": 0.23809523809523808,
+        "failed_rate": 0.2857142857142857,
+        "form": "LWLWD"
+    },
+    "723": {
+        "name": "Almeria",
+        "league": 141,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.09090909090909091,
+        "form": "WDWLD"
+    },
+    "724": {
+        "name": "Cadiz",
+        "league": 141,
+        "clean_sheet_rate": 0.30952380952380953,
+        "failed_rate": 0.3333333333333333,
+        "form": "LWLWL"
+    },
+    "726": {
+        "name": "Huesca",
+        "league": 141,
+        "clean_sheet_rate": 0.2619047619047619,
+        "failed_rate": 0.21428571428571427,
+        "form": "LLWLW"
+    },
+    "731": {
+        "name": "Sporting Gijon",
+        "league": 141,
+        "clean_sheet_rate": 0.21428571428571427,
+        "failed_rate": 0.16666666666666666,
+        "form": "LWLWW"
+    },
+    "732": {
+        "name": "Zaragoza",
+        "league": 141,
+        "clean_sheet_rate": 0.19047619047619047,
+        "failed_rate": 0.23809523809523808,
+        "form": "WWLWL"
+    },
+    "797": {
+        "name": "Elche",
+        "league": 141,
+        "clean_sheet_rate": 0.4523809523809524,
+        "failed_rate": 0.21428571428571427,
+        "form": "WLLWW"
+    },
+    "799": {
+        "name": "Mirandes",
+        "league": 141,
+        "clean_sheet_rate": 0.3695652173913043,
+        "failed_rate": 0.2391304347826087,
+        "form": "WDWWL"
+    },
+    "4665": {
+        "name": "Racing Santander",
+        "league": 141,
+        "clean_sheet_rate": 0.25,
+        "failed_rate": 0.1590909090909091,
+        "form": "LDWDL"
+    },
+    "5254": {
+        "name": "Castellón",
+        "league": 141,
+        "clean_sheet_rate": 0.19047619047619047,
+        "failed_rate": 0.2619047619047619,
+        "form": "WLDLW"
+    },
+    "5262": {
+        "name": "FC Cartagena",
+        "league": 141,
+        "clean_sheet_rate": 0.16666666666666666,
+        "failed_rate": 0.40476190476190477,
+        "form": "WLWLL"
+    },
+    "9580": {
+        "name": "Burgos",
+        "league": 141,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.35714285714285715,
+        "form": "LWLLD"
+    },
+    "9692": {
+        "name": "Eldense",
+        "league": 141,
+        "clean_sheet_rate": 0.2857142857142857,
+        "failed_rate": 0.3333333333333333,
+        "form": "LWDDL"
+    },
+    "488": {
+        "name": "Sassuolo",
+        "league": 136,
+        "clean_sheet_rate": 0.39473684210526316,
+        "failed_rate": 0.10526315789473684,
+        "form": "WWDLL"
+    },
+    "498": {
+        "name": "Sampdoria",
+        "league": 136,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.3333333333333333,
+        "form": "DDWDW"
+    },
+    "508": {
+        "name": "Bari",
+        "league": 136,
+        "clean_sheet_rate": 0.34210526315789475,
+        "failed_rate": 0.2631578947368421,
+        "form": "LLWLD"
+    },
+    "509": {
+        "name": "Cesena",
+        "league": 136,
+        "clean_sheet_rate": 0.28205128205128205,
+        "failed_rate": 0.2564102564102564,
+        "form": "LWWWL"
+    },
+    "510": {
+        "name": "Cittadella",
+        "league": 136,
+        "clean_sheet_rate": 0.3157894736842105,
+        "failed_rate": 0.42105263157894735,
+        "form": "LLDWL"
+    },
+    "512": {
+        "name": "Frosinone",
+        "league": 136,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.3157894736842105,
+        "form": "DLDLW"
+    },
+    "515": {
+        "name": "Spezia",
+        "league": 136,
+        "clean_sheet_rate": 0.42857142857142855,
+        "failed_rate": 0.23809523809523808,
+        "form": "WWWDL"
+    },
+    "518": {
+        "name": "Brescia",
+        "league": 136,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.2894736842105263,
+        "form": "LWDDW"
+    },
+    "520": {
+        "name": "Cremonese",
+        "league": 136,
+        "clean_sheet_rate": 0.23809523809523808,
+        "failed_rate": 0.19047619047619047,
+        "form": "LLWDW"
+    },
+    "522": {
+        "name": "Palermo",
+        "league": 136,
+        "clean_sheet_rate": 0.28205128205128205,
+        "failed_rate": 0.20512820512820512,
+        "form": "LLWDL"
+    },
+    "801": {
+        "name": "Pisa",
+        "league": 136,
+        "clean_sheet_rate": 0.2894736842105263,
+        "failed_rate": 0.23684210526315788,
+        "form": "WWLDW"
+    },
+    "863": {
+        "name": "Juve Stabia",
+        "league": 136,
+        "clean_sheet_rate": 0.3170731707317073,
+        "failed_rate": 0.3170731707317073,
+        "form": "LDWWL"
+    },
+    "880": {
+        "name": "Reggiana",
+        "league": 136,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.3157894736842105,
+        "form": "WWWWL"
+    },
+    "899": {
+        "name": "Modena",
+        "league": 136,
+        "clean_sheet_rate": 0.18421052631578946,
+        "failed_rate": 0.23684210526315788,
+        "form": "WLLDL"
+    },
+    "1687": {
+        "name": "Catanzaro",
+        "league": 136,
+        "clean_sheet_rate": 0.34146341463414637,
+        "failed_rate": 0.2926829268292683,
+        "form": "WDWLL"
+    },
+    "1693": {
+        "name": "Mantova",
+        "league": 136,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.2894736842105263,
+        "form": "LWLWD"
+    },
+    "10137": {
+        "name": "Cosenza",
+        "league": 136,
+        "clean_sheet_rate": 0.18421052631578946,
+        "failed_rate": 0.34210526315789475,
+        "form": "LWLLL"
+    },
+    "535": {
+        "name": "Malaga",
+        "league": 141,
+        "clean_sheet_rate": 0.38095238095238093,
+        "failed_rate": 0.35714285714285715,
+        "form": "WLWLD"
+    },
+    "539": {
+        "name": "Levante",
+        "league": 141,
+        "clean_sheet_rate": 0.2619047619047619,
+        "failed_rate": 0.23809523809523808,
+        "form": "DWWWW"
+    },
+    "544": {
+        "name": "Deportivo La Coruna",
+        "league": 141,
+        "clean_sheet_rate": 0.2619047619047619,
+        "failed_rate": 0.2857142857142857,
+        "form": "WLLLL"
+    },
+    "9409": {
+        "name": "Racing Ferrol",
+        "league": 141,
+        "clean_sheet_rate": 0.3333333333333333,
+        "failed_rate": 0.5476190476190477,
+        "form": "LDWLL"
+    },
+    "514": {
+        "name": "Salernitana",
+        "league": 136,
+        "clean_sheet_rate": 0.2564102564102564,
+        "failed_rate": 0.4358974358974359,
+        "form": "LWLWL"
+    },
+    "1578": {
+        "name": "Sudtirol",
+        "league": 136,
+        "clean_sheet_rate": 0.21052631578947367,
+        "failed_rate": 0.2894736842105263,
+        "form": "WWWDD"
+    },
+    "1581": {
+        "name": "Carrarese",
+        "league": 136,
+        "clean_sheet_rate": 0.34210526315789475,
+        "failed_rate": 0.3157894736842105,
+        "form": "WLWLD"
     }
 }
