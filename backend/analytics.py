@@ -61,26 +61,26 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         home_stats = historical_context["home"]
         away_stats = historical_context["away"]
         
-                  h_matches = max(home_stats.get("matches_played", len(home_stats.get("form", " "))), 1)
-          a_matches = max(away_stats.get("matches_played", len(away_stats.get("form", " "))), 1)
-          
-          # --- REGULARIZACIÓN BAYESIANA (Inspirado en v0.1) ---
-          # Evita overfitting en equipos con pocos partidos (ej. recién ascendidos o inicio de temporada)
-          PRIOR_MATCHES = 5.0
-          GLOBAL_CS_RATE = 0.25  # Promedio global de porterías a cero
-          GLOBAL_FTS_RATE = 0.25 # Promedio global de partidos sin anotar
-          
-          # 1. Clean Sheets Regularizado
-          raw_h_cs = home_stats.get("clean_sheet_rate", home_stats.get("clean_sheets", home_stats.get("clean_sheets_total", 0)))
-          raw_a_cs = away_stats.get("clean_sheet_rate", away_stats.get("clean_sheets", away_stats.get("clean_sheets_total", 0)))
-          h_clean_sheet_rate = (raw_h_cs + PRIOR_MATCHES * GLOBAL_CS_RATE) / (h_matches + PRIOR_MATCHES)
-          a_clean_sheet_rate = (raw_a_cs + PRIOR_MATCHES * GLOBAL_CS_RATE) / (a_matches + PRIOR_MATCHES)
-          
-          # 2. Failed to score Regularizado
-          raw_h_fts = home_stats.get("failed_rate", home_stats.get("failed_to_score", home_stats.get("failed_to_score_total", 0)))
-          raw_a_fts = away_stats.get("failed_rate", away_stats.get("failed_to_score", away_stats.get("failed_to_score_total", 0)))
-          h_failed_rate = (raw_h_fts + PRIOR_MATCHES * GLOBAL_FTS_RATE) / (h_matches + PRIOR_MATCHES)
-          a_failed_rate = (raw_a_fts + PRIOR_MATCHES * GLOBAL_FTS_RATE) / (a_matches + PRIOR_MATCHES)
+        h_matches = max(home_stats.get("matches_played", len(home_stats.get("form", " "))), 1)
+        a_matches = max(away_stats.get("matches_played", len(away_stats.get("form", " "))), 1)
+        
+        # --- REGULARIZACIÓN BAYESIANA (Inspirado en v0.1) ---
+        # Evita overfitting en equipos con pocos partidos (ej. recién ascendidos o inicio de temporada)
+        PRIOR_MATCHES = 5.0
+        GLOBAL_CS_RATE = 0.25  # Promedio global de porterías a cero
+        GLOBAL_FTS_RATE = 0.25 # Promedio global de partidos sin anotar
+        
+        # 1. Clean Sheets Regularizado
+        raw_h_cs = home_stats.get("clean_sheet_rate", home_stats.get("clean_sheets", home_stats.get("clean_sheets_total", 0)))
+        raw_a_cs = away_stats.get("clean_sheet_rate", away_stats.get("clean_sheets", away_stats.get("clean_sheets_total", 0)))
+        h_clean_sheet_rate = (raw_h_cs + PRIOR_MATCHES * GLOBAL_CS_RATE) / (h_matches + PRIOR_MATCHES)
+        a_clean_sheet_rate = (raw_a_cs + PRIOR_MATCHES * GLOBAL_CS_RATE) / (a_matches + PRIOR_MATCHES)
+        
+        # 2. Failed to score Regularizado
+        raw_h_fts = home_stats.get("failed_rate", home_stats.get("failed_to_score", home_stats.get("failed_to_score_total", 0)))
+        raw_a_fts = away_stats.get("failed_rate", away_stats.get("failed_to_score", away_stats.get("failed_to_score_total", 0)))
+        h_failed_rate = (raw_h_fts + PRIOR_MATCHES * GLOBAL_FTS_RATE) / (h_matches + PRIOR_MATCHES)
+        a_failed_rate = (raw_a_fts + PRIOR_MATCHES * GLOBAL_FTS_RATE) / (a_matches + PRIOR_MATCHES)
         
         # Ajustamos los Expected Goals base de Elo
         # Si la defensa rival es un muro de 50%, corto mis goles a la mitad.
@@ -517,4 +517,7 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
         analysis["player_prop"] = best_pp
 
     return analysis
+
+
+
 
