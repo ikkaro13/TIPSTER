@@ -3774,5 +3774,41 @@
         "failed_to_score": 8,
         "over_25": 0,
         "under_25": 0
+    },
+    "948": {
+        "name": "Adelaide United",
+        "league": 188,
+        "form": "DWWWDWWDLWWWDLWLLDDLLLLWDDL",
+        "clean_sheets": 4,
+        "failed_to_score": 2,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "7573": {
+        "name": "Western United",
+        "league": 188,
+        "form": "DDLLWLDWWWWLWWDDLWWWWWLLWWWLD",
+        "clean_sheets": 5,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "15550": {
+        "name": "Macarthur",
+        "league": 188,
+        "form": "WLLWLDDWDWWLWLWLDLLLWDWDLL",
+        "clean_sheets": 3,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "24608": {
+        "name": "Auckland",
+        "league": 188,
+        "form": "WWWWWWDLWDLWDWWWWDDDWDDWWLWL",
+        "clean_sheets": 13,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     }
 }
