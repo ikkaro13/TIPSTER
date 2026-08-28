@@ -1,7 +1,0 @@
-﻿import json
-try:
-    with open('backend/team_stats_db.json', 'r', encoding='utf-8') as f:
-        db = json.load(f)
-    print(f"Total equipos en team_stats_db: {len(db.keys())}")
-except Exception as e:
-    print(e)
