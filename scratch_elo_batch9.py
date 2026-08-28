@@ -1,70 +1,20 @@
-﻿import sys
+import sys
 import os
 import time
 
-# Necesitamos aÃ±adir la ruta base para que pueda importar mÃ³dulos
-sys.path.append(os.path.join(os.path.dirname(__file__), "backend"))
+# Necesitamos añadir la ruta base para que pueda importar módulos
+sys.path.append(os.path.join(os.path.dirname(__file__), 'backend'))
 
 from api_football_engine import make_api_request
 from data_engine import get_national_elo, save_national_elo, save_historical_match
 from elo_updater import calculate_elo_change
 
-ALL_TRACKED_LEAGUES = {
-    # ðŸ† TOP 5 EUROPA
-    "Premier League": 39,
-    "La Liga": 140,
-    "Serie A": 135,
-    "Bundesliga": 78,
-    "Ligue 1": 61,
-    
-    # ðŸŒŽ LAS AMÃ‰RICAS
-    "Liga MX": 262,
-    "MLS": 253,
-    "Brasileirao": 71,
-    "Primera Div Argentina": 128,
-    "Primera A Colombia": 239,
-    "Liga Expansion MX": 263,
-    "Primera Nacional Arg": 129,
-    
-    # ðŸ›¡ï¸ EUROPA RENTABLE (TIER 2 y Ligas Goleadoras)
-    "Championship": 40,
-    "Serie B": 136,
-    "Segunda Division": 141,
-    "Eredivisie": 88,
-    "Eerste Divisie": 89,
-    "Primeira Liga": 94,
-    "Super Lig": 203,
-    "Scottish Premiership": 179,
-    "Pro League Belgica": 144,
-    
-    # â„ï¸ NÃ“RDICOS Y BÃLTICOS (Alta predictibilidad / Mercados ineficientes)
-    "Eliteserien": 103,
-    "Allsvenskan": 113,
-    "Superettan": 114,
-    "Veikkausliiga": 244,
-    "Parva Liga Bulgaria": 172,
-    "Ekstraklasa Polonia": 106,
-    "SuperLiga Rumania": 283,
-    
-    # ðŸŒ ASIA Y EXÃ“TICAS
-    "J1 League": 98,
-    "J2 League": 99,
-    "K League 1": 292,
-    "Saudi Pro League": 307,
-    "A-League": 188,
-    
-    # ðŸ’Ž JOYAS OCULTAS (Clima Extremo, Altitud y Ventaja de Localidad)
-    "Liga Prof Bolivia": 230,     # La Paz a 3,600m = Ventaja local brutal que las casas suelen subestimar
-    "Liga 1 Peru": 281,           # GeografÃ­a extrema (Selva/Andes) = Alta localÃ­a
-    "Super League Suiza": 207,    # HistÃ³ricamente altÃ­simo promedio de Goles (Over 2.5)
-    "Superliga Dinamarca": 119,   # Muy estable estadÃ­sticamente
-    "Super League Grecia": 197    # Estadios muy hostiles = AltÃ­sima ventaja local
-}
+ALL_TRACKED_LEAGUES = {"Championship": 40, "LaLiga Hypermotion": 141, "Serie B": 136}
 
 SEASONS = [2023, 2024]
 
 def seed_leagues():
-    print("ðŸ§  INICIANDO INYECCIÃ“N MASIVA DE ELO PARA CLUBES...")
+    print("🧠 INICIANDO INYECCIÓN MASIVA DE ELO PARA CLUBES...")
     
     # 1. Cargar DB a la memoria RAM para no hacer 7000 escrituras al disco
     db = get_national_elo()
@@ -73,7 +23,7 @@ def seed_leagues():
     TEAM_FORM = {} # team_name -> [puntos_historicos_recientes] (max 5)
     
     for league_name, league_id in ALL_TRACKED_LEAGUES.items():
-        print(f"\nðŸŒ Procesando {league_name} (ID: {league_id})...")
+        print(f"\n🌍 Procesando {league_name} (ID: {league_id})...")
         
         all_league_matches = []
         
@@ -88,12 +38,12 @@ def seed_leagues():
             else:
                 print(f"   -> Error o sin datos para la temporada {season}.")
                 
-            time.sleep(7) # Pausa larga para no rebasar el lÃ­mite de 10 peticiones/minuto
+            time.sleep(7) # Pausa larga para no rebasar el límite de 10 peticiones/minuto
             
-        # 2. Ordenar cronolÃ³gicamente (del mÃ¡s antiguo al mÃ¡s reciente)
+        # 2. Ordenar cronológicamente (del más antiguo al más reciente)
         all_league_matches.sort(key=lambda x: x["fixture"]["timestamp"])
         
-        # 3. Procesar resultados cronolÃ³gicamente
+        # 3. Procesar resultados cronológicamente
         for match in all_league_matches:
             try:
                 home_team = match["teams"]["home"]["name"]
@@ -105,7 +55,7 @@ def seed_leagues():
                     continue
                     
                 # Si el equipo no existe, le asignamos 1500 (Promedio de Liga)
-                # Nota: National Teams usan 1750, pero 1500 es el estÃ¡ndar mundial para clubes base
+                # Nota: National Teams usan 1750, pero 1500 es el estándar mundial para clubes base
                 r1 = db.get(home_team, 1500)
                 r2 = db.get(away_team, 1500)
                 
@@ -116,7 +66,7 @@ def seed_leagues():
                 btts = 1 if home_goals > 0 and away_goals > 0 else 0
                 outcome = 2 if home_goals > away_goals else 0 if away_goals > home_goals else 1
                 
-                # Momentum CÃ¡lculo ANTES del partido
+                # Momentum Cálculo ANTES del partido
                 if home_team not in TEAM_FORM: TEAM_FORM[home_team] = []
                 if away_team not in TEAM_FORM: TEAM_FORM[away_team] = []
                 
@@ -141,7 +91,7 @@ def seed_leagues():
                 }
                 save_historical_match(match_data)
                 
-                # Actualizar Momentum DESPUÃ‰S del partido
+                # Actualizar Momentum DESPUÉS del partido
                 if outcome == 2:
                     TEAM_FORM[home_team].append(3)
                     TEAM_FORM[away_team].append(0)
@@ -152,7 +102,7 @@ def seed_leagues():
                     TEAM_FORM[home_team].append(1)
                     TEAM_FORM[away_team].append(1)
                     
-                # Mantener solo los Ãºltimos 5 resultados
+                # Mantener solo los últimos 5 resultados
                 if len(TEAM_FORM[home_team]) > 5: TEAM_FORM[home_team].pop(0)
                 if len(TEAM_FORM[away_team]) > 5: TEAM_FORM[away_team].pop(0)
                 
@@ -163,9 +113,9 @@ def seed_leagues():
                 continue
             
     # 4. Guardar DB de un solo golpe
-    print(f"\nðŸ’¾ Guardando {len(db)} equipos en tipster.db...")
+    print(f"\n💾 Guardando {len(db)} equipos en tipster.db...")
     save_national_elo(db)
-    print(f"âœ… Â¡InyecciÃ³n Completada! {matches_processed} partidos analizados matemÃ¡ticamente.")
+    print(f"✅ ¡Inyección Completada! {matches_processed} partidos analizados matemáticamente.")
 
 if __name__ == "__main__":
     seed_leagues()

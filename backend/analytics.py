@@ -124,6 +124,13 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     prob_over_35 = 0.0; prob_under_35 = 0.0
     prob_btts_yes = 0.0; prob_btts_no = 0.0
     prob_home_minus_1_5 = 0.0; prob_away_minus_1_5 = 0.0
+    prob_home_minus_1_0 = 0.0; prob_away_minus_1_0 = 0.0
+    prob_home_plus_1_0 = 0.0; prob_away_plus_1_0 = 0.0
+    prob_home_plus_1_5 = 0.0; prob_away_plus_1_5 = 0.0
+    
+    prob_ht_home_win = 0.0; prob_ht_draw = 0.0; prob_ht_away_win = 0.0
+    prob_ht_over_05 = 0.0; prob_ht_under_05 = 0.0
+    
     prob_exact_score = {}
     
     prob_ultra_home_btts_o35 = 0.0; prob_ultra_away_btts_o35 = 0.0
@@ -170,6 +177,18 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
                 
             if (home_goals - away_goals) > 1.5: prob_home_minus_1_5 += prob
             if (away_goals - home_goals) > 1.5: prob_away_minus_1_5 += prob
+            
+            # Asian Handicap (Win by 2+, Win by 1 is push -> so we only count Win by 2+)
+            # Note: For strict Kelly, a push is return of stake, but probability of WIN is what matters
+            if (home_goals - away_goals) >= 2: prob_home_minus_1_0 += prob
+            if (away_goals - home_goals) >= 2: prob_away_minus_1_0 += prob
+            
+            # Plus Handicaps (Win or Draw)
+            if (home_goals - away_goals) >= -0.5: prob_home_plus_1_0 += prob # Win or Draw is green. Loss by 1 is push. So Win/Draw is the pure win prob.
+            if (away_goals - home_goals) >= -0.5: prob_away_plus_1_0 += prob
+            
+            if (home_goals - away_goals) >= -1.5: prob_home_plus_1_5 += prob
+            if (away_goals - home_goals) >= -1.5: prob_away_plus_1_5 += prob
                 
             # ULTRA (SÃºper Parlays DinÃ¡micos)
             if home_goals > away_goals:
@@ -185,6 +204,24 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             else:
                 if home_goals > 0 and (home_goals + away_goals) > 3.5:
                     prob_ultra_draw_btts_o35 += prob
+
+    # --------------------------------------------
+    # SIMULACIÓN PARALELA: MEDIO TIEMPO
+    # --------------------------------------------
+    home_expected_ht = home_expected_full * 0.45
+    away_expected_ht = away_expected_full * 0.45
+    
+    for h in range(6):
+        for a in range(6):
+            base_prob = calculate_poisson(home_expected_ht, h) * calculate_poisson(away_expected_ht, a)
+            prob = base_prob * dixon_coles_adjustment(home_expected_ht, away_expected_ht, h, a)
+            
+            if h > a: prob_ht_home_win += prob
+            elif h == a: prob_ht_draw += prob
+            else: prob_ht_away_win += prob
+            
+            if (h+a) > 0.5: prob_ht_over_05 += prob
+            else: prob_ht_under_05 += prob
 
     # Ensamblaje con IA (Random Forest) si el modelo estÃ¡ disponible
     is_ensembled = False
@@ -306,6 +343,14 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "btts_no": (prob_btts_no / total) * 100,
         "home_minus_1_5": (prob_home_minus_1_5 / total) * 100,
         "away_minus_1_5": (prob_away_minus_1_5 / total) * 100,
+        "home_minus_1_0": (prob_home_minus_1_0 / total) * 100,
+        "away_minus_1_0": (prob_away_minus_1_0 / total) * 100,
+        "home_plus_1_5": (prob_home_plus_1_5 / total) * 100,
+        "away_plus_1_5": (prob_away_plus_1_5 / total) * 100,
+        "ht_home": (prob_ht_home_win / max(1.0, prob_ht_home_win + prob_ht_draw + prob_ht_away_win)) * 100,
+        "ht_draw": (prob_ht_draw / max(1.0, prob_ht_home_win + prob_ht_draw + prob_ht_away_win)) * 100,
+        "ht_away": (prob_ht_away_win / max(1.0, prob_ht_home_win + prob_ht_draw + prob_ht_away_win)) * 100,
+        "ht_over_0_5": (prob_ht_over_05 / max(1.0, prob_ht_over_05 + prob_ht_under_05)) * 100,
         "exact_score": best_exact_score,
         "exact_score_prob": (best_exact_score_prob / total) * 100,
         "home_xg": home_expected_full,
