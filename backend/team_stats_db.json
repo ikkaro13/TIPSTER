@@ -488,7 +488,7 @@
         "last_updated": 1787311314.4202511
     },
     "14002": {
-        "name": "Mazatlán",
+        "name": "Mazatl\u00e1n",
         "league": 262,
         "form": "LDLLWDLDDLDDWDLDLDLWWLLDLWDDLWLDLL",
         "clean_sheets_total": 9,
@@ -499,7 +499,7 @@
         "last_updated": 1787311320.9181662
     },
     "157": {
-        "name": "Bayern München",
+        "name": "Bayern M\u00fcnchen",
         "league": 78,
         "form": "WWWWDDWWWWWDWLWWWWWWWDWWLDWWDWWDWW",
         "clean_sheets_total": 16,
@@ -543,7 +543,7 @@
         "last_updated": 1787335821.9500968
     },
     "163": {
-        "name": "Borussia Mönchengladbach",
+        "name": "Borussia M\u00f6nchengladbach",
         "league": 78,
         "form": "LWLLWLWDWDWLDWWLLLWWDWLWLWWDLLLDLL",
         "clean_sheets_total": 7,
@@ -1735,7 +1735,7 @@
         "form": "WLWLL"
     },
     "224": {
-        "name": "Vitória SC",
+        "name": "Vit\u00f3ria SC",
         "league": 94,
         "clean_sheet_rate": 0.38235294117647056,
         "failed_rate": 0.2647058823529412,
@@ -1861,14 +1861,14 @@
         "form": "DWLLW"
     },
     "549": {
-        "name": "Beşiktaş",
+        "name": "Be\u015fikta\u015f",
         "league": 203,
         "clean_sheet_rate": 0.3055555555555556,
         "failed_rate": 0.1111111111111111,
         "form": "WWDLW"
     },
     "564": {
-        "name": "Başakşehir",
+        "name": "Ba\u015fak\u015fehir",
         "league": 203,
         "clean_sheet_rate": 0.2777777777777778,
         "failed_rate": 0.2222222222222222,
@@ -1882,7 +1882,7 @@
         "form": "WLWLL"
     },
     "611": {
-        "name": "Fenerbahçe",
+        "name": "Fenerbah\u00e7e",
         "league": 203,
         "clean_sheet_rate": 0.3333333333333333,
         "failed_rate": 0.1111111111111111,
@@ -1896,7 +1896,7 @@
         "form": "WWWWW"
     },
     "994": {
-        "name": "Göztepe",
+        "name": "G\u00f6ztepe",
         "league": 203,
         "clean_sheet_rate": 0.2222222222222222,
         "failed_rate": 0.19444444444444445,
@@ -1931,7 +1931,7 @@
         "form": "WLDLL"
     },
     "1004": {
-        "name": "Kasımpaşa",
+        "name": "Kas\u0131mpa\u015fa",
         "league": 203,
         "clean_sheet_rate": 0.19444444444444445,
         "failed_rate": 0.19444444444444445,
@@ -1980,7 +1980,7 @@
         "form": "LDDDL"
     },
     "3588": {
-        "name": "Eyüpspor",
+        "name": "Ey\u00fcpspor",
         "league": 203,
         "clean_sheet_rate": 0.3055555555555556,
         "failed_rate": 0.16666666666666666,
@@ -2575,7 +2575,7 @@
         "form": "WLDLL"
     },
     "6698": {
-        "name": "Skövde AIK",
+        "name": "Sk\u00f6vde AIK",
         "league": 114,
         "clean_sheet_rate": 0.23333333333333334,
         "failed_rate": 0.36666666666666664,
@@ -3065,7 +3065,7 @@
         "form": "LLWDL"
     },
     "1144": {
-        "name": "Águilas Doradas",
+        "name": "\u00c1guilas Doradas",
         "league": 239,
         "clean_sheet_rate": 0.2631578947368421,
         "failed_rate": 0.3684210526315789,
@@ -3499,7 +3499,7 @@
         "form": "LDWDL"
     },
     "5254": {
-        "name": "Castellón",
+        "name": "Castell\u00f3n",
         "league": 141,
         "clean_sheet_rate": 0.19047619047619047,
         "failed_rate": 0.2619047619047619,
@@ -3693,5 +3693,86 @@
         "clean_sheet_rate": 0.34210526315789475,
         "failed_rate": 0.3157894736842105,
         "form": "WLWLD"
+    },
+    "939": {
+        "name": "Western Sydney Wanderers",
+        "league": 188,
+        "form": "LDLWLWDWWLDWLLWDWWWWDDWDWWL",
+        "clean_sheets": 5,
+        "failed_to_score": 1,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "940": {
+        "name": "Perth Glory",
+        "league": 188,
+        "form": "LLDLLDLLWLLLWLDLDLDLLLLWLW",
+        "clean_sheets": 5,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "941": {
+        "name": "Central Coast Mariners",
+        "league": 188,
+        "form": "DDDLWWLDLDWLWDDDDLLLDWLLDL",
+        "clean_sheets": 3,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "942": {
+        "name": "Wellington Phoenix",
+        "league": 188,
+        "form": "DWLWWLLLWLLDWDDLLLLDDWLLLL",
+        "clean_sheets": 5,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "943": {
+        "name": "Sydney",
+        "league": 188,
+        "form": "WLWLWLLDWDWWDLLWDDWDLWDWLL",
+        "clean_sheets": 5,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "944": {
+        "name": "Melbourne Victory",
+        "league": 188,
+        "form": "DWWWLWWDLDDLLWWLWDDWLWWLWDWLWL",
+        "clean_sheets": 9,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "945": {
+        "name": "Melbourne City",
+        "league": 188,
+        "form": "WLWWLWDDDWWWLLLWDWWLWWWDDWWDW",
+        "clean_sheets": 13,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "946": {
+        "name": "Newcastle Jets",
+        "league": 188,
+        "form": "LWLLLLWLDWLLDDWWWDWLDLWLLD",
+        "clean_sheets": 5,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "947": {
+        "name": "Brisbane Roar",
+        "league": 188,
+        "form": "LLLLDLDLLLLLWLDLDDWLLLWDWW",
+        "clean_sheets": 1,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     }
 }
