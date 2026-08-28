@@ -124,18 +124,21 @@ class ValueAggregator:
         odds = context.get('odds', {})
         probs = context.get('probs', {})
         
-        market_map = {
+                market_map = {
             "Gana Local": "home",
             "Empate": "draw",
             "Gana Visita": "away",
-            "Más de 1.5 Goles": "over_1_5",
-            "Más de 2.5 Goles": "over_2_5",
+            "Mǭs de 1.5 Goles": "over_1_5",
+            "Mǭs de 2.5 Goles": "over_2_5",
             "Menos de 3.5 Goles": "under_3_5",
-            "Ambos Anotan (SÍ)": "btts_yes",
+            "Ambos Anotan (S?)": "btts_yes",
             "Ambos Anotan (NO)": "btts_no",
             "Menos de 2.5 Goles": "under_2_5",
+            "Doble Oportunidad (1X)": "dc_1x",
+            "Doble Oportunidad (X2)": "dc_x2",
+            "DNB (Local)": "dnb_home",
+            "DNB (Visita)": "dnb_away"
         }
-        
         valid_safe_markets = {}
         for market_desc, key in market_map.items():
             if key in odds and key in probs:
