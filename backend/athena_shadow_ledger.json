@@ -612,5 +612,21 @@
         "bookie": "Mock",
         "type": "🎯 Francotirador",
         "logged_at": "2026-08-26T03:00:15.021962+00:00"
+    },
+    {
+        "fixture_id": "1493106",
+        "league": "Liga Profesional Argentina",
+        "home_team": "Union Santa Fe",
+        "away_team": "Sarmiento Junin",
+        "pick": "Under 2.5",
+        "prob": 73.69,
+        "odds": 1.67,
+        "edge": 23.06,
+        "bookie": "Unknown",
+        "type": "ðŸŽ¯ Francotirador",
+        "exact_score": "0 - 0",
+        "exact_score_prob": 18.5,
+        "logged_at": "2026-08-28T14:18:16.451222+00:00",
+        "record_hash": "6be1d37ecc260fd679bd038448c2e7072a19216bed3a69392937a7048d5b9b97"
     }
 ]
