@@ -22,6 +22,10 @@ class ValueAggregator:
             "Ambos Anotan - SÍ": "btts_yes",
             "Ambos Anotan - NO": "btts_no",
             "Under 2.5 Goles (Partido Cerrado)": "under_2_5",
+            "Doble Oportunidad (1X)": "dc_1x",
+            "Doble Oportunidad (X2)": "dc_x2",
+            "DNB (Local)": "dnb_home",
+            "DNB (Visita)": "dnb_away",
         }
         
         market_map_inverse = {v: k for k, v in market_map.items()}
@@ -124,7 +128,7 @@ class ValueAggregator:
         odds = context.get('odds', {})
         probs = context.get('probs', {})
         
-                market_map = {
+        market_map = {
             "Gana Local": "home",
             "Empate": "draw",
             "Gana Visita": "away",
