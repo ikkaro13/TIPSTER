@@ -722,6 +722,10 @@ def scan_day_for_value_bets(date: str):
         "Away":               0.10,   # 10%
         "Over 2.5":           0.20,   # 20% — modelo sin ventaja demostrada
         "Under 2.5":          0.20,   # 20%
+        "Over 1.5":           0.20,   # 20%
+        "Under 1.5":          0.20,   # 20%
+        "Over 0.5":           0.20,   # 20%
+        "Under 0.5":          0.20,   # 20%
         "BTTS Yes":           0.20,   # 20%
         "Double Chance 1X":   0.12,   # 12%
         "Double Chance X2":   0.12,   # 12%
@@ -835,7 +839,7 @@ def scan_day_for_value_bets(date: str):
                 continue
             
             probs = calculate_match_probabilities(
-                home_team, away_team, GLOBAL_STATS_DB, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=h_ctx
+                home_team, away_team, GLOBAL_STATS_DB, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=h_ctx, league_name=league_name
             )
             
             odds = daily_odds[fixture_id]
@@ -847,6 +851,10 @@ def scan_day_for_value_bets(date: str):
                 ("Away",             probs.get('away', 0),     odds.get('away', {})),
                 ("Over 2.5",         probs.get('over_2_5', 0), odds.get('over_2_5', {})),
                 ("Under 2.5",        probs.get('under_2_5', 0),odds.get('under_2_5', {})),
+                ("Over 1.5",         probs.get('over_1_5', 0), odds.get('over_1_5', {})),
+                ("Under 1.5",        probs.get('under_1_5', 0),odds.get('under_1_5', {})),
+                ("Over 0.5",         probs.get('over_0_5', 0), odds.get('over_0_5', {})),
+                ("Under 0.5",        probs.get('under_0_5', 0),odds.get('under_0_5', {})),
                 ("BTTS Yes",         probs.get('btts_yes', 0), odds.get('btts_yes', {})),
                 ("Double Chance 1X", probs.get('dc_1x', 0),   odds.get('dc_1x', {})),
                 ("Double Chance X2", probs.get('dc_x2', 0),   odds.get('dc_x2', {})),

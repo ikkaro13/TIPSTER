@@ -40,15 +40,29 @@ def dixon_coles_adjustment(lambda_, mu, x, y, rho=-0.13):
     if x == 1 and y == 1: return max(0.0, 1.0 - rho)
     return 1.0
 
-def elo_to_expected_goals(home_elo, away_elo, home_advantage_points):
+def elo_to_expected_goals(home_elo, away_elo, home_advantage_points, league_name="Unknown"):
     elo_diff = home_elo - away_elo + home_advantage_points
     win_expectancy = 1 / (1 + 10 ** (-elo_diff / 400))
-    total_goals_avg = 2.5
+    
+    GOALS_BY_LEAGUE = {
+        "Bundesliga": 3.1,
+        "Bundesliga 1": 3.1,
+        "Premier League": 2.7,
+        "Serie A": 2.6,
+        "Eredivisie": 3.1,
+        "Ligue 1": 2.4,
+        "Liga MX": 2.5,
+        "La Liga": 2.6,
+        "Championship": 2.5,
+    }
+    # Si la liga no está en el diccionario, usamos 2.6 como promedio global
+    total_goals_avg = GOALS_BY_LEAGUE.get(league_name, 2.6)
+    
     home_xg = total_goals_avg * win_expectancy
     away_xg = total_goals_avg * (1 - win_expectancy)
     return home_xg, away_xg
 
-def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=None, current_corners=0):
+def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0, current_home_goals=0, current_away_goals=0, historical_context=None, current_corners=0, league_name="Unknown"):
     home_elo = elo_db.get(home_team, 1750)
     away_elo = elo_db.get(away_team, 1750)
     
@@ -58,7 +72,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     home_advantage_points = 100 if home_team in concacaf_teams else 50
     
     # Fallback inicial usando Elo (Plan B base)
-    home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
+    home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points, league_name)
 
     # Si tenemos contexto histÃ³rico real (BÃ³veda de Stats)
     if historical_context and historical_context.get("home") and historical_context.get("away"):
