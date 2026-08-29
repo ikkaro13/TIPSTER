@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -911,7 +911,9 @@ export default function Home() {
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('portfolio'); // 'radar', 'portfolio', 'calendar', 'match-detail'
+  const [activeTab, setActiveTab] = useState('portfolio'); // 'radar', 'portfolio', 'calendar', 'match-detail', 'lab'
+  const [labData, setLabData] = useState<any>(null);
+  const [labLoading, setLabLoading] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<any>(null);
   
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
@@ -956,6 +958,16 @@ export default function Home() {
       const data = await res.json();
       setPortfolio(data);
     } catch (e) { console.error(e); }
+  };
+
+  const fetchLab = async () => {
+    setLabLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/portfolio/lab`);
+      const data = await res.json();
+      setLabData(data);
+    } catch (e) { console.error(e); }
+    setLabLoading(false);
   };
   
   const fetchArgosStatus = async () => {
@@ -1189,6 +1201,7 @@ export default function Home() {
               <button onClick={() => setActiveTab('calendar')} className={`cyber-button ${activeTab === 'calendar' ? 'active' : ''}`}>📅 Chronos</button>
               <button onClick={() => setActiveTab('radar')} className={`cyber-button ${activeTab === 'radar' ? 'active' : ''}`}>🔭 Argos</button>
               <button onClick={() => setActiveTab('portfolio')} className={`cyber-button ${activeTab === 'portfolio' ? 'active' : ''}`}>💼 Plutus</button>
+              <button onClick={() => { setActiveTab('lab'); fetchLab(); }} className={`cyber-button ${activeTab === 'lab' ? 'active' : ''}`}>🧬 LAB</button>
           </div>
         </div>
 
@@ -1533,6 +1546,127 @@ export default function Home() {
               </div>
             </div>
           )}
+
+        {/* ── LAB TAB ─────────────────────────────────────────────────────── */}
+        {activeTab === 'lab' && (
+          <div className="match-card">
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem'}}>
+              <div>
+                <div style={{color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.3rem'}}>🧬 Laboratorio de Patrones</div>
+                <div style={{color: '#fff', fontWeight: 900, fontSize: '1.5rem'}}>¿Qué combinaciones te hacen ganar?</div>
+              </div>
+              <button onClick={fetchLab} style={{background: '#8b5cf6', color: 'white', border: 'none', borderRadius: '8px', padding: '0.6rem 1.2rem', fontWeight: 700, cursor: 'pointer'}}>↻ Actualizar</button>
+            </div>
+
+            {labLoading && <div style={{textAlign: 'center', color: 'var(--text-muted)', padding: '3rem'}}>Analizando tus patrones...</div>}
+            {!labLoading && labData && labData.status === 'sin_datos' && (
+              <div style={{textAlign: 'center', color: 'var(--text-muted)', padding: '3rem'}}>{labData.message}</div>
+            )}
+
+            {!labLoading && labData && labData.status === 'ok' && (() => {
+              const roiColor = (roi: number) => roi >= 10 ? '#10b981' : roi >= 0 ? '#f59e0b' : '#ef4444';
+              const hitColor = (hr: number) => hr >= 65 ? '#10b981' : hr >= 50 ? '#f59e0b' : '#ef4444';
+
+              const StatCard = ({ label, stats }: { label: string, stats: any }) => (
+                <div style={{background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '0.9rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                  <div style={{fontWeight: 700, fontSize: '0.9rem', color: '#cbd5e1', maxWidth: '55%'}}>{label}</div>
+                  <div style={{display: 'flex', gap: '1.2rem', alignItems: 'center'}}>
+                    <div style={{textAlign: 'center'}}>
+                      <div style={{color: 'var(--text-muted)', fontSize: '0.65rem', fontWeight: 700}}>APUESTAS</div>
+                      <div style={{color: '#fff', fontWeight: 900}}>{stats.total}</div>
+                    </div>
+                    <div style={{textAlign: 'center'}}>
+                      <div style={{color: 'var(--text-muted)', fontSize: '0.65rem', fontWeight: 700}}>HIT RATE</div>
+                      <div style={{color: hitColor(stats.hit_rate), fontWeight: 900}}>{stats.hit_rate}%</div>
+                    </div>
+                    <div style={{textAlign: 'center'}}>
+                      <div style={{color: 'var(--text-muted)', fontSize: '0.65rem', fontWeight: 700}}>ROI</div>
+                      <div style={{color: roiColor(stats.roi), fontWeight: 900}}>{stats.roi > 0 ? '+' : ''}{stats.roi}%</div>
+                    </div>
+                  </div>
+                </div>
+              );
+
+              const Section = ({ title, data }: { title: string, data: Record<string, any> }) => (
+                <div style={{marginBottom: '2rem'}}>
+                  <div style={{color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.8rem'}}>{title}</div>
+                  <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                    {Object.entries(data).sort((a: any, b: any) => (b[1]?.roi ?? -999) - (a[1]?.roi ?? -999)).map(([key, stats]: [string, any]) =>
+                      stats ? <StatCard key={key} label={key} stats={stats} /> : null
+                    )}
+                  </div>
+                </div>
+              );
+
+              return (
+                <div>
+                  {/* Resumen global */}
+                  <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2.5rem'}}>
+                    {[
+                      { label: 'Apuestas analizadas', value: labData.total_analizadas, color: '#fff' },
+                      { label: 'Hit Rate Global', value: `${labData.resumen?.hit_rate}%`, color: hitColor(labData.resumen?.hit_rate ?? 0) },
+                      { label: 'ROI Global', value: `${labData.resumen?.roi > 0 ? '+' : ''}${labData.resumen?.roi}%`, color: roiColor(labData.resumen?.roi ?? 0) },
+                      { label: 'Ganancia Neta', value: `$${labData.resumen?.ganancia_neta?.toFixed(2)}`, color: (labData.resumen?.ganancia_neta ?? 0) >= 0 ? '#10b981' : '#ef4444' },
+                    ].map(item => (
+                      <div key={item.label} style={{background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '1.2rem', textAlign: 'center'}}>
+                        <div style={{color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem'}}>{item.label}</div>
+                        <div style={{color: item.color, fontWeight: 900, fontSize: '1.6rem'}}>{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Patrón Dorado */}
+                  {labData.patron_dorado && (
+                    <div style={{background: 'linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.05))', border: '1px solid rgba(251,191,36,0.4)', borderRadius: '14px', padding: '1.5rem', marginBottom: '2.5rem'}}>
+                      <div style={{color: '#fbbf24', fontWeight: 900, fontSize: '1rem', marginBottom: '0.8rem'}}>👑 PATRÓN DORADO — Tu combinación más rentable</div>
+                      <div style={{color: '#fff', fontWeight: 800, fontSize: '1.3rem', marginBottom: '0.5rem'}}>{labData.patron_dorado.descripcion}</div>
+                      <div style={{display: 'flex', gap: '2rem'}}>
+                        <div><span style={{color: 'var(--text-muted)', fontSize: '0.8rem'}}>Apuestas: </span><strong style={{color: '#fff'}}>{labData.patron_dorado.total}</strong></div>
+                        <div><span style={{color: 'var(--text-muted)', fontSize: '0.8rem'}}>Hit Rate: </span><strong style={{color: hitColor(labData.patron_dorado.hit_rate)}}>{labData.patron_dorado.hit_rate}%</strong></div>
+                        <div><span style={{color: 'var(--text-muted)', fontSize: '0.8rem'}}>ROI: </span><strong style={{color: roiColor(labData.patron_dorado.roi)}}>{labData.patron_dorado.roi > 0 ? '+' : ''}{labData.patron_dorado.roi}%</strong></div>
+                        <div><span style={{color: 'var(--text-muted)', fontSize: '0.8rem'}}>Ganancia: </span><strong style={{color: '#10b981'}}>${labData.patron_dorado.ganancia_neta?.toFixed(2)}</strong></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mejores y peores mercados */}
+                  {(labData.mejor_mercado || labData.peor_mercado) && (
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2.5rem'}}>
+                      {labData.mejor_mercado && (
+                        <div style={{background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '10px', padding: '1rem'}}>
+                          <div style={{color: '#10b981', fontWeight: 800, fontSize: '0.75rem', marginBottom: '0.3rem'}}>✅ MEJOR MERCADO</div>
+                          <div style={{color: '#fff', fontWeight: 900}}>{labData.mejor_mercado}</div>
+                          <div style={{color: '#10b981', fontSize: '0.85rem'}}>ROI: +{labData.por_mercado[labData.mejor_mercado]?.roi}%</div>
+                        </div>
+                      )}
+                      {labData.peor_mercado && (
+                        <div style={{background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '10px', padding: '1rem'}}>
+                          <div style={{color: '#ef4444', fontWeight: 800, fontSize: '0.75rem', marginBottom: '0.3rem'}}>❌ MERCADO A EVITAR</div>
+                          <div style={{color: '#fff', fontWeight: 900}}>{labData.peor_mercado}</div>
+                          <div style={{color: '#ef4444', fontSize: '0.85rem'}}>ROI: {labData.por_mercado[labData.peor_mercado]?.roi}%</div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Tablas de análisis */}
+                  <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem'}}>
+                    <div>
+                      <Section title="Por Probabilidad del Modelo" data={labData.por_probabilidad} />
+                      <Section title="Por AVI (Edge)" data={labData.por_avi} />
+                      <Section title="Por Confianza Hermes" data={labData.por_confianza_hermes} />
+                    </div>
+                    <div>
+                      <Section title="Por Mercado Apostado" data={labData.por_mercado} />
+                      <Section title="Por xG Total del Partido" data={labData.por_xg_total} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        )}
+
       </main>
     </>
   );

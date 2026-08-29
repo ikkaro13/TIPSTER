@@ -291,6 +291,189 @@ def delete_bet_endpoint(bet_id: str):
         raise HTTPException(status_code=404, detail=res["message"])
     return res
 
+@app.get("/api/portfolio/lab")
+def portfolio_lab():
+    """
+    🧬 LABORATORIO DE PATRONES
+    Analiza apuestas cerradas con evidence_snapshot para descubrir patrones ganadores.
+    """
+    import json as _json
+    from portfolio_manager import get_portfolio
+
+    data = get_portfolio()
+    bets = data.get("bets", [])
+    
+    # Solo apuestas cerradas con snapshot
+    settled = [b for b in bets if b["status"] in ("WON", "LOST") and b.get("evidence_snapshot")]
+    
+    if not settled:
+        return {"status": "sin_datos", "message": "No hay apuestas cerradas con datos de análisis aún.", "total_analizadas": 0}
+
+    # ── Helpers ──────────────────────────────────────────────────────────────
+    def parse_snap(b):
+        try:
+            return _json.loads(b["evidence_snapshot"])
+        except Exception:
+            return None
+
+    def extract_market_from_pick(pick: str) -> str:
+        """Infiere el mercado apostado desde el texto del pick."""
+        p = pick.lower()
+        if "over 2.5" in p or "más de 2.5" in p: return "Over 2.5"
+        if "under 2.5" in p or "menos de 2.5" in p: return "Under 2.5"
+        if "over 1.5" in p or "más de 1.5" in p: return "Over 1.5"
+        if "under 1.5" in p or "menos de 1.5" in p: return "Under 1.5"
+        if "over 0.5" in p or "más de 0.5" in p: return "Over 0.5"
+        if "btts" in p or "ambos anotan" in p: return "BTTS"
+        if "doble oportunidad" in p or "dc_1x" in p or "(1x)" in p: return "Doble Oportunidad 1X"
+        if "doble oportunidad" in p or "dc_x2" in p or "(x2)" in p: return "Doble Oportunidad X2"
+        if "draw no bet" in p or "empate no acción" in p or "dnb" in p: return "DNB"
+        if "empate" in p or "draw" in p: return "Empate"
+        if "gana visita" in p or "away" in p: return "Gana Visita"
+        if "pivote seguro" in p or "gana local" in p or "home" in p: return "Gana Local"
+        return "Otro"
+
+    def bucket_prob(prob):
+        if prob < 50:   return "<50%"
+        if prob < 60:   return "50-60%"
+        if prob < 70:   return "60-70%"
+        if prob < 80:   return "70-80%"
+        return "≥80%"
+
+    def bucket_avi(edge):
+        if edge < 0:    return "Negativo"
+        if edge < 10:   return "0-10%"
+        if edge < 20:   return "10-20%"
+        if edge < 30:   return "20-30%"
+        return "≥30%"
+
+    def bucket_xg(xg_total):
+        if xg_total < 1.5:  return "<1.5 xG"
+        if xg_total < 2.5:  return "1.5-2.5 xG"
+        if xg_total < 3.5:  return "2.5-3.5 xG"
+        return "≥3.5 xG"
+
+    def bucket_confidence(conf):
+        if conf < 40:   return "<40%"
+        if conf < 60:   return "40-60%"
+        if conf < 80:   return "60-80%"
+        return "≥80%"
+
+    def compute_stats(group):
+        if not group: return None
+        total = len(group)
+        won = sum(1 for b in group if b["status"] == "WON")
+        hit_rate = round(won / total * 100, 1)
+        total_profit = sum(b.get("profit", 0) for b in group)
+        total_stake = sum(b.get("stake", 0) for b in group)
+        roi = round((total_profit / total_stake * 100) if total_stake > 0 else 0, 1)
+        return {"total": total, "ganadas": won, "perdidas": total - won, "hit_rate": hit_rate, "roi": roi, "ganancia_neta": round(total_profit, 2)}
+
+    # ── Build enriched records ────────────────────────────────────────────────
+    records = []
+    for b in settled:
+        snap = parse_snap(b)
+        if not snap: continue
+
+        hermes = snap.get("hermes", {})
+        metrics = snap.get("metrics", {})
+        
+        # Determinar la prob del mercado apostado
+        pick_lower = b["pick"].lower()
+        if "gana local" in pick_lower or "pivote seguro" in pick_lower:
+            prob_used = snap.get("home", 0)
+        elif "empate" in pick_lower:
+            prob_used = snap.get("draw", 0)
+        elif "gana visita" in pick_lower:
+            prob_used = snap.get("away", 0)
+        elif "1x" in pick_lower or "doble oportunidad (1x)" in pick_lower.replace(" ", ""):
+            prob_used = snap.get("dc_1x", 0)
+        elif "x2" in pick_lower or "doble oportunidad (x2)" in pick_lower.replace(" ", ""):
+            prob_used = snap.get("dc_x2", 0)
+        elif "over 1.5" in pick_lower or "más de 1.5" in pick_lower:
+            prob_used = snap.get("over_1_5", 0)
+        elif "over 2.5" in pick_lower or "más de 2.5" in pick_lower:
+            prob_used = snap.get("over_2_5", 0)
+        elif "btts" in pick_lower or "ambos anotan" in pick_lower:
+            prob_used = snap.get("btts_yes", 0)
+        else:
+            prob_used = snap.get("home", 0)
+
+        # AVI (Edge) calculado con la cuota real que el usuario usó
+        odds = b.get("odds", 1.0)
+        avi = round(((prob_used / 100.0) * odds - 1) * 100, 2)
+
+        xg_total = snap.get("home_xg", metrics.get("home_xg", 0)) + snap.get("away_xg", metrics.get("away_xg", 0))
+        hermes_confidence = hermes.get("confidence", 0)
+
+        records.append({
+            "bet": b,
+            "snap": snap,
+            "prob": prob_used,
+            "avi": avi,
+            "xg_total": xg_total,
+            "hermes_confidence": hermes_confidence,
+            "market": extract_market_from_pick(b["pick"]),
+            "prob_bucket": bucket_prob(prob_used),
+            "avi_bucket": bucket_avi(avi),
+            "xg_bucket": bucket_xg(xg_total),
+            "conf_bucket": bucket_confidence(hermes_confidence),
+        })
+
+    if not records:
+        return {"status": "sin_datos", "message": "Los snapshots no pudieron procesarse.", "total_analizadas": 0}
+
+    # ── Analysis by dimensions ────────────────────────────────────────────────
+    from collections import defaultdict
+
+    def group_by(records, key_fn):
+        groups = defaultdict(list)
+        for r in records:
+            groups[key_fn(r)].append(r["bet"])
+        return {k: compute_stats(v) for k, v in groups.items()}
+
+    prob_analysis = group_by(records, lambda r: r["prob_bucket"])
+    avi_analysis  = group_by(records, lambda r: r["avi_bucket"])
+    market_analysis = group_by(records, lambda r: r["market"])
+    xg_analysis   = group_by(records, lambda r: r["xg_bucket"])
+    conf_analysis = group_by(records, lambda r: r["conf_bucket"])
+
+    # ── Golden Pattern: find the combo with best ROI (min 5 bets) ────────────
+    combo_groups = defaultdict(list)
+    for r in records:
+        key = f"Prob {r['prob_bucket']} + AVI {r['avi_bucket']}"
+        combo_groups[key].append(r["bet"])
+    
+    patron_dorado = None
+    best_roi = -999
+    for combo_key, combo_bets in combo_groups.items():
+        if len(combo_bets) >= 3:  # mínimo 3 apuestas para ser relevante
+            stats = compute_stats(combo_bets)
+            if stats and stats["roi"] > best_roi:
+                best_roi = stats["roi"]
+                patron_dorado = {"descripcion": combo_key, **stats}
+
+    # ── Best and worst markets ────────────────────────────────────────────────
+    mercados_ordenados = sorted(
+        [(m, s) for m, s in market_analysis.items() if s and s["total"] >= 2],
+        key=lambda x: x[1]["roi"], reverse=True
+    )
+
+    return {
+        "status": "ok",
+        "total_analizadas": len(records),
+        "resumen": compute_stats([r["bet"] for r in records]),
+        "por_probabilidad": prob_analysis,
+        "por_avi": avi_analysis,
+        "por_mercado": market_analysis,
+        "por_xg_total": xg_analysis,
+        "por_confianza_hermes": conf_analysis,
+        "mejor_mercado": mercados_ordenados[0][0] if mercados_ordenados else None,
+        "peor_mercado": mercados_ordenados[-1][0] if mercados_ordenados else None,
+        "patron_dorado": patron_dorado,
+    }
+
+
 @app.put("/api/portfolio/bets/{bet_id}/odds")
 def update_bet_odds_endpoint(bet_id: str, request: UpdateOddsRequest):
     res = update_bet_odds(bet_id, request.odds)
