@@ -154,16 +154,17 @@ class ValueAggregator:
                 
                 # REGLA DEL LADRILLO: Cuota mínima de 1.60
                 if o >= 1.60:
-                    valid_safe_markets[market_desc] = p
+                    # Verificar que el edge no sea demasiado negativo (> -5%)
+                    # Evita recomendar apuestas con overround muy alto donde la casa siempre gana
+                    implied_edge = (p / 100.0) * o - 1
+                    if implied_edge > -0.05:
+                        valid_safe_markets[market_desc] = p
                     
         if not valid_safe_markets:
             return "NO HAY SAFE PICK (Ningún mercado seguro >= 1.60)", 0
             
         best_safe_desc = max(valid_safe_markets, key=valid_safe_markets.get)
         best_safe_prob = valid_safe_markets[best_safe_desc]
-        
-        # Opcionalmente, agregar DO (Doble Oportunidad) si tenemos cuotas de DO y cumplen >= 1.60
-        # Por simplicidad, tomamos el mejor de los principales.
         
         return f"{best_safe_desc} (Cuota >= 1.60)", int(best_safe_prob)
 

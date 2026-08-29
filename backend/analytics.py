@@ -1,10 +1,12 @@
-﻿import math
+import math
 import os
 import joblib
 from scraper import get_corners_data
 from player_props import get_player_props
 from engine.hermes import Hermes
 
+# Singleton de Hermes: se instancia una sola vez al cargar el módulo
+_HERMES_INSTANCE = Hermes()
 
 CORNERS_DB = get_corners_data()
 ML_MODEL_1X2 = None
@@ -50,8 +52,10 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     home_elo = elo_db.get(home_team, 1750)
     away_elo = elo_db.get(away_team, 1750)
     
-    hosts = ["Mexico", "Canada", "USA", "United States"]
-    home_advantage_points = 100 if home_team in hosts else 0
+    # Ventaja local universal: +50 ELO para cualquier equipo en casa.
+    # CONCACAF (ligas más estudiadas por el sistema) mantiene +100.
+    concacaf_teams = ["Mexico", "Canada", "USA", "United States"]
+    home_advantage_points = 100 if home_team in concacaf_teams else 50
     
     # Fallback inicial usando Elo (Plan B base)
     home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points)
@@ -282,8 +286,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     elif prob_away_win > prob_home_win and prob_away_win > prob_draw: poisson_winner = away_team
     else: poisson_winner = "Empate"
 
-    hermes = Hermes()
-    hermes_insight = hermes.analyze({
+    hermes_insight = _HERMES_INSTANCE.analyze({
         'home_team': home_team,
         'away_team': away_team,
         'home_elo': elo_db.get(home_team, 1500),
@@ -322,6 +325,16 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     total = prob_home_win + prob_draw + prob_away_win
     if total == 0: total = 1.0 # Prevent division by zero
     
+    # Normalización correcta por familia de mercado
+    total_ou25 = prob_over_25 + prob_under_25
+    if total_ou25 == 0: total_ou25 = 1.0
+    total_ou15 = prob_over_15 + prob_under_15
+    if total_ou15 == 0: total_ou15 = 1.0
+    total_ou35 = prob_over_35 + prob_under_35
+    if total_ou35 == 0: total_ou35 = 1.0
+    total_btts = prob_btts_yes + prob_btts_no
+    if total_btts == 0: total_btts = 1.0
+    
     result = {
         "home": (prob_home_win / total) * 100,
         "draw": (prob_draw / total) * 100,
@@ -333,14 +346,14 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         "dnb_away": (prob_away_win / (prob_home_win + prob_away_win)) * 100 if (prob_home_win + prob_away_win) > 0 else 0,
         "over_0_5": (prob_over_05 / total) * 100,
         "under_0_5": (prob_under_05 / total) * 100,
-        "over_1_5": (prob_over_15 / total) * 100,
-        "under_1_5": (prob_under_15 / total) * 100,
-        "over_2_5": (prob_over_25 / total) * 100,
-        "under_2_5": (prob_under_25 / total) * 100,
-        "over_3_5": (prob_over_35 / total) * 100,
-        "under_3_5": (prob_under_35 / total) * 100,
-        "btts_yes": (prob_btts_yes / total) * 100,
-        "btts_no": (prob_btts_no / total) * 100,
+        "over_1_5": (prob_over_15 / total_ou15) * 100,
+        "under_1_5": (prob_under_15 / total_ou15) * 100,
+        "over_2_5": (prob_over_25 / total_ou25) * 100,
+        "under_2_5": (prob_under_25 / total_ou25) * 100,
+        "over_3_5": (prob_over_35 / total_ou35) * 100,
+        "under_3_5": (prob_under_35 / total_ou35) * 100,
+        "btts_yes": (prob_btts_yes / total_btts) * 100,
+        "btts_no": (prob_btts_no / total_btts) * 100,
         "home_minus_1_5": (prob_home_minus_1_5 / total) * 100,
         "away_minus_1_5": (prob_away_minus_1_5 / total) * 100,
         "home_minus_1_0": (prob_home_minus_1_0 / total) * 100,

@@ -82,36 +82,75 @@ def settle_bet(bet_id, result_status):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
-    bet = cursor.fetchone()
-    
-    if not bet or bet['status'] != 'OPEN':
+    try:
+        cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
+        bet = cursor.fetchone()
+        
+        if not bet or bet['status'] != 'OPEN':
+            return {"status": "error", "message": "Apuesta no encontrada o ya cerrada"}
+            
+        cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+        row = cursor.fetchone()
+        bankroll = row['value'] if row else 10000.0
+        
+        stake = bet['stake']
+        odds = bet['odds']
+        
+        if result_status == 'WON':
+            profit = (stake * odds) - stake
+            bankroll += (stake * odds)
+        elif result_status == 'LOST':
+            profit = -stake
+        else: # REFUND
+            profit = 0
+            bankroll += stake
+            
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
+        cursor.execute("UPDATE bets SET status = ?, profit = ? WHERE id = ?", (result_status, profit, bet_id))
+        
+        conn.commit()
+        return {"status": "success", "new_bankroll": bankroll}
+    finally:
         conn.close()
-        return {"status": "error", "message": "Apuesta no encontrada o ya cerrada"}
+
+def reopen_bet(bet_id):
+    """Revierte una apuesta cerrada (REFUND/WON/LOST) de vuelta a OPEN, ajustando el bankroll."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
+        bet = cursor.fetchone()
         
-    cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
-    row = cursor.fetchone()
-    bankroll = row['value'] if row else 10000.0
-    
-    stake = bet['stake']
-    odds = bet['odds']
-    
-    if result_status == 'WON':
-        profit = (stake * odds) - stake
-        bankroll += (stake * odds)
-    elif result_status == 'LOST':
-        profit = -stake
-    else: # REFUND
-        profit = 0
-        bankroll += stake
+        if not bet:
+            return {"status": "error", "message": "Apuesta no encontrada"}
         
-    cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
-    cursor.execute("UPDATE bets SET status = ?, profit = ? WHERE id = ?", (result_status, profit, bet_id))
-    
-    conn.commit()
-    conn.close()
-    
-    return {"status": "success", "new_bankroll": bankroll}
+        if bet['status'] == 'OPEN':
+            return {"status": "error", "message": "La apuesta ya está abierta"}
+            
+        cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+        row = cursor.fetchone()
+        bankroll = row['value'] if row else 10000.0
+        
+        stake = bet['stake']
+        odds = bet['odds']
+        current_status = bet['status']
+        
+        # Revertir el efecto financiero según el estado actual
+        if current_status == 'WON':
+            bankroll = bankroll - (stake * odds)  # quitar la ganancia
+        elif current_status == 'LOST':
+            bankroll = bankroll - stake  # quitar la devolución (el stake ya estaba descontado)
+        elif current_status == 'REFUND':
+            bankroll = bankroll - stake  # quitar el reembolso
+        
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
+        cursor.execute("UPDATE bets SET status = 'OPEN', profit = 0 WHERE id = ?", (bet_id,))
+        
+        conn.commit()
+        return {"status": "success", "message": f"Apuesta reabierta correctamente.", "new_bankroll": bankroll}
+    finally:
+        conn.close()
 
 def delete_bet(bet_id):
     conn = get_db_connection()

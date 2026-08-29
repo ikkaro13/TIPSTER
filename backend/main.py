@@ -1,4 +1,4 @@
-﻿import os
+import os
 import time
 import traceback
 import requests
@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from analytics import calculate_match_probabilities, find_value_bets
 from data_engine import get_national_elo
 from elo_updater import update_match_result
-from portfolio_manager import get_portfolio, place_bet, settle_bet, reset_bankroll, delete_bet, update_bet_odds
+from portfolio_manager import get_portfolio, place_bet, settle_bet, reopen_bet, reset_bankroll, delete_bet, update_bet_odds
 from pydantic import BaseModel
 from services.historical_context_service import HistoricalContextService
 from engine.hermes import Hermes
@@ -275,6 +275,14 @@ def trigger_auto_tuning():
 @app.post("/api/portfolio/settle/{bet_id}")
 def settle_bet_endpoint(bet_id: str, request: SettleRequest):
     return settle_bet(bet_id, request.result)
+
+@app.post("/api/portfolio/reopen/{bet_id}")
+def reopen_bet_endpoint(bet_id: str):
+    """Revierte una apuesta cerrada de vuelta a PENDIENTE (OPEN). Útil para corregir errores."""
+    res = reopen_bet(bet_id)
+    if res.get("status") == "error":
+        raise HTTPException(status_code=400, detail=res["message"])
+    return res
 
 @app.delete("/api/portfolio/bets/{bet_id}")
 def delete_bet_endpoint(bet_id: str):
@@ -704,9 +712,27 @@ def scan_day_for_value_bets(date: str):
     global GLOBAL_STATS_DB
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
-        
+
+    # ── Umbrales de Edge mínimo por familia de mercado ──────────────────────
+    # El modelo de Poisson/ELO tiene más señal en 1X2 que en totales.
+    # Para totales, exigimos más margen para compensar la menor precisión.
+    MIN_EDGE_PER_MARKET = {
+        "Home":               0.10,   # 10%
+        "Draw":               0.15,   # 15% — el más difícil
+        "Away":               0.10,   # 10%
+        "Over 2.5":           0.20,   # 20% — modelo sin ventaja demostrada
+        "Under 2.5":          0.20,   # 20%
+        "BTTS Yes":           0.20,   # 20%
+        "Double Chance 1X":   0.12,   # 12%
+        "Double Chance X2":   0.12,   # 12%
+        "Double Chance 12":   0.15,   # 15%
+        "Draw No Bet Home":   0.12,   # 12%
+        "Draw No Bet Away":   0.12,   # 12%
+    }
+    DEFAULT_MIN_EDGE = 0.12  # Para cualquier mercado no listado explícitamente
+
     try:
-        # 1. Obtener todos los partidos del dÃ­a
+        # 1. Obtener todos los partidos del día
         fixtures = api_football_engine.get_daily_fixtures(date, timezone_str="America/Mexico_City")
         if not fixtures:
             return {"status": "success", "date": date, "value_bets": []}
@@ -717,7 +743,7 @@ def scan_day_for_value_bets(date: str):
         value_bets = []
         safe_bets = []
         
-        # Cargar parÃ¡metros de auto-tuning
+        # Cargar parámetros de auto-tuning
         tuning_params = {"markets": {}}
         tuning_file = os.path.join(os.path.dirname(__file__), "tuning_params.json")
         if os.path.exists(tuning_file):
@@ -727,7 +753,7 @@ def scan_day_for_value_bets(date: str):
             except:
                 pass
         
-        # Cargar Boveda de EstadÃ­sticas (Motor Hibrido)
+        # Cargar Boveda de Estadísticas (Motor Hibrido)
         stats_db = {}
         stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
         if os.path.exists(stats_file):
@@ -736,8 +762,55 @@ def scan_day_for_value_bets(date: str):
                     stats_db = json.load(f)
             except:
                 pass
-        
-        # 3. Analizar matemÃ¡ticamente
+
+        # ── check_edge: definida FUERA del loop para eficiencia ────────────
+        def check_edge(prob_percent, odds_val, pick_name, match_probs, match_odds,
+                       match_home, match_away, match_league, match_fixture_id):
+            prob = prob_percent / 100.0
+            edge = (prob * odds_val) - 1
+
+            # Umbral mínimo por mercado (más exigente para totales)
+            required_edge = MIN_EDGE_PER_MARKET.get(pick_name, DEFAULT_MIN_EDGE)
+
+            # Penalización adicional de auto-tuning si existe
+            m_key = pick_name.upper()
+            edge_penalty = tuning_params.get("markets", {}).get(m_key, {}).get("edge_penalty", 0.0)
+            required_edge = required_edge + edge_penalty
+
+            if edge > required_edge and prob_percent >= 50.0:
+                value_bets.append({
+                    "fixture_id": match_fixture_id,
+                    "league": match_league,
+                    "home_team": match_home,
+                    "away_team": match_away,
+                    "pick": pick_name,
+                    "prob": round(prob_percent, 2),
+                    "odds": odds_val,
+                    "edge": round(edge * 100, 2),
+                    "bookmaker": match_odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'API'),
+                    "type": "🎯 Francotirador",
+                    "exact_score": match_probs.get("exact_score", "?-?"),
+                    "exact_score_prob": round(match_probs.get("exact_score_prob", 0), 1)
+                })
+
+            # Ladrillo: alta probabilidad + cuota jugable + edge no demasiado negativo (> -5%)
+            if prob_percent >= 60.0 and odds_val >= 1.60 and edge > -0.05:
+                safe_bets.append({
+                    "fixture_id": match_fixture_id,
+                    "league": match_league,
+                    "home_team": match_home,
+                    "away_team": match_away,
+                    "pick": pick_name,
+                    "prob": round(prob_percent, 2),
+                    "odds": odds_val,
+                    "edge": round(edge * 100, 2),
+                    "bookmaker": match_odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'API'),
+                    "type": "🧱 Ladrillo",
+                    "exact_score": match_probs.get("exact_score", "?-?"),
+                    "exact_score_prob": round(match_probs.get("exact_score_prob", 0), 1)
+                })
+
+        # 3. Analizar matemáticamente
         for match in fixtures:
             fixture_id = str(match.get("fixture", {}).get("id"))
             if fixture_id not in daily_odds:
@@ -758,8 +831,7 @@ def scan_day_for_value_bets(date: str):
                     "away": stats_db[away_id]
                 }
             else:
-                # Si no tenemos los datos hÃ­bridos, ignoramos el partido para el Radar
-                # AsÃ­ aseguramos que Telegram solo mande balas de mÃ¡xima precisiÃ³n.
+                # Si no tenemos los datos híbridos, ignoramos el partido para el Radar
                 continue
             
             probs = calculate_match_probabilities(
@@ -768,69 +840,34 @@ def scan_day_for_value_bets(date: str):
             
             odds = daily_odds[fixture_id]
             
-            # Helper to check edge
-            def check_edge(prob_percent, odds_val, pick_name):
-                prob = prob_percent / 100.0
-                edge = (prob * odds_val) - 1
-                
-                # Obtener penalizaciÃ³n por mercado si existe
-                m_key = pick_name.upper()
-                edge_penalty = tuning_params.get("markets", {}).get(m_key, {}).get("edge_penalty", 0.0)
-                required_edge = 0.05 + edge_penalty
-                
-                # REGLA: Equilibrio matemÃ¡tico y realidad
-                # Exigimos un mÃ­nimo de probabilidad real base para evitar buscar "milagros" matemÃ¡ticos.
-                if edge > required_edge and prob_percent >= 50.0:
-                    value_bets.append({
-                        "fixture_id": fixture_id,
-                        "league": league_name,
-                        "home_team": home_team,
-                        "away_team": away_team,
-                        "pick": pick_name,
-                        "prob": round(prob_percent, 2),
-                        "odds": odds_val,
-                        "edge": round(edge * 100, 2),
-                        "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
-                        "type": "ðŸŽ¯ Francotirador",
-                        "exact_score": probs.get("exact_score", "?-?"),
-                        "exact_score_prob": round(probs.get("exact_score_prob", 0), 1)
-                    })
-                # PLAN B (Ladrillo): Alta probabilidad y cuota jugable
-                if prob_percent >= 60.0 and odds_val >= 1.60:
-                    safe_bets.append({
-                        "fixture_id": fixture_id,
-                        "league": league_name,
-                        "home_team": home_team,
-                        "away_team": away_team,
-                        "pick": pick_name,
-                        "prob": round(prob_percent, 2),
-                        "odds": odds_val,
-                        "edge": round(edge * 100, 2),
-                        "bookie": odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'Unknown'),
-                        "type": "ðŸ§± Ladrillo",
-                        "exact_score": probs.get("exact_score", "?-?"),
-                        "exact_score_prob": round(probs.get("exact_score_prob", 0), 1)
-                    })
-                    
-            if odds.get('home', {}).get('price', 0) > 1.0:
-                check_edge(probs['home'], odds['home']['price'], "Home")
-            if odds.get('draw', {}).get('price', 0) > 1.0:
-                check_edge(probs['draw'], odds['draw']['price'], "Draw")
-            if odds.get('away', {}).get('price', 0) > 1.0:
-                check_edge(probs['away'], odds['away']['price'], "Away")
-            if odds.get('over_2_5', {}).get('price', 0) > 1.0:
-                check_edge(probs['over_2_5'], odds['over_2_5']['price'], "Over 2.5")
-            if odds.get('under_2_5', {}).get('price', 0) > 1.0:
-                check_edge(probs['under_2_5'], odds['under_2_5']['price'], "Under 2.5")
-            if odds.get('btts_yes', {}).get('price', 0) > 1.0:
-                check_edge(probs['btts_yes'], odds['btts_yes']['price'], "BTTS Yes")
-                
+            # Evaluar todos los mercados disponibles
+            markets_to_check = [
+                ("Home",             probs.get('home', 0),     odds.get('home', {})),
+                ("Draw",             probs.get('draw', 0),     odds.get('draw', {})),
+                ("Away",             probs.get('away', 0),     odds.get('away', {})),
+                ("Over 2.5",         probs.get('over_2_5', 0), odds.get('over_2_5', {})),
+                ("Under 2.5",        probs.get('under_2_5', 0),odds.get('under_2_5', {})),
+                ("BTTS Yes",         probs.get('btts_yes', 0), odds.get('btts_yes', {})),
+                ("Double Chance 1X", probs.get('dc_1x', 0),   odds.get('dc_1x', {})),
+                ("Double Chance X2", probs.get('dc_x2', 0),   odds.get('dc_x2', {})),
+                ("Double Chance 12", probs.get('dc_12', 0),   odds.get('dc_12', {})),
+                ("Draw No Bet Home", probs.get('dnb_home', 0),odds.get('dnb_home', {})),
+                ("Draw No Bet Away", probs.get('dnb_away', 0),odds.get('dnb_away', {})),
+            ]
+            
+            for pick_name, prob_pct, odd_info in markets_to_check:
+                price = odd_info.get('price', 0)
+                if price > 1.0:
+                    check_edge(prob_pct, price, pick_name, probs, odds,
+                               home_team, away_team, league_name, fixture_id)
+
         # Ordenar por edge descendente
+
         value_bets.sort(key=lambda x: x["edge"], reverse=True)
         # Ordenar Plan B por probabilidad descendente
         safe_bets.sort(key=lambda x: x["prob"], reverse=True)
         
-        final_bets = value_bets if len(value_bets) > 0 else safe_bets
+        final_bets = value_bets + safe_bets
                 # --- SHADOW LEDGER (DEDUPLICACIÓN CON SHA-256) ---
         import hashlib
         shadow_file = os.path.join(os.path.dirname(__file__), "athena_shadow_ledger.json")
