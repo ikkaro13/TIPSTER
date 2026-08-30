@@ -74,7 +74,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     # Fallback inicial usando Elo (Plan B base)
     home_expected_full, away_expected_full = elo_to_expected_goals(home_elo, away_elo, home_advantage_points, league_name)
 
-    # Si tenemos contexto histÃ³rico real (Bóveda de Stats)
+    # Si tenemos contexto histórico real (Bóveda de Stats)
     if historical_context and historical_context.get("home") and historical_context.get("away"):
         home_stats = historical_context["home"]
         away_stats = historical_context["away"]
@@ -172,7 +172,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
                 best_exact_score_prob = prob
                 best_exact_score = f"{home_goals} - {away_goals}"
             
-            # BÃ¡sicos
+            # Básicos
             if home_goals > away_goals: prob_home_win += prob
             elif home_goals == away_goals: prob_draw += prob
             else: prob_away_win += prob
@@ -208,7 +208,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             if (home_goals - away_goals) >= -1.5: prob_home_plus_1_5 += prob
             if (away_goals - home_goals) >= -1.5: prob_away_plus_1_5 += prob
                 
-            # ULTRA (SÃºper Parlays DinÃ¡micos)
+            # ULTRA (Súper Parlays Dinámicos)
             if home_goals > away_goals:
                 if away_goals > 0 and (home_goals + away_goals) > 3.5:
                     prob_ultra_home_btts_o35 += prob
@@ -241,7 +241,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
             if (h+a) > 0.5: prob_ht_over_05 += prob
             else: prob_ht_under_05 += prob
 
-    # Ensamblaje con IA (Random Forest) si el modelo estÃ¡ disponible
+    # Ensamblaje con IA (Random Forest) si el modelo está disponible
     is_ensembled = False
     if home_team in elo_db and away_team in elo_db:
         h_elo = elo_db[home_team]
@@ -288,7 +288,7 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
     total = prob_home_win + prob_draw + prob_away_win
     if total == 0: total = 1.0 
     
-    # Evaluar contexto con el OrÃ¡culo de Hermes (Motor de Reglas)
+    # Evaluar contexto con el Oráculo de Hermes (Motor de Reglas)
     ml_winner = None
     if is_ensembled and ML_MODEL_1X2:
         if ml_probs_1x2[2] > ml_probs_1x2[0] and ml_probs_1x2[2] > ml_probs_1x2[1]: ml_winner = home_team
@@ -560,7 +560,7 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
         cuota_ultra = 100.0 / best_u_prob if best_u_prob > 0 else 0
         analysis["ultra"] = { "pick": best_u_pick, "prob": round(best_u_prob, 1), "fair_odds": round(cuota_ultra, 2) }
     else:
-        # Fallback para cachÃ© antiguo
+        # Fallback para caché antiguo
         uh = real_probs.get("ultra_home", 0); ua = real_probs.get("ultra_away", 0)
         best_u_prob = max(uh, ua)
         best_u_pick = "Gana Local + Ambos Anotan + Más 3.5 Goles" if uh > ua else "Gana Visita + Ambos Anotan + Más 3.5 Goles"

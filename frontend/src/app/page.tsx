@@ -315,7 +315,11 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
           home_xg: insights.metrics.home_xg,
           away_xg: insights.metrics.away_xg,
           odds: odds,
-          probs: insights
+          probs: insights,
+          home_injuries: insights.context?.home_injuries || 0,
+          away_injuries: insights.context?.away_injuries || 0,
+          home_red_cards: insights.context?.home_red_cards || 0,
+          away_red_cards: insights.context?.away_red_cards || 0
         })
       });
       const data = await res.json();
@@ -431,6 +435,24 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
             <span>{cMatch.homeTeam}</span>
             <span style={{color: '#475569', fontSize: '1.2rem', fontWeight: 700}}>VS</span>
             <span>{cMatch.awayTeam}</span>
+            {insights?.context && (
+                <div style={{display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap'}}>
+                    {(insights.context.home_injuries > 0 || insights.context.home_red_cards > 0) && (
+                        <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.3rem 0.6rem', borderRadius: '4px'}}>
+                            <span style={{fontSize: '0.75rem', color: '#fca5a5', fontWeight: 'bold'}}>{cMatch.homeTeam}:</span>
+                            {insights.context.home_injuries > 0 && <span style={{fontSize: '0.75rem', color: '#ef4444'}}>🏥 {insights.context.home_injuries} Bajas</span>}
+                            {insights.context.home_red_cards > 0 && <span style={{fontSize: '0.75rem', color: '#ef4444'}}>🟥 {insights.context.home_red_cards} Rojas(T)</span>}
+                        </div>
+                    )}
+                    {(insights.context.away_injuries > 0 || insights.context.away_red_cards > 0) && (
+                        <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.3rem 0.6rem', borderRadius: '4px'}}>
+                            <span style={{fontSize: '0.75rem', color: '#fca5a5', fontWeight: 'bold'}}>{cMatch.awayTeam}:</span>
+                            {insights.context.away_injuries > 0 && <span style={{fontSize: '0.75rem', color: '#ef4444'}}>🏥 {insights.context.away_injuries} Bajas</span>}
+                            {insights.context.away_red_cards > 0 && <span style={{fontSize: '0.75rem', color: '#ef4444'}}>🟥 {insights.context.away_red_cards} Rojas(T)</span>}
+                        </div>
+                    )}
+                </div>
+            )}
           </div>
         </div>
         <div style={{textAlign: 'right'}}>

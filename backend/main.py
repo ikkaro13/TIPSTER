@@ -53,6 +53,10 @@ class RecalculateHermesRequest(BaseModel):
     away_xg: float
     odds: dict
     probs: dict
+    home_injuries: int = 0
+    away_injuries: int = 0
+    home_red_cards: int = 0
+    away_red_cards: int = 0
 
 class BetRequest(BaseModel):
     match_id: str
@@ -230,7 +234,11 @@ def api_recalculate_hermes(req: RecalculateHermesRequest):
         'home_xg': req.home_xg,
         'away_xg': req.away_xg,
         'odds': req.odds,
-        'probs': req.probs
+        'probs': req.probs,
+        'home_injuries': req.home_injuries,
+        'away_injuries': req.away_injuries,
+        'home_red_cards': req.home_red_cards,
+        'away_red_cards': req.away_red_cards
     }
     
     h = Hermes()
@@ -1097,7 +1105,7 @@ def get_prematch_insight(req: PrematchInsightRequest):
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
         
-    # Cargar BÃ³veda HÃ­brida
+    # Cargar Boveda Hibrida
     stats_db = {}
     stats_file = os.path.join(os.path.dirname(__file__), "team_stats_db.json")
     if os.path.exists(stats_file):
@@ -1108,26 +1116,38 @@ def get_prematch_insight(req: PrematchInsightRequest):
             pass
             
     # Buscar IDs por nombre
-    h_stats = None
-    a_stats = None
+    h_stats, a_stats = None, None
+    h_id, a_id = None, None
     for tid, tdata in stats_db.items():
         if tdata.get("name") == req.homeTeam:
-            h_stats = tdata
+            h_stats, h_id = tdata, tid
         if tdata.get("name") == req.awayTeam:
-            a_stats = tdata
+            a_stats, a_id = tdata, tid
             
     hist_context = None
     if h_stats and a_stats:
-        print(f"[ATHENA] Memoria HÃ­brida activada para: {req.homeTeam} vs {req.awayTeam}")
+        print(f"[ATHENA] Memoria Hibrida activada para: {req.homeTeam} vs {req.awayTeam}")
         hist_context = {
             "home": h_stats,
             "away": a_stats
         }
+        hist_context["home_red_cards"] = h_stats.get("red_cards", 0)
+        hist_context["away_red_cards"] = a_stats.get("red_cards", 0)
+        
+        if req.match_id and req.match_id != "-1":
+            injuries_data = api_football_engine.get_fixture_injuries(req.match_id)
+            home_injuries = len([i for i in injuries_data if str(i.get("team", {}).get("id")) == str(h_id)]) if injuries_data else 0
+            away_injuries = len([i for i in injuries_data if str(i.get("team", {}).get("id")) == str(a_id)]) if injuries_data else 0
+            hist_context["home_injuries"] = home_injuries
+            hist_context["away_injuries"] = away_injuries
+        else:
+            hist_context["home_injuries"] = 0
+            hist_context["away_injuries"] = 0
     else:
-        # Fallback a la API de Football (aunque es mÃ¡s lenta y no tiene stats avanzadas)
+        # Fallback a la API de Football (aunque es mas lenta y no tiene stats avanzadas)
         historical_service = HistoricalContextService()
         if req.match_id and req.match_id != "-1":
-            print(f"[ATHENA] Construyendo Memoria HistÃ³rica para partido: {req.match_id}")
+            print(f"[ATHENA] Construyendo Memoria Historica para partido: {req.match_id}")
             hist_context = historical_service.build_context(req.match_id)
     
     # 0 porque es pre-match (minute=0, goals=0)
@@ -1144,7 +1164,13 @@ def get_prematch_insight(req: PrematchInsightRequest):
     return {
         "homeTeam": req.homeTeam,
         "awayTeam": req.awayTeam,
-        "probs": real_probs
+        "probs": real_probs,
+        "context": {
+            "home_injuries": hist_context.get("home_injuries", 0) if hist_context else 0,
+            "away_injuries": hist_context.get("away_injuries", 0) if hist_context else 0,
+            "home_red_cards": hist_context.get("home_red_cards", 0) if hist_context else 0,
+            "away_red_cards": hist_context.get("away_red_cards", 0) if hist_context else 0
+        }
     }
 
 @app.get("/api/delfos/historial")
