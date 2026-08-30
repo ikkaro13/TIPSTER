@@ -134,14 +134,15 @@ class ValueAggregator:
         odds = context.get('odds', {})
         probs = context.get('probs', {})
         
+        # Unificando y corrigiendo Mojibake
         market_map = {
-            "Gana Local": "home",
+            context.get('home_team', "Gana Local"): "home",
             "Empate": "draw",
-            "Gana Visita": "away",
-            "Mǭs de 1.5 Goles": "over_1_5",
-            "Mǭs de 2.5 Goles": "over_2_5",
+            context.get('away_team', "Gana Visita"): "away",
+            "Más de 1.5 Goles": "over_1_5",
+            "Más de 2.5 Goles": "over_2_5",
             "Menos de 3.5 Goles": "under_3_5",
-            "Ambos Anotan (S?)": "btts_yes",
+            "Ambos Anotan (SÍ)": "btts_yes",
             "Ambos Anotan (NO)": "btts_no",
             "Menos de 2.5 Goles": "under_2_5",
             "Doble Oportunidad (1X)": "dc_1x",
