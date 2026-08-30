@@ -1,9 +1,11 @@
 from engine.rules import ALL_PREMATCH_RULES
+from market_rules import HERMES_MIN_EDGE, HERMES_MIN_ODDS, HERMES_MIN_PROB, is_shadow_market, get_all_shadow_markets
 
 class ValueAggregator:
-    def __init__(self, min_edge=3.0, min_prob_threshold=52.0):
-        self.min_edge = min_edge
-        self.min_prob_threshold = min_prob_threshold
+    def __init__(self, min_edge=None, min_prob_threshold=None):
+        # Lee umbrales de market_rules.py (fuente única de verdad)
+        self.min_edge = min_edge if min_edge is not None else HERMES_MIN_EDGE * 100  # en %
+        self.min_prob_threshold = min_prob_threshold if min_prob_threshold is not None else HERMES_MIN_PROB
 
     def evaluate_value(self, current_pick, current_confidence, context):
         odds = context.get('odds', {})
@@ -18,7 +20,7 @@ class ValueAggregator:
             "Empate": "draw",
             context.get('away_team'): "away",
             "Over 2.5 Goles (Alta Intensidad)": "over_2_5",
-            "Over 0.5 Goles 1T (Arranque Rápido)": "over_0_5_ht", # Asumiendo que pudiese existir, si no, lo ignoramos
+            "Over 0.5 Goles 1T (Arranque Rápido)": "over_0_5_ht",
             "Ambos Anotan - SÍ": "btts_yes",
             "Ambos Anotan - NO": "btts_no",
             "Under 2.5 Goles (Partido Cerrado)": "under_2_5",
@@ -30,13 +32,17 @@ class ValueAggregator:
         
         market_map_inverse = {v: k for k, v in market_map.items()}
         
-        # Calcular todos los edges disponibles
+        # Calcular todos los edges disponibles — respetar shadow mode
         edges = {}
         for market_desc, key in market_map.items():
             if key in odds and key in probs:
+                # Si el mercado está en shadow mode → no recomendar
+                if is_shadow_market(market_desc):
+                    continue
+                    
                 o = float(odds[key])
-                if o < 1.60:
-                    continue # REGLA ESTRICTA: No consideramos apuestas con momios menores a 1.60
+                if o < HERMES_MIN_ODDS:
+                    continue  # Cuota mínima 1.60
                 
                 p = float(probs[key]) / 100.0
                 if o > 1.0:
@@ -46,7 +52,7 @@ class ValueAggregator:
         if not edges:
             return current_pick, current_confidence
 
-        # Revisar si el pick actual tiene buen edge y buena probabilidad
+        # Revisar si el pick actual tiene buen edge (usa umbral de market_rules)
         current_edge = edges.get(current_pick, -100)
         
         if current_edge >= self.min_edge and current_confidence >= self.min_prob_threshold:
@@ -179,7 +185,7 @@ class EvidenceAggregator:
             "Recent Form": 1.5,
             "Offensive Power": 1.2
         }
-        self.value_aggregator = ValueAggregator(min_edge=3.0)
+        self.value_aggregator = ValueAggregator()  # Lee HERMES_MIN_EDGE de market_rules
 
     def aggregate(self, results, context):
         home_team = context.get('home_team')
@@ -231,17 +237,32 @@ class EvidenceAggregator:
                 final_pick = "Over 2.5 Goles (Alta Intensidad)"
                 confidence = min(int((total_xg / 3.5) * 85), 95)
             elif total_xg >= 2.2 and home_xg >= 1.1 and away_xg >= 1.1:
-                final_pick = "Ambos Anotan - SÍ"
-                confidence = 80
+                # BTTS en shadow mode → usar Over 1.5 como alternativa
+                if is_shadow_market("Ambos Anotan - SÍ"):
+                    final_pick = "Más de 1.5 Goles (Alternativa BTTS)"
+                    confidence = 75
+                else:
+                    final_pick = "Ambos Anotan - SÍ"
+                    confidence = 80
             elif total_xg >= 2.0:
                 final_pick = "Over 0.5 Goles 1T (Arranque Rápido)"
                 confidence = 75
             elif total_xg <= 1.5:
-                final_pick = "Under 2.5 Goles (Partido Cerrado)"
-                confidence = 85
+                # Under 2.5 en shadow mode → NO BET honesto
+                if is_shadow_market("Under 2.5 Goles (Partido Cerrado)"):
+                    final_pick = "NO BET (Partido Cerrado — Mercado en Monitoreo)"
+                    confidence = 0
+                else:
+                    final_pick = "Under 2.5 Goles (Partido Cerrado)"
+                    confidence = 85
             elif home_xg < 0.8 or away_xg < 0.8:
-                final_pick = "Ambos Anotan - NO"
-                confidence = 78
+                # BTTS NO en shadow mode → NO BET honesto
+                if is_shadow_market("Ambos Anotan - NO"):
+                    final_pick = "NO BET (Una defensa dominante — Mercado en Monitoreo)"
+                    confidence = 0
+                else:
+                    final_pick = "Ambos Anotan - NO"
+                    confidence = 78
             else:
                 final_pick = "NO BET (Conflicto Extremo y Sin Tendencia)"
                 confidence = 0

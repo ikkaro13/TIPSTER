@@ -24,6 +24,7 @@ import api_football_engine
 import sofascore_scraper
 from autotune import run_auto_tuning
 from train_model import train_models
+from market_rules import get_min_edge, is_shadow_market, get_all_shadow_markets
 import json
 
 class MatchResult(BaseModel):
@@ -896,27 +897,8 @@ def scan_day_for_value_bets(date: str):
     if not GLOBAL_STATS_DB: 
         GLOBAL_STATS_DB = get_national_elo()
 
-    # ── Umbrales de Edge mínimo por familia de mercado ──────────────────────
-    # El modelo de Poisson/ELO tiene más señal en 1X2 que en totales.
-    # Para totales, exigimos más margen para compensar la menor precisión.
-    MIN_EDGE_PER_MARKET = {
-        "Home":               0.10,   # 10%
-        "Draw":               0.15,   # 15% — el más difícil
-        "Away":               0.10,   # 10%
-        "Over 2.5":           0.20,   # 20%
-        "Under 2.5":          0.20,   # Bloqueado, pero se mantiene la constante
-        "Over 1.5":           0.15,   # 15% - Rebajado para facilitar combinadas (antes 20%)
-        "Under 1.5":          0.20,
-        "Over 0.5":           0.20,   # 20%
-        "Under 0.5":          0.20,   # 20%
-        "BTTS Yes":           0.20,   # 20%
-        "Double Chance 1X":   0.12,   # 12%
-        "Double Chance X2":   0.12,   # 12%
-        "Double Chance 12":   0.15,   # 15%
-        "Draw No Bet Home":   0.12,   # 12%
-        "Draw No Bet Away":   0.12,   # 12%
-    }
-    DEFAULT_MIN_EDGE = 0.12  # Para cualquier mercado no listado explícitamente
+    # ── Umbrales provienen de market_rules.py (fuente única de verdad) ────────
+    # Para ajustar umbrales o activar/desactivar mercados, editar market_rules.py
 
     try:
         # 1. Obtener todos los partidos del día
@@ -929,16 +911,6 @@ def scan_day_for_value_bets(date: str):
         
         value_bets = []
         safe_bets = []
-        
-        # Cargar parámetros de auto-tuning
-        tuning_params = {"markets": {}}
-        tuning_file = os.path.join(os.path.dirname(__file__), "tuning_params.json")
-        if os.path.exists(tuning_file):
-            try:
-                with open(tuning_file, 'r', encoding='utf-8') as f:
-                    tuning_params = json.load(f)
-            except:
-                pass
         
         # Cargar Boveda de Estadísticas (Motor Hibrido)
         stats_db = {}
@@ -953,16 +925,30 @@ def scan_day_for_value_bets(date: str):
         # ── check_edge: definida FUERA del loop para eficiencia ────────────
         def check_edge(prob_percent, odds_val, pick_name, match_probs, match_odds,
                        match_home, match_away, match_league, match_fixture_id):
+            from data_engine import save_delfos_pick
+            import json as _json
             prob = prob_percent / 100.0
             edge = (prob * odds_val) - 1
 
-            # Umbral mínimo por mercado (más exigente para totales)
-            required_edge = MIN_EDGE_PER_MARKET.get(pick_name, DEFAULT_MIN_EDGE)
+            # Umbral desde market_rules (incluye penalización de tuning)
+            required_edge = get_min_edge(pick_name, apply_tuning=True)
 
-            # Penalización adicional de auto-tuning si existe
-            m_key = pick_name.upper()
-            edge_penalty = tuning_params.get("markets", {}).get(m_key, {}).get("edge_penalty", 0.0)
-            required_edge = required_edge + edge_penalty
+            # Shadow Mode: calcular, guardar en DB, NO recomendar
+            if required_edge is None:
+                if edge > 0.05 and prob_percent >= 50.0:  # Solo guardar si hay algo de edge
+                    save_delfos_pick(
+                        fixture_id=match_fixture_id,
+                        home_team=match_home,
+                        away_team=match_away,
+                        liga=match_league,
+                        pick=pick_name,
+                        probabilidad=round(prob_percent, 2),
+                        cuota=odds_val,
+                        edge=round(edge * 100, 2),
+                        tipo="🔬 Shadow (Monitoreo)",
+                        evidence_snapshot=_json.dumps(match_probs)
+                    )
+                return  # No agregar a value_bets
 
             if edge > required_edge and prob_percent >= 50.0:
                 value_bets.append({
@@ -1029,30 +1015,31 @@ def scan_day_for_value_bets(date: str):
             
             odds = daily_odds[fixture_id]
             
-            # Evaluar todos los mercados disponibles
+            # Mapeo de nombres de mercado → clave en probs/odds
+            market_key_map = {
+                "Home":                ("home",      "home"),
+                "Draw":                ("draw",      "draw"),
+                "Away":                ("away",      "away"),
+                "Double Chance 1X":    ("dc_1x",     "dc_1x"),
+                "Double Chance X2":    ("dc_x2",     "dc_x2"),
+                "Double Chance 12":    ("dc_12",     "dc_12"),
+                "Draw No Bet Home":    ("dnb_home",  "dnb_home"),
+                "Draw No Bet Away":    ("dnb_away",  "dnb_away"),
+                "Over 2.5":            ("over_2_5",  "over_2_5"),
+                "Over 1.5":            ("over_1_5",  "over_1_5"),
+                "Over 0.5":            ("over_0_5",  "over_0_5"),
+                # Shadow markets — se incluyen para monitoreo silencioso
+                "BTTS Yes":            ("btts_yes",  "btts_yes"),
+                "BTTS No":             ("btts_no",   "btts_no"),
+                "Under 2.5":           ("under_2_5", "under_2_5"),
+                "Under 1.5":           ("under_1_5", "under_1_5"),
+                "Under 0.5":           ("under_0_5", "under_0_5"),
+            }
+
+            # Lista dinámica de todos los mercados (activos + shadow)
             markets_to_check = [
-                # Mercados de Resultado (ELO) - Rentabilidad positiva demostrada
-                ("Home",             probs.get('home', 0),     odds.get('home', {})),
-                ("Draw",             probs.get('draw', 0),     odds.get('draw', {})),
-                ("Away",             probs.get('away', 0),     odds.get('away', {})),
-                ("Double Chance 1X", probs.get('dc_1x', 0),   odds.get('dc_1x', {})),
-                ("Double Chance X2", probs.get('dc_x2', 0),   odds.get('dc_x2', {})),
-                ("Double Chance 12", probs.get('dc_12', 0),   odds.get('dc_12', {})),
-                ("Draw No Bet Home", probs.get('dnb_home', 0),odds.get('dnb_home', {})),
-                ("Draw No Bet Away", probs.get('dnb_away', 0),odds.get('dnb_away', {})),
-                
-                # Mercados de Goles - Overs priorizados para combinadas
-                ("Over 2.5",         probs.get('over_2_5', 0), odds.get('over_2_5', {})),
-                ("Over 1.5",         probs.get('over_1_5', 0), odds.get('over_1_5', {})),
-                ("Over 0.5",         probs.get('over_0_5', 0), odds.get('over_0_5', {})),
-                
-                # [BLOQUEO ANTI-SANGRIA: 2026-08-30] 
-                # LAB reporta Under 2.5 (-11.3% ROI) y BTTS (-19% ROI). Bloqueados temporalmente.
-                # ("Under 2.5",        probs.get('under_2_5', 0),odds.get('under_2_5', {})),
-                # ("Under 1.5",        probs.get('under_1_5', 0),odds.get('under_1_5', {})),
-                # ("Under 0.5",        probs.get('under_0_5', 0),odds.get('under_0_5', {})),
-                # ("BTTS Yes",         probs.get('btts_yes', 0), odds.get('btts_yes', {})),
-                # ("BTTS No",          probs.get('btts_no', 0),  odds.get('btts_no', {})),
+                (name, probs.get(pk, 0), odds.get(ok, {}))
+                for name, (pk, ok) in market_key_map.items()
             ]
             
             for pick_name, prob_pct, odd_info in markets_to_check:

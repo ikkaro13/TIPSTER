@@ -655,40 +655,50 @@ const MatchDashboard = ({ cMatch, onBack }: { cMatch: any, onBack: () => void })
                 {renderEdgeBadge(insights.over_2_5, oddsOver25)}
               </div>
             </div>
-            {/* Under 2.5 */}
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #38bdf8'}}>
+            {/* Under 2.5 — SHADOW MODE */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.15)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ef4444', boxShadow: '0 0 8px 2px rgba(239,68,68,0.45)', opacity: 0.8}}>
               <div>
-                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Menos de 2.5 Goles</div>
+                <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem'}}>
+                  <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Menos de 2.5 Goles</div>
+                  <div style={{background: '#374151', color: '#9ca3af', fontSize: '0.65rem', fontWeight: 800, padding: '0.15rem 0.5rem', borderRadius: '4px', border: '1px solid #ef4444', textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 0 4px rgba(239,68,68,0.5)'}}>🔬 EN MONITOREO</div>
+                </div>
                 <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.under_2_5.toFixed(1)}%</div>
+                <div style={{color: '#6b7280', fontSize: '0.7rem', marginTop: '0.2rem'}}>Sin recomendación — Acumulando datos con API PRO 2026</div>
               </div>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
-                <input type="number" placeholder="Cuota" value={oddsUnder25} onChange={e => setOddsUnder25(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
-                {renderEdgeBadge(insights.under_2_5, oddsUnder25)}
+                <input type="number" placeholder="Cuota" value={oddsUnder25} onChange={e => setOddsUnder25(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#111827', border: '1px solid #374151', color: '#6b7280', textAlign: 'center', fontWeight: 700}} />
               </div>
             </div>
-            
+
             <div style={{height: '1px', background: '#334155', margin: '0.5rem 0'}}></div>
-            
-            {/* BTTS Yes */}
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #10b981'}}>
+
+            {/* BTTS Yes — SHADOW MODE */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.15)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ef4444', boxShadow: '0 0 8px 2px rgba(239,68,68,0.45)', opacity: 0.8}}>
               <div>
-                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Ambos Anotan (SÍ)</div>
+                <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem'}}>
+                  <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Ambos Anotan (SÍ)</div>
+                  <div style={{background: '#374151', color: '#9ca3af', fontSize: '0.65rem', fontWeight: 800, padding: '0.15rem 0.5rem', borderRadius: '4px', border: '1px solid #ef4444', textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 0 4px rgba(239,68,68,0.5)'}}>🔬 EN MONITOREO</div>
+                </div>
                 <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.btts_yes.toFixed(1)}%</div>
+                <div style={{color: '#6b7280', fontSize: '0.7rem', marginTop: '0.2rem'}}>Sin recomendación — Acumulando datos con API PRO 2026</div>
               </div>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
-                <input type="number" placeholder="Cuota" value={oddsBttsYes} onChange={e => setOddsBttsYes(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
-                {renderEdgeBadge(insights.btts_yes, oddsBttsYes)}
+                <input type="number" placeholder="Cuota" value={oddsBttsYes} onChange={e => setOddsBttsYes(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#111827', border: '1px solid #374151', color: '#6b7280', textAlign: 'center', fontWeight: 700}} />
               </div>
             </div>
-            {/* BTTS No */}
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ef4444'}}>
+
+            {/* BTTS No — SHADOW MODE */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.15)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #ef4444', boxShadow: '0 0 8px 2px rgba(239,68,68,0.45)', opacity: 0.8}}>
               <div>
-                <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Ambos Anotan (NO)</div>
+                <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem'}}>
+                  <div style={{color: '#94a3b8', fontSize: '0.85rem'}}>Ambos Anotan (NO)</div>
+                  <div style={{background: '#374151', color: '#9ca3af', fontSize: '0.65rem', fontWeight: 800, padding: '0.15rem 0.5rem', borderRadius: '4px', border: '1px solid #ef4444', textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 0 4px rgba(239,68,68,0.5)'}}>🔬 EN MONITOREO</div>
+                </div>
                 <div style={{color: '#f8fafc', fontWeight: 800, fontSize: '1.2rem'}}>{insights.btts_no.toFixed(1)}%</div>
+                <div style={{color: '#6b7280', fontSize: '0.7rem', marginTop: '0.2rem'}}>Sin recomendación — Acumulando datos con API PRO 2026</div>
               </div>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem'}}>
-                <input type="number" placeholder="Cuota" value={oddsBttsNo} onChange={e => setOddsBttsNo(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#1e293b', border: '1px solid #475569', color: 'white', textAlign: 'center', fontWeight: 700}} />
-                {renderEdgeBadge(insights.btts_no, oddsBttsNo)}
+                <input type="number" placeholder="Cuota" value={oddsBttsNo} onChange={e => setOddsBttsNo(e.target.value)} style={{width: '80px', padding: '0.5rem', borderRadius: '6px', background: '#111827', border: '1px solid #374151', color: '#6b7280', textAlign: 'center', fontWeight: 700}} />
               </div>
             </div>
           </div>
