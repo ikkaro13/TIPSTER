@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+from datetime import datetime
 
 # Necesitamos añadir la ruta base para que pueda importar módulos
 sys.path.append(os.path.dirname(__file__))
@@ -61,7 +62,9 @@ ALL_TRACKED_LEAGUES = {
     "Super League Grecia": 197    # Estadios muy hostiles = Altísima ventaja local
 }
 
-SEASONS = [2023, 2024]
+# Años a escanear (Se usarán para armar el histórico ELO)
+current_year = datetime.now().year
+SEASONS = [current_year - 1, current_year]
 
 def seed_leagues():
     print("🧠 INICIANDO INYECCIÓN MASIVA DE ELO PARA CLUBES...")

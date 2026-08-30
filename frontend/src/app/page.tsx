@@ -914,6 +914,9 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState('portfolio'); // 'radar', 'portfolio', 'calendar', 'match-detail', 'lab'
   const [labData, setLabData] = useState<any>(null);
   const [labLoading, setLabLoading] = useState(false);
+  const [delfosAuditData, setDelfosAuditData] = useState<any>(null);
+  const [delfosLoading, setDelfosLoading] = useState(false);
+  
   const [selectedMatch, setSelectedMatch] = useState<any>(null);
   
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
@@ -968,6 +971,16 @@ export default function Home() {
       setLabData(data);
     } catch (e) { console.error(e); }
     setLabLoading(false);
+  };
+
+  const fetchDelfosAudit = async () => {
+    setDelfosLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/delfos/historial`);
+      const data = await res.json();
+      setDelfosAuditData(data);
+    } catch (e) { console.error(e); }
+    setDelfosLoading(false);
   };
   
   const fetchArgosStatus = async () => {
@@ -1202,6 +1215,7 @@ export default function Home() {
               <button onClick={() => setActiveTab('radar')} className={`cyber-button ${activeTab === 'radar' ? 'active' : ''}`}>🔭 Argos</button>
               <button onClick={() => setActiveTab('portfolio')} className={`cyber-button ${activeTab === 'portfolio' ? 'active' : ''}`}>💼 Plutus</button>
               <button onClick={() => { setActiveTab('lab'); fetchLab(); }} className={`cyber-button ${activeTab === 'lab' ? 'active' : ''}`}>🧬 LAB</button>
+              <button onClick={() => { setActiveTab('delfos'); fetchDelfosAudit(); }} className={`cyber-button ${activeTab === 'delfos' ? 'active' : ''}`}>🔭 Delfos Audit</button>
           </div>
         </div>
 
@@ -1664,6 +1678,103 @@ export default function Home() {
                 </div>
               );
             })()}
+          </div>
+        )}
+
+        {/* 🔭 DELFOS AUDIT TAB */}
+        {activeTab === 'delfos' && (
+          <div className="match-card">
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem'}}>
+              <div>
+                <div style={{color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.3rem'}}>📡 Oráculo de Delfos</div>
+                <div style={{color: '#fff', fontWeight: 900, fontSize: '1.5rem'}}>Auditoría de Rendimiento Real</div>
+              </div>
+              <button onClick={fetchDelfosAudit} style={{background: '#8b5cf6', color: 'white', border: 'none', borderRadius: '8px', padding: '0.6rem 1.2rem', fontWeight: 700, cursor: 'pointer'}}>🔄 Actualizar</button>
+            </div>
+
+            {delfosLoading && <div style={{textAlign: 'center', color: 'var(--text-muted)', padding: '3rem'}}>Obteniendo registros...</div>}
+
+            {!delfosLoading && delfosAuditData && (
+              <div>
+                <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem'}}>
+                  <div style={{background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--card-border)'}}>
+                    <div style={{color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem'}}>Total Resueltos</div>
+                    <div style={{fontSize: '2rem', fontWeight: 900}}>{delfosAuditData.resumen.total_resueltos}</div>
+                  </div>
+                  <div style={{background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--card-border)'}}>
+                    <div style={{color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem'}}>Hit Rate Global</div>
+                    <div style={{fontSize: '2rem', fontWeight: 900, color: delfosAuditData.resumen.hit_rate >= 50 ? '#10b981' : '#ef4444'}}>{delfosAuditData.resumen.hit_rate}%</div>
+                  </div>
+                  <div style={{background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--card-border)'}}>
+                    <div style={{color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem'}}>ROI Teórico (Plano)</div>
+                    <div style={{fontSize: '2rem', fontWeight: 900, color: delfosAuditData.resumen.roi_teorico >= 0 ? '#10b981' : '#ef4444'}}>{delfosAuditData.resumen.roi_teorico > 0 ? '+' : ''}{delfosAuditData.resumen.roi_teorico}%</div>
+                  </div>
+                </div>
+
+                <div style={{marginBottom: '2rem'}}>
+                  <h3 style={{fontSize: '1.2rem', marginBottom: '1rem'}}>Rendimiento por Mercado Recomendado</h3>
+                  <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                    {Object.entries(delfosAuditData.por_mercado).map(([market, data]: [string, any]) => (
+                      <div key={market} style={{display: 'flex', justifyContent: 'space-between', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--card-border)'}}>
+                        <div style={{fontWeight: 800}}>{market}</div>
+                        <div style={{display: 'flex', gap: '2rem', width: '60%', justifyContent: 'flex-end'}}>
+                          <div style={{textAlign: 'right'}}><span style={{color: 'var(--text-muted)', fontSize: '0.7rem', display: 'block'}}>PICKS</span><span style={{fontWeight: 800}}>{data.total}</span></div>
+                          <div style={{textAlign: 'right'}}><span style={{color: 'var(--text-muted)', fontSize: '0.7rem', display: 'block'}}>HIT RATE</span><span style={{fontWeight: 800, color: data.hit_rate >= 50 ? '#10b981' : '#ef4444'}}>{data.hit_rate}%</span></div>
+                          <div style={{textAlign: 'right', minWidth: '70px'}}><span style={{color: 'var(--text-muted)', fontSize: '0.7rem', display: 'block'}}>ROI</span><span style={{fontWeight: 800, color: data.roi >= 0 ? '#10b981' : '#ef4444'}}>{data.roi > 0 ? '+' : ''}{data.roi}%</span></div>
+                        </div>
+                      </div>
+                    ))}
+                    {Object.keys(delfosAuditData.por_mercado).length === 0 && <div style={{color: 'var(--text-muted)'}}>No hay suficientes datos resueltos.</div>}
+                  </div>
+                </div>
+
+                {delfosAuditData.picks_hoy.length > 0 && (
+                  <div style={{marginBottom: '2rem'}}>
+                    <h3 style={{fontSize: '1.2rem', marginBottom: '1rem'}}>Recomendaciones Activas (Hoy)</h3>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                      {delfosAuditData.picks_hoy.map((pick: any) => (
+                        <div key={pick.id} style={{display: 'flex', justifyContent: 'space-between', background: 'rgba(59, 130, 246, 0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                          <div>
+                            <div style={{fontWeight: 800}}>{pick.home_team} vs {pick.away_team}</div>
+                            <div style={{fontSize: '0.8rem', color: '#60a5fa'}}>{pick.pick} • {pick.tipo}</div>
+                          </div>
+                          <div style={{textAlign: 'right'}}>
+                            <div style={{fontWeight: 800, color: 'var(--text-muted)'}}>{pick.cuota}</div>
+                            <div style={{fontSize: '0.8rem', color: '#60a5fa'}}>{pick.probabilidad}% Prob</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <h3 style={{fontSize: '1.2rem', marginBottom: '1rem'}}>Historial Reciente</h3>
+                  <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                    {delfosAuditData.historial.map((pick: any) => (
+                      <div key={pick.id} style={{display: 'flex', justifyContent: 'space-between', background: pick.es_correcto === 1 ? 'rgba(16, 185, 129, 0.05)' : pick.es_correcto === -1 ? 'rgba(156, 163, 175, 0.05)' : 'rgba(239, 68, 68, 0.05)', padding: '1rem', borderRadius: '8px', border: `1px solid ${pick.es_correcto === 1 ? 'rgba(16, 185, 129, 0.2)' : pick.es_correcto === -1 ? 'rgba(156, 163, 175, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`}}>
+                        <div>
+                          <div style={{fontWeight: 800}}>{pick.home_team} vs {pick.away_team}</div>
+                          <div style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>{pick.fecha} • {pick.pick}</div>
+                        </div>
+                        <div style={{textAlign: 'right', display: 'flex', alignItems: 'center', gap: '1rem'}}>
+                          <div style={{fontWeight: 900, fontSize: '1.1rem'}}>{pick.resultado}</div>
+                          {pick.es_correcto === 1 ? (
+                            <div style={{background: '#10b981', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800}}>WIN</div>
+                          ) : pick.es_correcto === -1 ? (
+                            <div style={{background: '#6b7280', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800}}>REFUND</div>
+                          ) : (
+                            <div style={{background: '#ef4444', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800}}>LOSS</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {delfosAuditData.historial.length === 0 && <div style={{color: 'var(--text-muted)'}}>No hay historial de picks.</div>}
+                  </div>
+                </div>
+
+              </div>
+            )}
           </div>
         )}
 

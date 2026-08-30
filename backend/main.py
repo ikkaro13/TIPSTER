@@ -903,10 +903,10 @@ def scan_day_for_value_bets(date: str):
         "Home":               0.10,   # 10%
         "Draw":               0.15,   # 15% — el más difícil
         "Away":               0.10,   # 10%
-        "Over 2.5":           0.20,   # 20% — modelo sin ventaja demostrada
-        "Under 2.5":          0.20,   # 20%
-        "Over 1.5":           0.20,   # 20%
-        "Under 1.5":          0.20,   # 20%
+        "Over 2.5":           0.20,   # 20%
+        "Under 2.5":          0.20,   # Bloqueado, pero se mantiene la constante
+        "Over 1.5":           0.15,   # 15% - Rebajado para facilitar combinadas (antes 20%)
+        "Under 1.5":          0.20,
         "Over 0.5":           0.20,   # 20%
         "Under 0.5":          0.20,   # 20%
         "BTTS Yes":           0.20,   # 20%
@@ -977,7 +977,8 @@ def scan_day_for_value_bets(date: str):
                     "bookmaker": match_odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'API'),
                     "type": "🎯 Francotirador",
                     "exact_score": match_probs.get("exact_score", "?-?"),
-                    "exact_score_prob": round(match_probs.get("exact_score_prob", 0), 1)
+                    "exact_score_prob": round(match_probs.get("exact_score_prob", 0), 1),
+                    "insights": match_probs
                 })
 
             # Ladrillo: alta probabilidad + cuota jugable + edge no demasiado negativo (> -5%)
@@ -994,7 +995,8 @@ def scan_day_for_value_bets(date: str):
                     "bookmaker": match_odds.get(pick_name.lower().replace(' ', '_'), {}).get('bookie', 'API'),
                     "type": "🧱 Ladrillo",
                     "exact_score": match_probs.get("exact_score", "?-?"),
-                    "exact_score_prob": round(match_probs.get("exact_score_prob", 0), 1)
+                    "exact_score_prob": round(match_probs.get("exact_score_prob", 0), 1),
+                    "insights": match_probs
                 })
 
         # 3. Analizar matemáticamente
@@ -1029,21 +1031,28 @@ def scan_day_for_value_bets(date: str):
             
             # Evaluar todos los mercados disponibles
             markets_to_check = [
+                # Mercados de Resultado (ELO) - Rentabilidad positiva demostrada
                 ("Home",             probs.get('home', 0),     odds.get('home', {})),
                 ("Draw",             probs.get('draw', 0),     odds.get('draw', {})),
                 ("Away",             probs.get('away', 0),     odds.get('away', {})),
-                ("Over 2.5",         probs.get('over_2_5', 0), odds.get('over_2_5', {})),
-                ("Under 2.5",        probs.get('under_2_5', 0),odds.get('under_2_5', {})),
-                ("Over 1.5",         probs.get('over_1_5', 0), odds.get('over_1_5', {})),
-                ("Under 1.5",        probs.get('under_1_5', 0),odds.get('under_1_5', {})),
-                ("Over 0.5",         probs.get('over_0_5', 0), odds.get('over_0_5', {})),
-                ("Under 0.5",        probs.get('under_0_5', 0),odds.get('under_0_5', {})),
-                ("BTTS Yes",         probs.get('btts_yes', 0), odds.get('btts_yes', {})),
                 ("Double Chance 1X", probs.get('dc_1x', 0),   odds.get('dc_1x', {})),
                 ("Double Chance X2", probs.get('dc_x2', 0),   odds.get('dc_x2', {})),
                 ("Double Chance 12", probs.get('dc_12', 0),   odds.get('dc_12', {})),
                 ("Draw No Bet Home", probs.get('dnb_home', 0),odds.get('dnb_home', {})),
                 ("Draw No Bet Away", probs.get('dnb_away', 0),odds.get('dnb_away', {})),
+                
+                # Mercados de Goles - Overs priorizados para combinadas
+                ("Over 2.5",         probs.get('over_2_5', 0), odds.get('over_2_5', {})),
+                ("Over 1.5",         probs.get('over_1_5', 0), odds.get('over_1_5', {})),
+                ("Over 0.5",         probs.get('over_0_5', 0), odds.get('over_0_5', {})),
+                
+                # [BLOQUEO ANTI-SANGRIA: 2026-08-30] 
+                # LAB reporta Under 2.5 (-11.3% ROI) y BTTS (-19% ROI). Bloqueados temporalmente.
+                # ("Under 2.5",        probs.get('under_2_5', 0),odds.get('under_2_5', {})),
+                # ("Under 1.5",        probs.get('under_1_5', 0),odds.get('under_1_5', {})),
+                # ("Under 0.5",        probs.get('under_0_5', 0),odds.get('under_0_5', {})),
+                # ("BTTS Yes",         probs.get('btts_yes', 0), odds.get('btts_yes', {})),
+                # ("BTTS No",          probs.get('btts_no', 0),  odds.get('btts_no', {})),
             ]
             
             for pick_name, prob_pct, odd_info in markets_to_check:
@@ -1149,6 +1158,77 @@ def get_prematch_insight(req: PrematchInsightRequest):
         "homeTeam": req.homeTeam,
         "awayTeam": req.awayTeam,
         "probs": real_probs
+    }
+
+@app.get("/api/delfos/historial")
+def api_delfos_historial():
+    from portfolio_manager import get_db_connection
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM delfos_picks ORDER BY created_at DESC")
+    all_picks = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    
+    # Process stats
+    hoy_str = datetime.now().strftime("%Y-%m-%d")
+    picks_hoy = [p for p in all_picks if p['fecha'] == hoy_str]
+    historial = [p for p in all_picks if p['fecha'] != hoy_str and p['resultado'] is not None]
+    
+    correctos = sum(1 for p in historial if p['es_correcto'] == 1)
+    incorrectos = sum(1 for p in historial if p['es_correcto'] == 0)
+    refunds = sum(1 for p in historial if p['es_correcto'] == -1)
+    total_resueltos = correctos + incorrectos
+    
+    hit_rate = round((correctos / total_resueltos * 100), 1) if total_resueltos > 0 else 0
+    
+    # ROI teórico (asumiendo 1u plana)
+    profit_teorico = 0
+    for p in historial:
+        if p['es_correcto'] == 1:
+            profit_teorico += (p['cuota'] - 1)
+        elif p['es_correcto'] == 0:
+            profit_teorico -= 1
+            
+    roi_teorico = round((profit_teorico / len(historial) * 100), 1) if historial else 0
+    
+    # Por mercado
+    mercados = {}
+    for p in historial:
+        m = p['pick']
+        if m not in mercados:
+            mercados[m] = {"total": 0, "correctos": 0, "incorrectos": 0, "profit": 0}
+        
+        if p['es_correcto'] != -1:
+            mercados[m]["total"] += 1
+            if p['es_correcto'] == 1:
+                mercados[m]["correctos"] += 1
+                mercados[m]["profit"] += (p['cuota'] - 1)
+            else:
+                mercados[m]["incorrectos"] += 1
+                mercados[m]["profit"] -= 1
+                
+    por_mercado = {}
+    for m, data in mercados.items():
+        if data["total"] > 0:
+            por_mercado[m] = {
+                "total": data["total"],
+                "hit_rate": round(data["correctos"] / data["total"] * 100, 1),
+                "roi": round(data["profit"] / data["total"] * 100, 1)
+            }
+            
+    return {
+        "resumen": {
+            "total_resueltos": total_resueltos,
+            "correctos": correctos,
+            "incorrectos": incorrectos,
+            "refunds": refunds,
+            "hit_rate": hit_rate,
+            "roi_teorico": roi_teorico
+        },
+        "por_mercado": por_mercado,
+        "picks_hoy": picks_hoy,
+        "historial": historial[:100] # Mostrar 100 más recientes
     }
 
 

@@ -30,6 +30,7 @@ class HistoricalContextService:
 
     def _process_team_fixtures(self, fixtures, team_id):
         if not fixtures:
+            print(f"[⚠️ WARNING] No se obtuvieron fixtures para el equipo {team_id}. Usando Fallback de 1.25 goles. (Posible límite de API o error de parámetro)")
             # Fallback
             return {
                 "avg_goals_scored": 1.25,

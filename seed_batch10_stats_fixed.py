@@ -1,4 +1,4 @@
-﻿import os
+import os
 import time
 import json
 import sqlite3
@@ -6,10 +6,16 @@ import sys
 sys.path.append('backend')
 from api_football_engine import make_api_request
 
+from datetime import datetime
+
 LEAGUES = {
-    'A-League': 188,
-    'Veikkausliiga': 121,
-    'Eerste Divisie': 89
+    'Liga MX': 262,
+    'Premier League': 39,
+    'La Liga': 140,
+    'Serie A': 135,
+    'Bundesliga': 78,
+    'Ligue 1': 61,
+    'Eredivisie': 88
 }
 
 stats_file = 'backend/team_stats_db.json'
@@ -19,9 +25,11 @@ try:
 except:
     stats_db = {}
 
+current_year = datetime.now().year
+
 for name, lid in LEAGUES.items():
-    print(f"Inyectando Estadísticas Híbridas para {name}...")
-    team_res = make_api_request(f"/teams?league={lid}&season=2024")
+    print(f"Inyectando Estadísticas Híbridas para {name} (Temporada {current_year})...")
+    team_res = make_api_request(f"/teams?league={lid}&season={current_year}")
     time.sleep(7)
     if not team_res or "response" not in team_res:
         continue
@@ -31,12 +39,8 @@ for name, lid in LEAGUES.items():
         team_id = str(t["team"]["id"])
         team_name = t["team"]["name"]
         
-        if team_id in stats_db:
-            print(f"  {team_name} ya existe. Saltando...")
-            continue
-            
-        print(f"  -> Descargando {team_name}...")
-        stat_data = make_api_request(f"/teams/statistics?league={lid}&season=2024&team={team_id}")
+        print(f"  -> Descargando/Actualizando {team_name}...")
+        stat_data = make_api_request(f"/teams/statistics?league={lid}&season={current_year}&team={team_id}")
         if stat_data and "response" in stat_data and stat_data["response"]:
             resp = stat_data["response"]
             clean_sheet = resp.get("clean_sheet", {}).get("total", 0)

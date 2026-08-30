@@ -35,6 +35,27 @@ def initialize_db():
             away_momentum INTEGER DEFAULT 0
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS delfos_picks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT,
+            fixture_id TEXT,
+            home_team TEXT,
+            away_team TEXT,
+            liga TEXT,
+            pick TEXT,
+            probabilidad REAL,
+            cuota REAL,
+            edge REAL,
+            tipo TEXT,
+            resultado TEXT,
+            es_correcto INTEGER,
+            goles_home INTEGER,
+            goles_away INTEGER,
+            evidence_snapshot TEXT,
+            created_at TEXT
+        )
+    ''')
     
     # Parche de migración para bases de datos existentes
     try:
