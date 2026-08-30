@@ -19,13 +19,32 @@ class HistoricalContextService:
         home_fixtures = api_football_engine.get_team_historical_stats(home_id, last_n=10)
         away_fixtures = api_football_engine.get_team_historical_stats(away_id, last_n=10)
         
-        # 3. Procesar estadísticas
+        # 3. Bajar lesionados y suspendidos (Módulo Médico)
+        injuries_data = api_football_engine.get_fixture_injuries(fixture_id)
+        home_injuries = len([i for i in injuries_data if i.get("team", {}).get("id") == home_id]) if injuries_data else 0
+        away_injuries = len([i for i in injuries_data if i.get("team", {}).get("id") == away_id]) if injuries_data else 0
+        
+        # 4. Procesar estadísticas
         home_stats = self._process_team_fixtures(home_fixtures, home_id)
         away_stats = self._process_team_fixtures(away_fixtures, away_id)
         
+        # 5. Obtener Tarjetas Históricas de la Bóveda
+        import json
+        try:
+            with open("backend/team_stats_db.json", "r", encoding="utf-8") as f:
+                db = json.load(f)
+                home_reds = db.get(str(home_id), {}).get("red_cards", 0)
+                away_reds = db.get(str(away_id), {}).get("red_cards", 0)
+        except:
+            home_reds, away_reds = 0, 0
+            
         return {
             "home": home_stats,
-            "away": away_stats
+            "away": away_stats,
+            "home_injuries": home_injuries,
+            "away_injuries": away_injuries,
+            "home_red_cards": home_reds,
+            "away_red_cards": away_reds
         }
 
     def _process_team_fixtures(self, fixtures, team_id):

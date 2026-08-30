@@ -230,6 +230,26 @@ class EvidenceAggregator:
         if is_conflicted:
             confidence = int(confidence * 0.5)
             
+        # --- NUEVOS MÓDULOS (API PRO) ---
+        # 1. Penalización Médica
+        h_injuries = context.get("home_injuries", 0)
+        a_injuries = context.get("away_injuries", 0)
+        
+        if final_pick == home_team and h_injuries >= 3:
+            confidence = max(0, confidence - 15)  # -15% por demasiadas bajas
+        elif final_pick == away_team and a_injuries >= 3:
+            confidence = max(0, confidence - 15)
+            
+        # 2. Penalización Disciplinaria (Indisciplina Histórica)
+        h_reds = context.get("home_red_cards", 0)
+        a_reds = context.get("away_red_cards", 0)
+        
+        if final_pick == home_team and h_reds >= 3: # 3+ rojas en la temporada es alto riesgo
+            confidence = max(0, confidence - 10)
+        elif final_pick == away_team and a_reds >= 3:
+            confidence = max(0, confidence - 10)
+            
+        if is_conflicted:
             home_xg = context.get('home_xg', 0)
             away_xg = context.get('away_xg', 0)
             total_xg = home_xg + away_xg

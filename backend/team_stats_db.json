@@ -2,644 +2,618 @@
     "33": {
         "name": "Manchester United",
         "league": 39,
-        "form": "WLLWDLDWLDWDWLLWLLLDWLWLLDWDWLDLLDLLLW",
-        "clean_sheets": 10,
-        "failed_to_score": 15,
-        "over_25": 7,
-        "under_25": 31
+        "form": "LDWLWLWWWDDLWDWDLWDDDWWWWDWWLWDLWWWDWW",
+        "clean_sheets": 8,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 64,
+        "red_cards": 3
     },
     "34": {
         "name": "Newcastle",
         "league": 39,
-        "form": "WDWWLDDLLWWLDDLWWWWWWLWLLWLWWWWWLWDWLL",
-        "clean_sheets": 13,
-        "failed_to_score": 7,
-        "over_25": 12,
-        "under_25": 26
+        "form": "DLDWDLWLWLLWWDWLDLWWWDLLLWLLWWLLLLWDWL",
+        "clean_sheets": 8,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 67,
+        "red_cards": 3
     },
     "35": {
         "name": "Bournemouth",
         "league": 39,
-        "form": "DDWLLWLWDWLLWWWDWDDWDWWLWLLDLLDWDDWLLW",
-        "clean_sheets": 9,
-        "failed_to_score": 8,
-        "over_25": 7,
-        "under_25": 31
+        "form": "LWWWDDWDWLLDLLDDDLDLWDWWDWDDDDDWWDWWDD",
+        "clean_sheets": 11,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 88,
+        "red_cards": 2
     },
     "36": {
         "name": "Fulham",
         "league": 39,
-        "form": "LWDDWWLLDWWLDWDDDWDDLWLWWLWLWLWLLWLLWL",
-        "clean_sheets": 5,
-        "failed_to_score": 7,
-        "over_25": 4,
-        "under_25": 34
+        "form": "DDLWWLLLLWLWWLLWWWDDWLWLLLWWLDWLDWLLDW",
+        "clean_sheets": 9,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 75,
+        "red_cards": 1
     },
     "39": {
         "name": "Wolves",
         "league": 39,
-        "form": "LLDLLLLLDDWWLLLLWWDLLLLWLWLDWWWWWWLLLD",
-        "clean_sheets": 8,
-        "failed_to_score": 7,
-        "over_25": 5,
-        "under_25": 33
+        "form": "LLLLLDDLLLLLLLLLLLDWDDLLLDDLWWDLLLDLDD",
+        "clean_sheets": 4,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 80,
+        "red_cards": 3
     },
     "40": {
         "name": "Liverpool",
         "league": 39,
-        "form": "WWWLWWWWDWWWWDDWWWDDWWWDWDWWWWLWWWLDLD",
-        "clean_sheets": 14,
-        "failed_to_score": 1,
-        "over_25": 10,
-        "under_25": 28
+        "form": "WWWWWLLLLWLLWDDWWWDDDDLWLWWWLDLWWWLDLD",
+        "clean_sheets": 10,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 57,
+        "red_cards": 1
     },
     "41": {
         "name": "Southampton",
-        "league": 39,
-        "form": "LLLLDLLLLWLLDLLLDLLLLLLWLLLLLDLLDLLDLL",
-        "clean_sheets": 3,
-        "failed_to_score": 16,
+        "league": 40,
+        "form": "WDLDDLDWDDLLLWWWWLWWLDLDDLLWDWWWDWWDWWWWWWWDDWDW",
+        "clean_sheets": 12,
+        "failed_to_score": 6,
         "over_25": 0,
-        "under_25": 38
+        "under_25": 0
     },
     "42": {
         "name": "Arsenal",
         "league": 39,
-        "form": "WWDWDWWLDLDWWWDDWWWDWDWWWLDDWWDDWDLDWW",
-        "clean_sheets": 13,
-        "failed_to_score": 5,
-        "over_25": 8,
-        "under_25": 30
+        "form": "WWLWDWWWWWDWDWLWWWWWDDLWWDDWWWWLLWWWWW",
+        "clean_sheets": 19,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 51,
+        "red_cards": 0
     },
     "45": {
         "name": "Everton",
         "league": 39,
-        "form": "LLLLDWDWDLDDLWDDDLLLWWWDWDDDDLDWLLDWWW",
-        "clean_sheets": 12,
-        "failed_to_score": 15,
-        "over_25": 4,
-        "under_25": 34
+        "form": "LWWDLDWLLDWWLWWLLDWLDWDDWLLWWLWDLLDDLL",
+        "clean_sheets": 11,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 74,
+        "red_cards": 4
     },
     "529": {
         "name": "Barcelona",
         "league": 140,
-        "form": "WWWWWWWLWWWWLDLWDLLDWWWWWWWWWDWWWWWWLW",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 2,
-        "matches_played": 38,
-        "over_25": 17,
-        "under_25": 21,
-        "last_updated": 1787311073.9135852
+        "form": "WWDWWWWLWLWWWWWWWWWLWWWLWWWWWWWWWWWLWL",
+        "clean_sheets": 15,
+        "failed_to_score": 1,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 63,
+        "red_cards": 2
     },
     "530": {
         "name": "Atletico Madrid",
         "league": 140,
-        "form": "DWDWWDWDDWLWWWWWWWWLDWDDWWLLDWWLWDWLWW",
-        "clean_sheets_total": 17,
-        "failed_to_score_total": 6,
-        "matches_played": 38,
-        "over_25": 11,
-        "under_25": 27,
-        "last_updated": 1787311080.3810635
+        "form": "LDDWDWWDWWWWWWLLWWDWWDLLWWWWLLLLWWLWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 79,
+        "red_cards": 5
     },
     "531": {
         "name": "Athletic Club",
         "league": 140,
-        "form": "DLWLWWWDLWDDDWWWWDWWDDWDWLDWDDWLWDWWWL",
-        "clean_sheets_total": 15,
-        "failed_to_score_total": 9,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787311086.8581924
+        "form": "WWWLLDLWDLLWLWLWLLDLLDWWWDLLWLLWLWLLDL",
+        "clean_sheets": 6,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 78,
+        "red_cards": 7
     },
     "532": {
         "name": "Valencia",
         "league": 140,
-        "form": "LLLDLWDLDLDWLLLDDLDWLWWDLDWDWWWDDWWLLD",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 10,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787311093.3363025
+        "form": "DLWLWDLLDLLDWDDLDLDWWLLWLWWLWLLDWLWDWW",
+        "clean_sheets": 9,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 72,
+        "red_cards": 3
     },
     "533": {
         "name": "Villarreal",
         "league": 140,
-        "form": "DWWDWLWWLDWWDDLLDWLWDWWDWLLWDWDLWWWWWW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 6,
-        "matches_played": 38,
-        "over_25": 10,
-        "under_25": 28,
-        "last_updated": 1787311099.855666
+        "form": "WWDLWWWLDWWWWWWLWWLLDWLWWLWDWLWDWWDLLW",
+        "clean_sheets": 8,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 79,
+        "red_cards": 3
     },
     "534": {
         "name": "Las Palmas",
-        "league": 140,
-        "form": "DLDLLLDLLWWLWLWWDWLLDLLLLDLDDLWWLLLLLL",
-        "clean_sheets_total": 4,
-        "failed_to_score_total": 11,
-        "matches_played": 38,
-        "over_25": 3,
-        "under_25": 35,
-        "last_updated": 1787311106.363509
+        "league": 141,
+        "form": "DWLDWWLWDWDDWWWLDDWWDLLDDDDWWLWLWWLWWWLWDWLD",
+        "clean_sheets": 14,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "536": {
         "name": "Sevilla",
         "league": 140,
-        "form": "DLDLWLWDWLWLLWDLWLDWDDLWDDWLLLLDLDLWLL",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 9,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787311112.8357966
+        "form": "LLWDWLWWLLLWLLDWLLLDWLDDWDDLLLWLLWWWLL",
+        "clean_sheets": 6,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 107,
+        "red_cards": 5
     },
     "537": {
         "name": "Leganes",
-        "league": 140,
-        "form": "DWDLLLDDDLWLWLDLWLDWDLLDLWLLLDLDDDWLWW",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 14,
-        "matches_played": 38,
-        "over_25": 5,
-        "under_25": 33,
-        "last_updated": 1787311119.3431857
+        "league": 141,
+        "form": "DDDDWLLWDWDLLWLLDDLWWLWLWLDDLLWDDLWLLLLDLW",
+        "clean_sheets": 13,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "538": {
         "name": "Celta Vigo",
         "league": 140,
-        "form": "WWLLWLLDWLLWDDLWLWLLDLWDWDWWDWLLWLWWLW",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 4,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787311125.8439598
+        "form": "LDDDDDLDDWWLWLWWDWWWLDLDWWLDLWLLLWWLDW",
+        "clean_sheets": 10,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 73,
+        "red_cards": 1
     },
     "540": {
         "name": "Espanyol",
         "league": 140,
-        "form": "LLDWWLLLWLLLLWLDDLDWDWLDWDLDWWWDLLLLLW",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 11,
-        "matches_played": 38,
-        "over_25": 3,
-        "under_25": 35,
-        "last_updated": 1787311132.3371322
+        "form": "WDWWLDDLWWLLWWWWWLDLLLLDLDDLLDLLDLLWWD",
+        "clean_sheets": 10,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 91,
+        "red_cards": 5
     },
     "541": {
         "name": "Real Madrid",
         "league": 140,
-        "form": "DWDWWWWDWWLWWWLWDWWWWLDDWLWWWLWWWWLWWW",
-        "clean_sheets_total": 15,
-        "failed_to_score_total": 2,
-        "matches_played": 38,
-        "over_25": 13,
-        "under_25": 25,
-        "last_updated": 1787311138.8164747
+        "form": "WWWWWWLWWWWDDDWLWWWWWWWWLLWWWLDWDWLWWW",
+        "clean_sheets": 14,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 70,
+        "red_cards": 7
     },
     "542": {
         "name": "Alaves",
         "league": 140,
-        "form": "LDWWLWLLLLLWLLDDDDLWDLLDLDWDLWLDWDLWWD",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 13,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787311145.277097
+        "form": "WLDWLDLWDLWLLLWLLDLLWWLDDLLDWDDLWLDWWL",
+        "clean_sheets": 5,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 96,
+        "red_cards": 5
     },
     "543": {
         "name": "Real Betis",
         "league": 140,
-        "form": "DDLWWLDWLWWDDLLDWDLLWDLWWWWWWDLWWWDDLD",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 5,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787311151.7826958
+        "form": "DWDLDWWWDLWDDWLDWLDWLWWWDDLDLDDWDWDWLW",
+        "clean_sheets": 10,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 73,
+        "red_cards": 2
     },
     "546": {
         "name": "Getafe",
         "league": 140,
-        "form": "DDDLLDLWDDDLLWLWLLWDWDWWLLWWLWLLLLLLWL",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 16,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787311158.2616177
+        "form": "WWLWLDDLLWWLLWLLLDLLDDWWLWWLWWLWLLDWLW",
+        "clean_sheets": 12,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 109,
+        "red_cards": 8
     },
     "547": {
         "name": "Girona",
         "league": 140,
-        "form": "DLWWLLDDWLLWWWDLLWWLLWLLLDDDLLLLDWLWLL",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 11,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787311164.755672
+        "form": "LLLDLDDWLDLWDDLWLWWWDLDWDLDWLWDLLLDDLD",
+        "clean_sheets": 6,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 80,
+        "red_cards": 7
     },
     "548": {
         "name": "Real Sociedad",
         "league": 140,
-        "form": "LWLDLLDWDWLWWLWWDLWLLLWLWLLDWWLDLDLLWL",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 19,
-        "matches_played": 38,
-        "over_25": 5,
-        "under_25": 33,
-        "last_updated": 1787311171.23099
+        "form": "DDLLLWLLDWWDWLLLDDWWWDWLDWLWLWDLDLDDLD",
+        "clean_sheets": 3,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 88,
+        "red_cards": 4
     },
     "720": {
         "name": "Valladolid",
-        "league": 140,
-        "form": "WLDLLDLLLWLLDLLLWLWLLLLLLDLLLLLLLLLLLL",
-        "clean_sheets_total": 5,
-        "failed_to_score_total": 16,
-        "matches_played": 38,
-        "over_25": 1,
-        "under_25": 37,
-        "last_updated": 1787311177.7036831
+        "league": 141,
+        "form": "WWDDWLLDWLDWDLLDWLLDLWLLLLDWDWLLWLDLWLWLLL",
+        "clean_sheets": 11,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
     },
     "727": {
         "name": "Osasuna",
         "league": 140,
-        "form": "DWLWLWDWDLWWLDDDDLLDDWDDLDLLDDWWWLDWWD",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 8,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787311184.1946223
+        "form": "LWLWLDLWLLDLLDWLWDLWWDWDWLDLWDDLWLLLLL",
+        "clean_sheets": 7,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 91,
+        "red_cards": 7
     },
     "728": {
         "name": "Rayo Vallecano",
         "league": 140,
-        "form": "WDLLWDDDWLWLLLWDDDWDWWWLLDLDWLLDLWWDWD",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 9,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787311190.6979904
+        "form": "WLDLDLLWWWLDDDLDLDWLLLWDDWDDLWLWDWDDWW",
+        "clean_sheets": 12,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 104,
+        "red_cards": 9
     },
     "798": {
         "name": "Mallorca",
         "league": 140,
-        "form": "DLDWLWWWLWDLLWWLLWWLLLDWDDDWLLWDLLWLLD",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 14,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787311197.193561
+        "form": "LDLLDLWLWDLWLDDWDLLWLWLLLLDWLWWDLWDLLW",
+        "clean_sheets": 6,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 83,
+        "red_cards": 5
     },
     "2278": {
         "name": "Guadalajara Chivas",
         "league": 262,
-        "form": "DLWWDWLWLDLWWLDWLLWLDLDWLWLWDDLLDWD",
-        "clean_sheets_total": 12,
-        "failed_to_score_total": 8,
-        "matches_played": 35,
-        "over_25": 2,
-        "under_25": 33,
-        "last_updated": 1787311210.222713
+        "form": "LWLLDLWDLWWWWLWWWDLWWWWWWLLWWWWDLWDDLWDL",
+        "clean_sheets": 14,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "2279": {
         "name": "Tigres UANL",
         "league": 262,
-        "form": "WDWWDWWLWDWLLWWWDLDWWDWLWWLLWWWLDWDWDDDL",
-        "clean_sheets_total": 14,
-        "failed_to_score_total": 12,
-        "matches_played": 40,
-        "over_25": 6,
-        "under_25": 34,
-        "last_updated": 1787311216.711373
+        "form": "WWWLDWDDDWWDWWWDWLWDDWLWLDWWLLWLWDLLWDDWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "2280": {
         "name": "Club Tijuana",
         "league": 262,
-        "form": "WWLDWDWLLWWWDDLDWDWWLLDWLLLLLWLLLWLWWW",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 8,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787311223.2225492
+        "form": "WLDDWDWDWLWDLDLLWWWLDWDDDLDDLLWLWWDWD",
+        "clean_sheets": 13,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "2281": {
         "name": "Toluca",
         "league": 262,
-        "form": "DWWDWWWDLWDWWWDLWLLWDLDWDWWWLWWWWWWDLWDWDW",
-        "clean_sheets_total": 14,
-        "failed_to_score_total": 6,
-        "matches_played": 42,
-        "over_25": 16,
-        "under_25": 26,
-        "last_updated": 1787311229.7208433
+        "form": "WWLWDLWWWWWWWDDDWWDLWLWWWDDDWWWWWDDLDLLWLL",
+        "clean_sheets": 13,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "2282": {
         "name": "Monterrey",
         "league": 262,
-        "form": "WLWWWDLWWDDLWDLWWWWLWLDDDLDWLWWLWDWLWLWWLWWL",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 5,
-        "matches_played": 44,
-        "over_25": 12,
-        "under_25": 32,
-        "last_updated": 1787311236.270111
+        "form": "LWWWWWWWDLWDDWLDLWLWLLWWDLWLLWLDLLDLWL",
+        "clean_sheets": 10,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "2283": {
         "name": "Atlas",
         "league": 262,
-        "form": "DDWWWLWLLLWDDDLDDWLDLDDDLWLLWWLLDLWD",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 12,
-        "matches_played": 36,
-        "over_25": 5,
-        "under_25": 31,
-        "last_updated": 1787311242.7457106
+        "form": "WDLLDLLDDLWWLWLDLWLWWDLWLWLDDLDWDWLL",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "2285": {
         "name": "Santos Laguna",
         "league": 262,
-        "form": "LDLLLDWLWLLLDDLLLLLLLLLDLWLWLLLLLL",
-        "clean_sheets_total": 3,
-        "failed_to_score_total": 16,
-        "matches_played": 34,
-        "over_25": 1,
-        "under_25": 33,
-        "last_updated": 1787311249.2997122
+        "form": "WLLWLLLDLWLLWDWLWLLDLLLLDLWLWDLLLW",
+        "clean_sheets": 6,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "2286": {
         "name": "U.N.A.M. - Pumas",
         "league": 262,
-        "form": "WDWWLLLWWWDWDLDWWLLWLDDWWLLLLWLWLDWLDL",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 10,
-        "matches_played": 38,
-        "over_25": 5,
-        "under_25": 33,
-        "last_updated": 1787311255.7888138
+        "form": "LLWDDDWWDLLLDLDWWLDWDWDWWDLWDWDWWWWDDLWDL",
+        "clean_sheets": 12,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "2287": {
         "name": "Club America",
         "league": 262,
-        "form": "LWLWLLWWDLDWDWWWLDWWDWWDWDWWWWLDWWDWWLDLWDWLWDL",
-        "clean_sheets_total": 19,
-        "failed_to_score_total": 13,
-        "matches_played": 47,
-        "over_25": 12,
-        "under_25": 35,
-        "last_updated": 1787311262.335998
+        "form": "DWDWWWWLDWWWLWDWLLWDLDWWLWLLWWLDDWWLDD",
+        "clean_sheets": 11,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "2288": {
         "name": "Necaxa",
         "league": 262,
-        "form": "LWLDWLWDDDLLLLLDDLWWLLWWWWLLWWWLDWDD",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 8,
-        "matches_played": 36,
-        "over_25": 9,
-        "under_25": 27,
-        "last_updated": 1787311268.8416352
+        "form": "LWDDLLLDWLLLLDWWDWLLLWWLLLLDWWLDDL",
+        "clean_sheets": 4,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "2289": {
         "name": "Leon",
         "league": 262,
-        "form": "LDDDDLLLWDDWDWDDLWWWWWDWDWWLLLDWLLLL",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 5,
-        "matches_played": 36,
-        "over_25": 3,
-        "under_25": 33,
-        "last_updated": 1787311275.3389027
+        "form": "LWLLWDWDLDLLLLDLLWLDLLLWWLLLWWWWLL",
+        "clean_sheets": 6,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "2290": {
         "name": "Club Queretaro",
         "league": 262,
-        "form": "LLLLLLDLWWDDLLLLWLWLLDWLLLWLWLDWLW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 13,
-        "matches_played": 34,
-        "over_25": 2,
-        "under_25": 32,
-        "last_updated": 1787311281.8700845
+        "form": "LLLLDWLLWDLWLWLWWDLLDWLDLLDDWDWDDW",
+        "clean_sheets": 8,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "2291": {
         "name": "Puebla",
         "league": 262,
-        "form": "WLDLLWDWLLLLLLWLLDLDLWLLWLLLLLDLLL",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 12,
-        "matches_played": 34,
+        "form": "LLWLLDLLLDLLWLDLWLWLDDLLWWLDLDLLLL",
+        "clean_sheets": 6,
+        "failed_to_score": 14,
         "over_25": 0,
-        "under_25": 34,
-        "last_updated": 1787311288.3750052
+        "under_25": 0
     },
     "2292": {
         "name": "CF Pachuca",
         "league": 262,
-        "form": "LDWLLDLDWLLLDLWLLWWWDLLWLWDDWLWWDLWDL",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 11,
-        "matches_played": 37,
-        "over_25": 5,
-        "under_25": 32,
-        "last_updated": 1787311294.858827
+        "form": "WWWWLDLLLDWWDLDLLWLLWDDWWWLWWDDWWWLLWWWL",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "2295": {
         "name": "Cruz Azul",
         "league": 262,
-        "form": "WWWDWWWLWWWWWWWDDLWDLDLDWWWLWWDDWWWDWDWWWL",
-        "clean_sheets_total": 17,
-        "failed_to_score_total": 4,
-        "matches_played": 42,
-        "over_25": 13,
-        "under_25": 29,
-        "last_updated": 1787311301.3677282
+        "form": "DDWWWWWWWDLDWDWWLDWDDLWWWDWWWWWDDLDDDWWWDWDW",
+        "clean_sheets": 12,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "2298": {
         "name": "FC Juarez",
         "league": 262,
-        "form": "DLLLLLWLLWWLLLWDWDWLWLWWLWDLDWDDDLD",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 10,
-        "matches_played": 35,
-        "over_25": 1,
-        "under_25": 34,
-        "last_updated": 1787311307.921332
+        "form": "DLDLWWWDLWWLDLDWLLWLDWLDLLLWWLDWDDLLLW",
+        "clean_sheets": 3,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "2314": {
         "name": "Atletico San Luis",
         "league": 262,
-        "form": "WDLDWLWLWLWWLWWDWWDWLLWLLLLLLWLWLWWLLW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 10,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787311314.4202511
+        "form": "WLLLWLLDWLLLWWLLLLWDLLWLLWLDLWDLWL",
+        "clean_sheets": 7,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "14002": {
         "name": "Mazatl\u00e1n",
         "league": 262,
-        "form": "LDLLWDLDDLDDWDLDLDLWWLLDLWDDLWLDLL",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 16,
-        "matches_played": 34,
-        "over_25": 2,
-        "under_25": 32,
-        "last_updated": 1787311320.9181662
+        "form": "DWLDLDLLDDLWLDDLDLLLLLWDWLWLDLLDWL",
+        "clean_sheets": 2,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "157": {
         "name": "Bayern M\u00fcnchen",
         "league": 78,
-        "form": "WWWWDDWWWWWDWLWWWWWWWDWWLDWWDWWDWW",
-        "clean_sheets_total": 16,
-        "failed_to_score_total": 1,
-        "matches_played": 34,
-        "over_25": 22,
-        "under_25": 12,
-        "last_updated": 1787335802.2795665
+        "form": "WWWWWWWWWDWWWDWWWWLDWWWWWDWWWWWDWW",
+        "clean_sheets": 12,
+        "failed_to_score": 0,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 58,
+        "red_cards": 2
     },
     "160": {
         "name": "SC Freiburg",
         "league": 78,
-        "form": "WLWWLWWLDDLWDWLWLLLWWWWDDDLLWWWDWL",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 8,
-        "matches_played": 34,
-        "over_25": 8,
-        "under_25": 26,
-        "last_updated": 1787335808.823649
+        "form": "LLWWDDDLDWLWLDWWLDWLWLWLDLWLWWLDLW",
+        "clean_sheets": 6,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 51,
+        "red_cards": 3
     },
     "161": {
         "name": "VfL Wolfsburg",
         "league": 78,
-        "form": "LWLLDWLDDWWWWLLWWLDDDWDWDLLLLDLLDW",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 7,
-        "matches_played": 34,
-        "over_25": 6,
-        "under_25": 28,
-        "last_updated": 1787335815.4497283
+        "form": "WDDLLLLWLLLDWWLLWDLLLDLLLDLLLWDDLWDL",
+        "clean_sheets": 3,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 75,
+        "red_cards": 4
     },
     "162": {
         "name": "Werder Bremen",
         "league": 78,
-        "form": "DDWLWLWDLWLDWWWLDLDWLLLLWLWWWWDDDW",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 9,
-        "matches_played": 34,
-        "over_25": 6,
-        "under_25": 28,
-        "last_updated": 1787335821.9500968
+        "form": "LDWLLWDWDWLDLLDLDLLDLLLWWLWLLWDLLL",
+        "clean_sheets": 6,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 77,
+        "red_cards": 5
     },
     "163": {
         "name": "Borussia M\u00f6nchengladbach",
         "league": 78,
-        "form": "LWLLWLWDWDWLDWWLLLWWDWLWLWWDLLLDLL",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 6,
-        "matches_played": 34,
-        "over_25": 8,
-        "under_25": 26,
-        "last_updated": 1787335828.4536707
+        "form": "DLLDLDLLWWWDWLLWLDLDDLLWLWDDLDDWLW",
+        "clean_sheets": 13,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 60,
+        "red_cards": 3
     },
     "164": {
         "name": "FSV Mainz 05",
         "league": 78,
-        "form": "DDLWLWLDDWWWLWWWLLWLDWWWWDLDLDLDWD",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 8,
-        "matches_played": 34,
-        "over_25": 9,
-        "under_25": 25,
-        "last_updated": 1787335834.9756305
+        "form": "LDLWLLLLDLDLLDDDWLWWWLDDDWWWLDLWLW",
+        "clean_sheets": 4,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 70,
+        "red_cards": 5
     },
     "165": {
         "name": "Borussia Dortmund",
         "league": 78,
-        "form": "WDWLWLWLWLWDDDWLLLDWLLWWLLWWDWWWWW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 5,
-        "matches_played": 34,
-        "over_25": 12,
-        "under_25": 22,
-        "last_updated": 1787335841.487795
+        "form": "DWWWWDLWWDDWWDWDWWWWWWDLWWWWLLWLWW",
+        "clean_sheets": 15,
+        "failed_to_score": 2,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 63,
+        "red_cards": 2
     },
     "167": {
         "name": "1899 Hoffenheim",
         "league": 78,
-        "form": "WLLLLDWDLDWLDDLLLWDLLWDWDLDLWLLDDL",
-        "clean_sheets_total": 4,
-        "failed_to_score_total": 9,
-        "matches_played": 34,
-        "over_25": 7,
-        "under_25": 27,
-        "last_updated": 1787335847.9883246
+        "form": "WLWLDLWWWWDWLWDWWWWWLWDLWDLLDWWDWL",
+        "clean_sheets": 7,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 73,
+        "red_cards": 3
     },
     "168": {
         "name": "Bayer Leverkusen",
         "league": 78,
-        "form": "WLWWDDWDDDWWWWWWWWDWDDWWLWWWDDWDLD",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 5,
-        "matches_played": 34,
-        "over_25": 11,
-        "under_25": 23,
-        "last_updated": 1787335854.5112238
+        "form": "LDWDWWWWLWWLLWWLLWWDWLDWDDDWWLWWLD",
+        "clean_sheets": 8,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 70,
+        "red_cards": 2
     },
     "169": {
         "name": "Eintracht Frankfurt",
         "league": 78,
-        "form": "LWWWWDLDWWWWDLLWWWDDDWLLLWWLWDWDDW",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 4,
-        "matches_played": 34,
-        "over_25": 12,
-        "under_25": 22,
-        "last_updated": 1787335861.246106
+        "form": "WWLLWLDWDWWDLWDDLDLLDWLWDWLDWLDLLD",
+        "clean_sheets": 7,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 62,
+        "red_cards": 4
     },
     "170": {
         "name": "FC Augsburg",
         "league": 78,
-        "form": "DLWLLWLWDDLWDLLLWWWDDDWDWWDLWDLLLL",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 12,
-        "matches_played": 34,
-        "over_25": 2,
-        "under_25": 32,
-        "last_updated": 1787335867.7682905
+        "form": "WLLLLWDLLLWLWLDLDDWWLWWWLLLDDWDWWL",
+        "clean_sheets": 5,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 82,
+        "red_cards": 1
     },
     "172": {
         "name": "VfB Stuttgart",
         "league": 78,
-        "form": "LDWWDDLWDLWDWWLWWWLLWLDLDLLWLDLWWW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 6,
-        "matches_played": 34,
-        "over_25": 11,
-        "under_25": 23,
-        "last_updated": 1787335874.2935638
+        "form": "LWLWWWWWLWDLLWDWWDWWLWDWDWWLWLDDWD",
+        "clean_sheets": 11,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 63,
+        "red_cards": 2
     },
     "173": {
         "name": "RB Leipzig",
         "league": 78,
-        "form": "WWDDWWWWLDLLWWLWLDDDWDDLDWLWWDLDDL",
-        "clean_sheets_total": 14,
-        "failed_to_score_total": 9,
-        "matches_played": 34,
-        "over_25": 9,
-        "under_25": 25,
-        "last_updated": 1787335880.8406851
+        "form": "LWWWWDWWWLWDWLLWLWDLWDDWWLWWWWWLWL",
+        "clean_sheets": 11,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 52,
+        "red_cards": 0
     },
     "176": {
         "name": "VfL Bochum",
@@ -655,35 +629,29 @@
     "180": {
         "name": "1. FC Heidenheim",
         "league": 78,
-        "form": "WWLLWLLDLLLLLLLWDLLLLLDLDWWLLLWDWLDW",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 14,
-        "matches_played": 36,
-        "over_25": 4,
-        "under_25": 32,
-        "last_updated": 1787335894.0336833
+        "form": "LLLLWLDLDLLWWLLDLDLLLLDLLLDDWLWDWL",
+        "clean_sheets": 1,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "182": {
         "name": "Union Berlin",
         "league": 78,
-        "form": "DWDWLWWDLDLLLDLLLWLDWLLLWDWWDDDDLW",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 13,
-        "matches_played": 34,
-        "over_25": 2,
-        "under_25": 32,
-        "last_updated": 1787335900.527329
+        "form": "WLLWDLWLDDWLLWWDDDLLDLWLLWLDLLLDWW",
+        "clean_sheets": 7,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "186": {
         "name": "FC St. Pauli",
         "league": 78,
-        "form": "LLLDWLLDWLLWLLWLLWWDLLLLDWLDWDDLDL",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 17,
-        "matches_played": 34,
-        "over_25": 3,
-        "under_25": 31,
-        "last_updated": 1787335907.0529573
+        "form": "DWWLLLLLLLLLDWDLLDDLWLWWDLLDLDLLLL",
+        "clean_sheets": 5,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "191": {
         "name": "Holstein Kiel",
@@ -710,266 +678,252 @@
     "487": {
         "name": "Lazio",
         "league": 135,
-        "form": "WLDWLWWLWWWWWLWLWDLDWLWWDDWDLDWDWDWDDL",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 6,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787373250.368965
+        "form": "LWLLWDDWDWLWLDWDDLDWLDWDLDLWWWDLWDWLLW",
+        "clean_sheets": 15,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 78,
+        "red_cards": 9
     },
     "489": {
         "name": "AC Milan",
         "league": 135,
-        "form": "DLDWWWLWLWDDWLDWDDWLWDWWLLLWWLDWLWWWLW",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 5,
-        "matches_played": 38,
-        "over_25": 8,
-        "under_25": 30,
-        "last_updated": 1787373256.9679391
+        "form": "LWWWWDWDDWDWWWDWWDDWWDWWDLWWLWLLWDLLWL",
+        "clean_sheets": 15,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 64,
+        "red_cards": 3
     },
     "490": {
         "name": "Cagliari",
         "league": 135,
-        "form": "DDLLLWDWLLLDDWLLLLWDWLLWDLLDLWDLLWLLWL",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 15,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373263.536833
+        "form": "DLWWLDLDLLDDLWLDWLDLWWWLLDDLLLLWLWDLWW",
+        "clean_sheets": 8,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 81,
+        "red_cards": 2
     },
     "492": {
         "name": "Napoli",
         "league": 135,
-        "form": "LWWWDWWWWWLDWWLWWWWWWWDDDLDWDWDWWWWDDW",
-        "clean_sheets_total": 19,
-        "failed_to_score_total": 6,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787373270.0957603
+        "form": "WWWWLWLWWDLWWWLWWDDDWLWWDLWWWWWDLWDLWW",
+        "clean_sheets": 15,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 49,
+        "red_cards": 2
     },
     "494": {
         "name": "Udinese",
         "league": 135,
-        "form": "DWWWLLWLWLLLDLWLWDDDLLWDWWWDLLLLLDWLLL",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 12,
-        "matches_played": 38,
-        "over_25": 3,
-        "under_25": 35,
-        "last_updated": 1787373276.6046724
+        "form": "DWWLLDDWLWLLWLWLDLWDLWWLLLWDLWDWLDWWLL",
+        "clean_sheets": 11,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 71,
+        "red_cards": 2
     },
     "495": {
         "name": "Genoa",
         "league": 135,
-        "form": "DWLDLLLDLLWDDWDDLWDWLWLDWLDDWLWDLLLDLW",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 13,
-        "matches_played": 38,
-        "over_25": 1,
-        "under_25": 37,
-        "last_updated": 1787373283.192156
+        "form": "DLDLLLDLLWDDWWLLLDDWDWLLDWLWWLLWWLDDLL",
+        "clean_sheets": 9,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 63,
+        "red_cards": 3
     },
     "496": {
         "name": "Juventus",
         "league": 135,
-        "form": "WWDDDWDWDDWWDDDDWDDDWLWWWWWLLWDWLWDDWW",
-        "clean_sheets_total": 17,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373289.77033
+        "form": "WWWDDDLLWWDDWLWWWDWWLWWDLLDWWDWWWDDWLD",
+        "clean_sheets": 16,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 52,
+        "red_cards": 2
     },
     "497": {
         "name": "AS Roma",
         "league": 135,
-        "form": "DLDDWWDLLWLLLLWLWDWDWWDWWWWWWWDDWWWLWW",
-        "clean_sheets_total": 16,
-        "failed_to_score_total": 6,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373296.27477
+        "form": "WWLWWWLWWLWWLLWLWLWWWDLWDWDLLWLWDWWWWW",
+        "clean_sheets": 18,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 68,
+        "red_cards": 3
     },
     "499": {
         "name": "Atalanta",
         "league": 135,
-        "form": "WLLWLDWWWWWWWWWWWDDDLWDWDWDWLLLWWDWWWL",
-        "clean_sheets_total": 15,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 12,
-        "under_25": 26,
-        "last_updated": 1787373302.9321826
+        "form": "DDWWDDDDDLLLWLWWLWWWDWDWWWLDDWWLDLDWLD",
+        "clean_sheets": 13,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 60,
+        "red_cards": 2
     },
     "500": {
         "name": "Bologna",
         "league": 135,
-        "form": "DLDDWDDDWWWLWDWWLDDWDWDWLWWWWWDLWDDLLL",
-        "clean_sheets_total": 12,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 5,
-        "under_25": 33,
-        "last_updated": 1787373309.5125892
+        "form": "LWLWDWWDDWWWLDLDLLDWLLLLWWWLWLWWLLDWWD",
+        "clean_sheets": 12,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 67,
+        "red_cards": 6
     },
     "502": {
         "name": "Fiorentina",
         "league": 135,
-        "form": "DDDLWDWWWWWWWWLLDLLDWWWLLLWLWWDDWWLLWW",
-        "clean_sheets_total": 12,
-        "failed_to_score_total": 8,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787373316.0451684
+        "form": "DDLLDLLDLLDDLLLWLWDDWLLDWWLDWDWWDDLDWD",
+        "clean_sheets": 10,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 83,
+        "red_cards": 3
     },
     "503": {
         "name": "Torino",
         "league": 135,
-        "form": "DWWDWLLLWLLLDLDWLDDDDWDDLWWDWDDLWLDLLL",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 13,
-        "matches_played": 38,
-        "over_25": 1,
-        "under_25": 37,
-        "last_updated": 1787373322.6146903
+        "form": "LDWLLDWWDDDLLLWWLWLLLLWDLLWLWLWWDDLWLD",
+        "clean_sheets": 12,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 71,
+        "red_cards": 1
     },
     "504": {
         "name": "Hellas Verona",
         "league": 135,
-        "form": "WLWLLLWLLLWLLLLWLWDLLDWLLWLLWDDDLLLDDW",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 17,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787373329.1640027
+        "form": "DLDDLLDDLLDLLWWLLDLLDLLDLLLWLLLLLDDLDL",
+        "clean_sheets": 6,
+        "failed_to_score": 20,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 89,
+        "red_cards": 5
     },
     "505": {
         "name": "Inter",
         "league": 135,
-        "form": "DWWDLWWWDWWDWWWWWWDWWDLWLWDWWWDWLLWWDW",
-        "clean_sheets_total": 16,
-        "failed_to_score_total": 4,
-        "matches_played": 38,
-        "over_25": 13,
-        "under_25": 25,
-        "last_updated": 1787373335.712118
+        "form": "WLLWWWWLWWWLWWWWWWDWWWWWWWWLDDWWWDWWDD",
+        "clean_sheets": 18,
+        "failed_to_score": 2,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 64,
+        "red_cards": 0
     },
     "511": {
         "name": "Empoli",
-        "league": 135,
-        "form": "DWDDWDLLDLWDDLWLLLDLLDLLLLDLLDDLDLLWWL",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 15,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787373342.197296
+        "league": 136,
+        "form": "WLDLDDWDLDLWWWLLWDWLLDLLDDDLLDDWLLDLWD",
+        "clean_sheets": 7,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "517": {
         "name": "Venezia",
-        "league": 135,
-        "form": "LDLLWLLLDWLLLLDDWLDLDDLLLDDDDLDWDLDWLL",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 17,
-        "matches_played": 38,
-        "over_25": 1,
-        "under_25": 37,
-        "last_updated": 1787373348.7048776
+        "league": 136,
+        "form": "WDDLWDWDLWLWWWDWWWWWWWWLWWDWWDWDWDWWDW",
+        "clean_sheets": 16,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "523": {
         "name": "Parma",
         "league": 135,
-        "form": "DWLLDLDDDDLWLWLLLWDLDLLLLWLDDDDDWDLLDW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 11,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787373355.377517
+        "form": "LDLDWLDDLLDWLWLWDLWDDLLWWWDDLLDDWWLLLW",
+        "clean_sheets": 13,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 66,
+        "red_cards": 5
     },
     "867": {
         "name": "Lecce",
         "league": 135,
-        "form": "LLWDDLLLLWLDWDLWLLDWLLWDDLLLLLDLLDLDWW",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 18,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787373361.8877978
+        "form": "DLLLDWDLLWDLWLWLDLLLLDLWWLLWLLLLDDWLWW",
+        "clean_sheets": 10,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 69,
+        "red_cards": 2
     },
     "895": {
         "name": "Como",
         "league": 135,
-        "form": "LDLDWWLDLLLDLDDWLWDLWLLLWWLDLDWWWWWWDL",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 8,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373368.3662684
+        "form": "WLDWDDWDWDDWWLLWWWDLWWDLDWWWWWDLLWDWWW",
+        "clean_sheets": 19,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 81,
+        "red_cards": 3
     },
     "1579": {
         "name": "Monza",
-        "league": 135,
-        "form": "DLDDLLDWDLLLDDLLLLLWLLLLDLLLDLLLLLLWLL",
-        "clean_sheets_total": 3,
-        "failed_to_score_total": 17,
-        "matches_played": 38,
-        "over_25": 1,
-        "under_25": 37,
-        "last_updated": 1787373374.8373797
+        "league": 136,
+        "form": "WDLWLDWWWWWWWDDLWWLDWWWDWWWWLWDDDWWWLDDWWL",
+        "clean_sheets": 17,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "77": {
         "name": "Angers",
         "league": 61,
-        "form": "LLLDDLDDWWLLWLLWWWLDLWDLLLLLWLLWWL",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 14,
-        "matches_played": 34,
-        "over_25": 3,
-        "under_25": 31,
-        "last_updated": 1787373387.8664112
+        "form": "WLDDLLLDWDLWWLWWLLDWWLLLWLLDLDLLDD",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "79": {
         "name": "Lille",
         "league": 61,
-        "form": "WWLLDWWDWDDWDWDDDWLWLWWLWLWLWWWDLW",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 5,
-        "matches_played": 34,
-        "over_25": 5,
-        "under_25": 29,
-        "last_updated": 1787373394.4101205
+        "form": "DWWWLLDWWLWLWWWWLLLLDDWWDWWWWDWDWL",
+        "clean_sheets": 13,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "80": {
         "name": "Lyon",
         "league": 61,
-        "form": "LLWDLWWWDDWDWWLWLDDLWWLWWWLWWLWLLW",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 5,
-        "matches_played": 34,
-        "over_25": 9,
-        "under_25": 25,
-        "last_updated": 1787373400.8956718
+        "form": "WWWLWWLLWDDLDWLWWWWWWWLLDDLDWWWWLL",
+        "clean_sheets": 15,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "81": {
         "name": "Marseille",
         "league": 61,
-        "form": "WDWWWLDWLWLWWWDWWDLWWWLWLLLWLWWDWW",
-        "clean_sheets_total": 5,
-        "failed_to_score_total": 6,
-        "matches_played": 34,
-        "over_25": 13,
-        "under_25": 21,
-        "last_updated": 1787373407.391825
+        "form": "LWLWWWWWLDWWWDLWLWWDLDLWWWLLWLDLWW",
+        "clean_sheets": 9,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "82": {
         "name": "Montpellier",
@@ -985,46 +939,38 @@
     "83": {
         "name": "Nantes",
         "league": 61,
-        "form": "DWWLDDLDLLLLDWLDDDDWLLWLLWLWLDDLDW",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 8,
-        "matches_played": 34,
-        "over_25": 3,
-        "under_25": 31,
-        "last_updated": 1787373420.5855129
+        "form": "LLWLDDDLWLLDDLLLWLLLLLWLLLDDDLLWL",
+        "clean_sheets": 7,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "84": {
         "name": "Nice",
         "league": 61,
-        "form": "LDWLWDDDWWDWLWDWWLWDWWWWLDLLDWWWLW",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 4,
-        "matches_played": 34,
-        "over_25": 8,
-        "under_25": 26,
-        "last_updated": 1787373427.1167912
+        "form": "LWLWLDDWWWLLLLLLDLWDDLDLLWLLDDDDLDDW",
+        "clean_sheets": 7,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "85": {
         "name": "Paris Saint Germain",
         "league": 61,
-        "form": "WWWWDWDWWWWWDDWWWWDWWWWWWWWWWDLLWW",
-        "clean_sheets_total": 7,
-        "failed_to_score_total": 1,
-        "matches_played": 34,
-        "over_25": 20,
-        "under_25": 14,
-        "last_updated": 1787373433.6411738
+        "form": "WWWWLWDDWDWWWLWWWWWWWLWWLWWLWWDWWL",
+        "clean_sheets": 18,
+        "failed_to_score": 2,
+        "over_25": 0,
+        "under_25": 0
     },
     "91": {
         "name": "Monaco",
         "league": 61,
-        "form": "WWDWWWWDLLWWLWDLDLWWLWLWDWWLWDDWWL",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 5,
-        "matches_played": 34,
-        "over_25": 10,
-        "under_25": 24,
-        "last_updated": 1787373440.1695435
+        "form": "WLWWWLDDWWLLLWLLLLDWDWWWWWWWLDDWLL",
+        "clean_sheets": 7,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "93": {
         "name": "Reims",
@@ -1040,211 +986,173 @@
     "94": {
         "name": "Rennes",
         "league": 61,
-        "form": "WLLWDLLDWLLLWLWLLLLWWLWWLLWLWWLLWL",
-        "clean_sheets_total": 11,
-        "failed_to_score_total": 7,
-        "matches_played": 34,
-        "over_25": 6,
-        "under_25": 28,
-        "last_updated": 1787373453.230112
+        "form": "WLDWDDDDLDWWWWLWWDLLLWWWWLDWWWWLWL",
+        "clean_sheets": 10,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "95": {
         "name": "Strasbourg",
         "league": 61,
-        "form": "DWLDDWDLWLLLLDWWWDWLWWDWWWWWDDWWLL",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 5,
-        "matches_played": 34,
-        "over_25": 8,
-        "under_25": 26,
-        "last_updated": 1787373459.7221272
+        "form": "WWLWWLWDLWLWLLLDDWWLLDWDDDWWLWLDWW",
+        "clean_sheets": 9,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "96": {
         "name": "Toulouse",
         "league": 61,
-        "form": "DDLWLLLDWWWLWLWWLDLDDLWWDLLLLLDWDW",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 8,
-        "matches_played": 34,
-        "over_25": 4,
-        "under_25": 30,
-        "last_updated": 1787373466.2631168
+        "form": "WWLLLDWWLDDDLDWWLWWDLLDLLWWLLLDWW",
+        "clean_sheets": 9,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "106": {
         "name": "Stade Brestois 29",
         "league": 61,
-        "form": "LLWLWLWDWLLLWLWLWWWLWDDLWDWWDLLWWL",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 7,
-        "matches_played": 34,
-        "over_25": 5,
-        "under_25": 29,
-        "last_updated": 1787373472.7739818
+        "form": "DLLLWWDDLLDLWWWLWLLDWDWWWLLLDDLLLD",
+        "clean_sheets": 9,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "108": {
         "name": "Auxerre",
         "league": 61,
-        "form": "WLLLLWLWDWWWLDDLDLDLDDWLWDWWLLWLDL",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 7,
-        "matches_played": 34,
-        "over_25": 5,
-        "under_25": 29,
-        "last_updated": 1787373479.304869
+        "form": "WLLLWLLDLLLLDDWLLLLDDWLDDLWDDDLWWW",
+        "clean_sheets": 9,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "111": {
         "name": "Le Havre",
         "league": 61,
-        "form": "LWWLLLLLLWLWLLLLLDLDWLLWDLWWLLDWLW",
-        "clean_sheets_total": 4,
-        "failed_to_score_total": 9,
-        "matches_played": 34,
-        "over_25": 4,
-        "under_25": 30,
-        "last_updated": 1787373485.8165622
+        "form": "LLWLDDDLWWDDLLDLWDDLWWLLLDLDDDDDLW",
+        "clean_sheets": 8,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "112": {
         "name": "Metz",
         "league": 61,
-        "form": "DW",
-        "clean_sheets_total": 0,
-        "failed_to_score_total": 0,
-        "matches_played": 2,
-        "over_25": 1,
-        "under_25": 1,
-        "last_updated": 1787373492.4019163
+        "form": "LLLDLDLLLWWWLLLLDLLLDLLLLLDDLLDLLD",
+        "clean_sheets": 7,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "116": {
         "name": "Lens",
         "league": 61,
-        "form": "WWDDDDDWLLWLWWDLWLWWLLLLWWLWLWLWDW",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 10,
-        "matches_played": 34,
-        "over_25": 4,
-        "under_25": 30,
-        "last_updated": 1787373498.921909
+        "form": "LWWLWDWWWLWWWWWWWWLWWWLDWLWLWDDWLW",
+        "clean_sheets": 12,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "1063": {
         "name": "Saint Etienne",
         "league": 61,
-        "form": "LLLWLDWLLWLWLLLWLDDLLLDLDWLLDWLLWL",
-        "clean_sheets_total": 5,
-        "failed_to_score_total": 10,
-        "matches_played": 34,
-        "over_25": 4,
-        "under_25": 30,
-        "last_updated": 1787373505.4348311
+        "form": "DL",
+        "clean_sheets": 1,
+        "failed_to_score": 1,
+        "over_25": 0,
+        "under_25": 0
     },
     "118": {
         "name": "Bahia",
         "league": 71,
-        "form": "LWDWWWDWDLWWLWLWLLDDLWWDLWLWLDLLLLDWLW",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 3,
-        "under_25": 35,
-        "last_updated": 1787373518.500472
+        "form": "DDDLWWWLWLWWWDWDDWWLLDLWLWLWWLWLDLWDWL",
+        "clean_sheets": 13,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "119": {
         "name": "Internacional",
         "league": 71,
-        "form": "WWLDWDLWWLDDLLDDDWLWDWWWWDWDWWDWWWWLLL",
-        "clean_sheets_total": 12,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373525.0564098
+        "form": "DWDLDWLLDDLLWWWDLWLLWLLDDWLWLLDLDWDLLW",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "120": {
         "name": "Botafogo",
         "league": 71,
-        "form": "LWWWLDWWWDLWDWWWWWDLWLWDWWWDWDWWDDDWWW",
-        "clean_sheets_total": 18,
-        "failed_to_score_total": 5,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373531.6396444
+        "form": "DWLDLWLWDWWWDWDLWLWWLDWDLWLLWDDWDWWDDW",
+        "clean_sheets": 15,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "121": {
         "name": "Palmeiras",
         "league": 71,
-        "form": "WLDDWLWWWWWLWDWWLWLLDDWWWWWWDWDLWWWLWL",
-        "clean_sheets_total": 16,
-        "failed_to_score_total": 11,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373538.1502037
+        "form": "DWWWWLWWWLLDWWWDWWWDWWLWWWWLDWWLLDDLWW",
+        "clean_sheets": 15,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "124": {
         "name": "Fluminense",
         "league": 71,
-        "form": "DLWLDLDLLLLLLDLDWWWWLDWWLLLWWWLDLDDDWW",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 13,
-        "matches_played": 38,
+        "form": "LWWWDLWLDWWLLLLWDWLDLWWDWLWLWWLWDWDWWW",
+        "clean_sheets": 16,
+        "failed_to_score": 10,
         "over_25": 0,
-        "under_25": 38,
-        "last_updated": 1787373544.670759
+        "under_25": 0
     },
     "126": {
         "name": "Sao Paulo",
         "league": 71,
-        "form": "LLWDWWWDDLLWWWWLWDDLWWLWLWLWLWDWWDDLLL",
-        "clean_sheets_total": 12,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 6,
-        "under_25": 32,
-        "last_updated": 1787373551.2246037
+        "form": "DDDDWDDLWLLLLDWWWWWDWLWLLWLLLWWDLLWLWL",
+        "clean_sheets": 12,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "127": {
         "name": "Flamengo",
         "league": 71,
-        "form": "WWDLDWWWDWWLWWDLWWWLDLWLDLWWLWDWDWDWWD",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 6,
-        "matches_played": 38,
-        "over_25": 5,
-        "under_25": 33,
-        "last_updated": 1787373557.9535327
+        "form": "DWWWDWLWDWWWLWWWDWWWDWDWDLWWLWDWWLWDWD",
+        "clean_sheets": 18,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "130": {
         "name": "Gremio",
         "league": 71,
-        "form": "LWWLLLLLLDWDLLLWDWWWLWLDWLDWLLWDLDDWDL",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 12,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787373564.4583607
+        "form": "WLLLDDWDLWWDLDLWLLWDDLWDWDLWLWLLDWLWLW",
+        "clean_sheets": 7,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "131": {
         "name": "Corinthians",
         "league": 71,
-        "form": "DLLWDLLDDLDDLWLLWWDLDDDLWLWLDWWWWWWWWW",
-        "clean_sheets_total": 10,
-        "failed_to_score_total": 12,
-        "matches_played": 38,
-        "over_25": 8,
-        "under_25": 30,
-        "last_updated": 1787373570.9717689
+        "form": "DWLLWLWLWDDDLWLDDDLLWDWLLDWLWWWLLWLDLD",
+        "clean_sheets": 11,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "133": {
         "name": "Vasco DA Gama",
         "league": 71,
-        "form": "WLLLLWLLDLWLDWWWWLLDWDWWDLDDLWWLLLLDWW",
-        "clean_sheets_total": 8,
-        "failed_to_score_total": 12,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787373577.522958
+        "form": "WLWLDLLLWLLWLDDLDWLLWDDWWLWWWWLLLLLWLL",
+        "clean_sheets": 7,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "134": {
         "name": "Atletico Paranaense",
@@ -1260,24 +1168,20 @@
     "135": {
         "name": "Cruzeiro",
         "league": 71,
-        "form": "WDLWWLWDWLWLLWWWLWWLDDLDWLDDLDLLWLDDLW",
-        "clean_sheets_total": 12,
-        "failed_to_score_total": 13,
-        "matches_played": 38,
-        "over_25": 5,
-        "under_25": 33,
-        "last_updated": 1787373590.5945003
+        "form": "WLDWLWWWDWWDWWWDLWLDWWWWLDDDWDWWDDWDDL",
+        "clean_sheets": 17,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "136": {
         "name": "Vitoria",
         "league": 71,
-        "form": "LDLLLLDDWWLWLLWLLLLWWLDLLWWLDWWWLWDWDD",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 8,
-        "matches_played": 38,
-        "over_25": 1,
-        "under_25": 37,
-        "last_updated": 1787373597.1676178
+        "form": "LLDWDDLWLLDDLDWDDDLDLWLLLWLWWLLWDDWWLW",
+        "clean_sheets": 12,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "140": {
         "name": "Criciuma",
@@ -1304,46 +1208,38 @@
     "152": {
         "name": "Juventude",
         "league": 71,
-        "form": "DWLDDWDLWLWLLWDDLLDWLWLLDWLDDLLLWDDWWL",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787373616.6733878
+        "form": "WLWLDLLLDLLWLLLLWDWLWLLDDLLLWLLWWDLDLD",
+        "clean_sheets": 7,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "154": {
         "name": "Fortaleza EC",
         "league": 71,
-        "form": "WDDDDWLLWDWWLWWWWDWWWWWLLDWWLDDWWDDLLW",
-        "clean_sheets_total": 13,
-        "failed_to_score_total": 7,
-        "matches_played": 38,
-        "over_25": 7,
-        "under_25": 31,
-        "last_updated": 1787373623.2083652
+        "form": "WDDLLDDWLLLLLDWLDLLLLWLWLWLLWDDDDWWWWL",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "794": {
         "name": "RB Bragantino",
         "league": 71,
-        "form": "DWWDDLWLWLWLDWLLWLDDLLLWDLDDDLLDDDLDWW",
-        "clean_sheets_total": 6,
-        "failed_to_score_total": 10,
-        "matches_played": 38,
-        "over_25": 2,
-        "under_25": 36,
-        "last_updated": 1787373629.7314126
+        "form": "DLWWWWWDLWWLWDLLLLLLWLDLDDWLLLLWWWLLWL",
+        "clean_sheets": 10,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "1062": {
         "name": "Atletico-MG",
         "league": 71,
-        "form": "DDWWDDWLLDWDLLWDWWLDDLWLWLDWDLLDLDDLLW",
-        "clean_sheets_total": 9,
-        "failed_to_score_total": 11,
-        "matches_played": 38,
-        "over_25": 4,
-        "under_25": 34,
-        "last_updated": 1787373636.2192585
+        "form": "LDDLWDWWDDWWLLLWDLLLDLWDLWDLWDWWDLDLLW",
+        "clean_sheets": 13,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "1193": {
         "name": "Cuiaba",
@@ -1359,373 +1255,479 @@
     "193": {
         "name": "PEC Zwolle",
         "league": 88,
-        "clean_sheet_rate": 0.17647058823529413,
-        "failed_rate": 0.29411764705882354,
-        "form": "LWDWW"
+        "form": "WWLLLDLLDDLWDWLWLDWLWLLDDDDWLDLWLL",
+        "clean_sheets": 6,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "194": {
         "name": "Ajax",
         "league": 88,
-        "clean_sheet_rate": 0.47058823529411764,
-        "failed_rate": 0.058823529411764705,
-        "form": "LDLDW"
+        "form": "WDWDWDWDLWDLLWWWDWDWDDWDDLWDLWWDLDWW",
+        "clean_sheets": 11,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0
     },
     "195": {
         "name": "Willem II",
-        "league": 88,
-        "clean_sheet_rate": 0.13157894736842105,
-        "failed_rate": 0.2894736842105263,
-        "form": "DLWDL"
+        "league": 89,
+        "form": "LLWWDDWWWLWLDLDDWLWLDWWLWDWLWDWWLWWWWWWDWWLW",
+        "clean_sheets": 15,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "197": {
         "name": "PSV Eindhoven",
         "league": 88,
-        "clean_sheet_rate": 0.2647058823529412,
-        "failed_rate": 0.058823529411764705,
-        "form": "WWWWW"
+        "form": "WWWLWDWWWWWWWWWWWWWDWWLWWWLLWWWDWW",
+        "clean_sheets": 7,
+        "failed_to_score": 1,
+        "over_25": 0,
+        "under_25": 0
     },
     "198": {
         "name": "ADO Den Haag",
-        "league": 88,
-        "clean_sheet_rate": 0.0,
-        "failed_rate": 1.0,
-        "form": "LL"
+        "league": 89,
+        "form": "WDWWWWWWWWWWWWLWWWWLLLDLWWWWWLWWWWWLWW",
+        "clean_sheets": 15,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "199": {
         "name": "De Graafschap",
-        "league": 88,
-        "clean_sheet_rate": 0.5,
-        "failed_rate": 1.0,
-        "form": "DL"
+        "league": 89,
+        "form": "WLLLDWDWDLDWWWWLWWWLWLLDDWWWDLWLWDWDWLLD",
+        "clean_sheets": 6,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "201": {
         "name": "AZ Alkmaar",
         "league": 88,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.1388888888888889,
-        "form": "WWDWW"
+        "form": "WDWWDDLWWWWLLLDLWLDWLDWWLLWLWWDDDD",
+        "clean_sheets": 9,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "202": {
         "name": "Groningen",
         "league": 88,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.35294117647058826,
-        "form": "WWLDL"
+        "form": "LWLWWWLWLWDLDLWWDDWLLLLLLWDWWDLLWWL",
+        "clean_sheets": 10,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "203": {
         "name": "NAC Breda",
         "league": 88,
-        "clean_sheet_rate": 0.14705882352941177,
-        "failed_rate": 0.29411764705882354,
-        "form": "DLLLD"
+        "form": "LWLLDWLLDDWLLLLDLDLDDLWWLDLLDDLLWD",
+        "clean_sheets": 6,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "205": {
         "name": "Fortuna Sittard",
         "league": 88,
-        "clean_sheet_rate": 0.29411764705882354,
-        "failed_rate": 0.3235294117647059,
-        "form": "WLWDD"
+        "form": "DLWWLWLWLLLWDDLLWDLWLDLWWLWLLDLLWL",
+        "clean_sheets": 3,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "206": {
         "name": "Heracles",
         "league": 88,
-        "clean_sheet_rate": 0.17647058823529413,
-        "failed_rate": 0.2647058823529412,
-        "form": "LLWLL"
+        "form": "LLLLLLWLLLWWWDDLLLLLWLLLLDLDLLLLLL",
+        "clean_sheets": 2,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "207": {
         "name": "Utrecht",
         "league": 88,
-        "clean_sheet_rate": 0.2647058823529412,
-        "failed_rate": 0.17647058823529413,
-        "form": "WWLDD"
+        "form": "WLWWLLDLWLWWDDDDLLLDLWWDWDWWLWLWWWWL",
+        "clean_sheets": 9,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "209": {
         "name": "Feyenoord",
         "league": 88,
-        "clean_sheet_rate": 0.29411764705882354,
-        "failed_rate": 0.14705882352941177,
-        "form": "WWLWL"
+        "form": "WWWWWDWWWLWLLWWLDDLWLWWWLDWDDDWWDW",
+        "clean_sheets": 10,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "210": {
         "name": "Heerenveen",
         "league": 88,
-        "clean_sheet_rate": 0.17142857142857143,
-        "failed_rate": 0.2857142857142857,
-        "form": "WLLWL"
+        "form": "DLLDLWDWWDDLWLLWWDLDLWWLWWWDWLWWLDL",
+        "clean_sheets": 5,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "409": {
         "name": "Dordrecht",
-        "league": 88,
-        "clean_sheet_rate": 0.5,
-        "failed_rate": 0.25,
-        "form": "DWWL"
+        "league": 89,
+        "form": "WWLWDDLDDWLLWLDDWLLLLDWWWWWLDDLDLLDWLL",
+        "clean_sheets": 8,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "410": {
         "name": "GO Ahead Eagles",
         "league": 88,
-        "clean_sheet_rate": 0.2647058823529412,
-        "failed_rate": 0.20588235294117646,
-        "form": "DLDWL"
+        "form": "DDLDWWLDLWLWLDDLDDDDDLLWWLWLWDDDLL",
+        "clean_sheets": 9,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "413": {
         "name": "NEC Nijmegen",
         "league": 88,
-        "clean_sheet_rate": 0.2857142857142857,
-        "failed_rate": 0.2571428571428571,
-        "form": "DWWWL"
+        "form": "WWWLLLWDDDLWWWWDDWWWWLDDLWWDWDDDLW",
+        "clean_sheets": 5,
+        "failed_to_score": 1,
+        "over_25": 0,
+        "under_25": 0
     },
     "415": {
         "name": "Twente",
         "league": 88,
-        "clean_sheet_rate": 0.3055555555555556,
-        "failed_rate": 0.05555555555555555,
-        "form": "WLLWL"
+        "form": "LLWLDWWWDLDDDWDWDDWDDWDWWWLWWWDDWL",
+        "clean_sheets": 8,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "417": {
         "name": "Waalwijk",
-        "league": 88,
-        "clean_sheet_rate": 0.11764705882352941,
-        "failed_rate": 0.3235294117647059,
-        "form": "LLWLW"
+        "league": 89,
+        "form": "WDLWLDWLWDLWWDLDWLLLWDWDWLLDWWWDLWDWLWDWLD",
+        "clean_sheets": 7,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "419": {
         "name": "Almere City FC",
-        "league": 88,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.5,
-        "form": "LDLDD"
+        "league": 89,
+        "form": "WLLLWLWLLDDLLWWLWWWWWWWLDLLWLWWDWWLLWLWWWDLL",
+        "clean_sheets": 9,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "420": {
         "name": "Cambuur",
-        "league": 88,
-        "clean_sheet_rate": 0.0,
-        "failed_rate": 0.5,
-        "form": "LD"
+        "league": 89,
+        "form": "LWWWDWWWDWWDLWWDWDWWWWLWDWWWWDWLWLDDLW",
+        "clean_sheets": 11,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0
     },
     "421": {
         "name": "Den Bosch",
-        "league": 88,
-        "clean_sheet_rate": 0.5,
-        "failed_rate": 0.25,
-        "form": "WDDL"
+        "league": 89,
+        "form": "WWLDWLLWDWLWLLWWLWLLWLLDDLWDDDLWWWDLDLLL",
+        "clean_sheets": 5,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "426": {
         "name": "Sparta Rotterdam",
         "league": 88,
-        "clean_sheet_rate": 0.17647058823529413,
-        "failed_rate": 0.2647058823529412,
-        "form": "DLWDL"
+        "form": "LWWLWLLDWWLLDLWLWWWWWDDLLDLWDLLDLL",
+        "clean_sheets": 11,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "427": {
         "name": "Telstar",
         "league": 88,
-        "clean_sheet_rate": 0.5,
-        "failed_rate": 0.16666666666666666,
-        "form": "WDWDW"
+        "form": "LLDWLLWLLLDDDLDDWLDLLDDLWWLWLLWDWW",
+        "clean_sheets": 5,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "436": {
         "name": "Racing Club",
         "league": 128,
-        "clean_sheet_rate": 0.4074074074074074,
-        "failed_rate": 0.2962962962962963,
-        "form": "WWLLW"
+        "form": "WWLWLLLLDWLWWWWWLLWLDLLLWWDDWWDWWWWWL",
+        "clean_sheets": 17,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "438": {
         "name": "Velez Sarsfield",
         "league": 128,
-        "clean_sheet_rate": 0.5925925925925926,
-        "failed_rate": 0.18518518518518517,
-        "form": "DDWLW"
+        "form": "LLLDLLDLWWLLLWWLWDDLWWWDWWDLWLLDL",
+        "clean_sheets": 12,
+        "failed_to_score": 18,
+        "over_25": 0,
+        "under_25": 0
     },
     "439": {
         "name": "Godoy Cruz",
         "league": 128,
-        "clean_sheet_rate": 0.25925925925925924,
-        "failed_rate": 0.25925925925925924,
-        "form": "LDLWW"
+        "form": "LDLDWDWDDDLDDLWLDDDLLLWDDLDDLDLD",
+        "clean_sheets": 12,
+        "failed_to_score": 18,
+        "over_25": 0,
+        "under_25": 0
     },
     "440": {
         "name": "Belgrano Cordoba",
         "league": 128,
-        "clean_sheet_rate": 0.25925925925925924,
-        "failed_rate": 0.2962962962962963,
-        "form": "DLWDL"
+        "form": "DLLDWLWLDDDWLDDDWLDWDLLDWDDDWDLD",
+        "clean_sheets": 13,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "441": {
         "name": "Union Santa Fe",
         "league": 128,
-        "clean_sheet_rate": 0.4444444444444444,
-        "failed_rate": 0.37037037037037035,
-        "form": "LLLWD"
+        "form": "LDLLDLWLWLLWDDLDWDDLWDWWDDLLWWDDL",
+        "clean_sheets": 12,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "442": {
         "name": "Defensa Y Justicia",
         "league": 128,
-        "clean_sheet_rate": 0.2962962962962963,
-        "failed_rate": 0.37037037037037035,
-        "form": "DDWDD"
+        "form": "LWWDWDLWWLLLDDLLDWLWDDWLLWDWLLLL",
+        "clean_sheets": 9,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "445": {
         "name": "Huracan",
         "league": 128,
-        "clean_sheet_rate": 0.5555555555555556,
-        "failed_rate": 0.37037037037037035,
-        "form": "LDLWL"
+        "form": "DDLWDWWWWWDDWDLLWWWLLLWWWDDDLDWLLWLD",
+        "clean_sheets": 17,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "446": {
         "name": "Lanus",
         "league": 128,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.37037037037037035,
-        "form": "DDWWD"
+        "form": "LLWWDLDDDWDDDDWLLLLWWWDLWWDWWWLDWL",
+        "clean_sheets": 13,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "449": {
         "name": "Banfield",
         "league": 128,
-        "clean_sheet_rate": 0.18518518518518517,
-        "failed_rate": 0.3333333333333333,
-        "form": "LDLLD"
+        "form": "WWLDLLLDLLDLDDLWDWLLWLWWLDLLWWLD",
+        "clean_sheets": 8,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "450": {
         "name": "Estudiantes L.P.",
         "league": 128,
-        "clean_sheet_rate": 0.18518518518518517,
-        "failed_rate": 0.25925925925925924,
-        "form": "DLWDD"
+        "form": "WDWDWDWWLDLLDLDLLLWWWLWLLWDDDWLLLWWWW",
+        "clean_sheets": 12,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "451": {
         "name": "Boca Juniors",
         "league": 128,
-        "clean_sheet_rate": 0.4074074074074074,
-        "failed_rate": 0.37037037037037035,
-        "form": "WDWWD"
+        "form": "DDWLWWWWWWLWWWLDWLDDLDWWWDDLWLWWWWWWL",
+        "clean_sheets": 18,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "452": {
         "name": "Tigre",
         "league": 128,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.4074074074074074,
-        "form": "WDDLW"
+        "form": "WLWLWWWWWLWLLDDDLLWDLWDLDWWDDDDWLWL",
+        "clean_sheets": 14,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "453": {
         "name": "Independiente",
         "league": 128,
-        "clean_sheet_rate": 0.5555555555555556,
-        "failed_rate": 0.4074074074074074,
-        "form": "WLWWD"
+        "form": "WWWLWDWDWDWDWDLLWWLDLLDLDLDDDLLWWWW",
+        "clean_sheets": 16,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "455": {
         "name": "Atletico Tucuman",
         "league": 128,
-        "clean_sheet_rate": 0.4074074074074074,
-        "failed_rate": 0.25925925925925924,
-        "form": "WLDLW"
+        "form": "WLLLWDLLLLLWLLWWWDLDDWLLWLWLLLWL",
+        "clean_sheets": 8,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "456": {
         "name": "Talleres Cordoba",
         "league": 128,
-        "clean_sheet_rate": 0.4074074074074074,
-        "failed_rate": 0.2222222222222222,
-        "form": "WWWWL"
+        "form": "LLLWDDLDDDDWDLLLLWDLDLLDDWDWLWWDL",
+        "clean_sheets": 14,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
     },
     "457": {
         "name": "Newells Old Boys",
         "league": 128,
-        "clean_sheet_rate": 0.2962962962962963,
-        "failed_rate": 0.5185185185185185,
-        "form": "LWDLW"
+        "form": "LLWLLLLWDDWWDDWLWLDDDLLWLDLDLLWL",
+        "clean_sheets": 9,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "458": {
         "name": "Argentinos JRS",
         "league": 128,
-        "clean_sheet_rate": 0.37037037037037035,
-        "failed_rate": 0.5185185185185185,
-        "form": "LLLWD"
+        "form": "DWWWDWDWWLDWDWDWWLDLDWLWLLWWDLWLWWWL",
+        "clean_sheets": 17,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "460": {
         "name": "San Lorenzo",
         "league": 128,
-        "clean_sheet_rate": 0.25925925925925924,
-        "failed_rate": 0.4074074074074074,
-        "form": "LLDLL"
+        "form": "WWDDWWLWLDDWWDLDWWLWDDWLWDLDWLLWWDDL",
+        "clean_sheets": 17,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "473": {
         "name": "Independ. Rivadavia",
         "league": 128,
-        "clean_sheet_rate": 0.4074074074074074,
-        "failed_rate": 0.3333333333333333,
-        "form": "WWWWD"
+        "form": "WDWDLLDDWLWDDWWWLLWDLLDWLDDDDLLDW",
+        "clean_sheets": 13,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "474": {
         "name": "Sarmiento Junin",
         "league": 128,
-        "clean_sheet_rate": 0.37037037037037035,
-        "failed_rate": 0.4074074074074074,
-        "form": "LWLDD"
+        "form": "LDLDLWLDDDDDWLDDDDLWDLWWLLWLLDWD",
+        "clean_sheets": 9,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "476": {
         "name": "Deportivo Riestra",
         "league": 128,
-        "clean_sheet_rate": 0.4444444444444444,
-        "failed_rate": 0.3333333333333333,
-        "form": "DDLDD"
+        "form": "WDWDDLDDDDWWLDDWLWLWLDWWWWWDDWLLDL",
+        "clean_sheets": 19,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "478": {
         "name": "Instituto Cordoba",
         "league": 128,
-        "clean_sheet_rate": 0.25925925925925924,
-        "failed_rate": 0.3333333333333333,
-        "form": "WDWLL"
+        "form": "WLWLDLLLDLWLWLDWLWLDDLLDWDDDWLLLD",
+        "clean_sheets": 13,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "1064": {
         "name": "Platense",
         "league": 128,
-        "clean_sheet_rate": 0.5185185185185185,
-        "failed_rate": 0.4444444444444444,
-        "form": "WLWLW"
+        "form": "DWLWLDDLDWWLDWWLWWWWLDDDWLWLDLDLLDLL",
+        "clean_sheets": 11,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1065": {
         "name": "Central Cordoba de Santiago",
         "league": 128,
-        "clean_sheet_rate": 0.2222222222222222,
-        "failed_rate": 0.4074074074074074,
-        "form": "WLLWL"
+        "form": "WWLWDWLDLWDLLLLLDDWDDWWLDLDWWDDDWL",
+        "clean_sheets": 12,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "2432": {
         "name": "Barracas Central",
         "league": 128,
-        "clean_sheet_rate": 0.2962962962962963,
-        "failed_rate": 0.5185185185185185,
-        "form": "DWDDD"
+        "form": "LDWWDDWLDDWLWLWWLWLWWDDWDLDDDLWDDWL",
+        "clean_sheets": 10,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "211": {
         "name": "Benfica",
         "league": 94,
-        "clean_sheet_rate": 0.4411764705882353,
-        "failed_rate": 0.058823529411764705,
-        "form": "WWWDD"
+        "form": "WWWDWDWDWWDWDWWDWWWDWWWWDWWDWWWDDW",
+        "clean_sheets": 14,
+        "failed_to_score": 2,
+        "over_25": 0,
+        "under_25": 0
     },
     "212": {
         "name": "FC Porto",
         "league": 94,
-        "clean_sheet_rate": 0.47058823529411764,
-        "failed_rate": 0.11764705882352941,
-        "form": "WLWWW"
+        "form": "WWWWWWWDWWWWWWWWWWWLDWWWDWWDWWWWLW",
+        "clean_sheets": 21,
+        "failed_to_score": 1,
+        "over_25": 0,
+        "under_25": 0
     },
     "215": {
         "name": "Moreirense",
         "league": 94,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.23529411764705882,
-        "form": "LDLDW"
+        "form": "WWWLWLWLLWLDDLDWWLWLLWLDDLLLDWLWLD",
+        "clean_sheets": 9,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "217": {
         "name": "SC Braga",
         "league": 94,
-        "clean_sheet_rate": 0.4411764705882353,
-        "failed_rate": 0.08823529411764706,
-        "form": "WDDLD"
+        "form": "WWDDLDLDWLWWWWLDDWWWWLWWDLWWDWLDDD",
+        "clean_sheets": 12,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0
     },
     "222": {
         "name": "Boavista",
@@ -1737,44 +1739,56 @@
     "224": {
         "name": "Vit\u00f3ria SC",
         "league": 94,
-        "clean_sheet_rate": 0.38235294117647056,
-        "failed_rate": 0.2647058823529412,
-        "form": "LWWLL"
+        "form": "LWLDWDLWLLWWDWLDWLLWLWLDLLLWDWWLLL",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "225": {
         "name": "Nacional",
         "league": 94,
-        "clean_sheet_rate": 0.23529411764705882,
-        "failed_rate": 0.4411764705882353,
-        "form": "LDLDL"
+        "form": "LDLWLLWWDLDLLWDLDLWLDLLLDLLWLWWLLW",
+        "clean_sheets": 8,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "226": {
         "name": "Rio Ave",
         "league": 94,
-        "clean_sheet_rate": 0.14705882352941177,
-        "failed_rate": 0.29411764705882354,
-        "form": "DLWDD"
+        "form": "DDDLLDDWWLDDWLDLWLLLLLLDWWWLWDLDLD",
+        "clean_sheets": 6,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "227": {
         "name": "Santa Clara",
         "league": 94,
-        "clean_sheet_rate": 0.3235294117647059,
-        "failed_rate": 0.3235294117647059,
-        "form": "DWDWW"
+        "form": "LLDWDWLLWLLDWLDLDLLLLLDDWWWLLDWDWL",
+        "clean_sheets": 10,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "228": {
         "name": "Sporting CP",
         "league": 94,
-        "clean_sheet_rate": 0.4411764705882353,
-        "failed_rate": 0.058823529411764705,
-        "form": "WWWDW"
+        "form": "WWWLWWWDWWWWDWWWDWWWDWWWDWWWLDDWWW",
+        "clean_sheets": 15,
+        "failed_to_score": 0,
+        "over_25": 0,
+        "under_25": 0
     },
     "230": {
         "name": "Estoril",
         "league": 94,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.3235294117647059,
-        "form": "LWLDW"
+        "form": "DLDLWLLDDWWLDLWWLWWWDLWLDWLLLLLDDL",
+        "clean_sheets": 5,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "231": {
         "name": "Farense",
@@ -1786,23 +1800,29 @@
     "240": {
         "name": "Arouca",
         "league": 94,
-        "clean_sheet_rate": 0.23529411764705882,
-        "failed_rate": 0.2647058823529412,
-        "form": "WLDDW"
+        "form": "WLDDLWLDLLLLLWDDLWLWWLWLLLWWLWLDWW",
+        "clean_sheets": 7,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "242": {
         "name": "Famalicao",
         "league": 94,
-        "clean_sheet_rate": 0.38235294117647056,
-        "failed_rate": 0.20588235294117646,
-        "form": "LDLLW"
+        "form": "WWDWLDDDWWLDLWLLLWWLWLWDWWWDDDWDDW",
+        "clean_sheets": 17,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "762": {
         "name": "GIL Vicente",
         "league": 94,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.38235294117647056,
-        "form": "WWLDD"
+        "form": "WLDWWWLWWWDLDDDDDWLWWWLLDDLWDLWDLL",
+        "clean_sheets": 12,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "810": {
         "name": "Vizela",
@@ -1814,23 +1834,29 @@
     "4716": {
         "name": "Casa Pia",
         "league": 94,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.2647058823529412,
-        "form": "DLDWL"
+        "form": "LWLLWDLDLLDLLDWDLLDWDWLDDLDLDLLLWDDW",
+        "clean_sheets": 9,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "15130": {
         "name": "Estrela",
         "league": 94,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.5294117647058824,
-        "form": "LWLLL"
+        "form": "DLDDLDWLLWDLWLDWDLLDWLLDDLWLLLLLDD",
+        "clean_sheets": 8,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "21595": {
         "name": "AVS",
         "league": 94,
-        "clean_sheet_rate": 0.25,
-        "failed_rate": 0.3333333333333333,
-        "form": "LWLWD"
+        "form": "LLDLLLLLLDDLLLDLLLDLLWLDDLDLDDDWWD",
+        "clean_sheets": 5,
+        "failed_to_score": 18,
+        "over_25": 0,
+        "under_25": 0
     },
     "247": {
         "name": "Celtic",
@@ -1842,23 +1868,29 @@
     "434": {
         "name": "Gimnasia L.P.",
         "league": 128,
-        "clean_sheet_rate": 0.37037037037037035,
-        "failed_rate": 0.4444444444444444,
-        "form": "LWLLL"
+        "form": "LLLWDWWLDLDLDLLWLDWWLLWLLLWLLWWWWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "435": {
         "name": "River Plate",
         "league": 128,
-        "clean_sheet_rate": 0.4074074074074074,
-        "failed_rate": 0.3333333333333333,
-        "form": "LWDWL"
+        "form": "DWDWDWWLWDDDDWWWWLWWDDWDWWLLLLWLLDL",
+        "clean_sheets": 16,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "437": {
         "name": "Rosario Central",
         "league": 128,
-        "clean_sheet_rate": 0.25925925925925924,
-        "failed_rate": 0.3333333333333333,
-        "form": "DWLLW"
+        "form": "WWDWDWWLDWDWDWWWWLDWDDDWDDWWWWWWDLL",
+        "clean_sheets": 18,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "549": {
         "name": "Be\u015fikta\u015f",
@@ -2745,254 +2777,326 @@
     "1595": {
         "name": "Seattle Sounders",
         "league": 253,
-        "clean_sheet_rate": 0.3684210526315789,
-        "failed_rate": 0.2631578947368421,
-        "form": "DDDWL"
+        "form": "DLWLDDLWWDWWLDWWLLWDWDWDWLWDLLDWWWLWL",
+        "clean_sheets": 9,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "1596": {
         "name": "San Jose Earthquakes",
         "league": 253,
-        "clean_sheet_rate": 0.058823529411764705,
-        "failed_rate": 0.29411764705882354,
-        "form": "LLWLL"
+        "form": "WWLLLDWLLLWWDDDWLDWDDLDLLWLWLLLWLW",
+        "clean_sheets": 5,
+        "failed_to_score": 2,
+        "over_25": 0,
+        "under_25": 0
     },
     "1597": {
         "name": "FC Dallas",
         "league": 253,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.17647058823529413,
-        "form": "WLLDW"
+        "form": "WDLLWWDLDWLDLLDDWLLLLDWLWDDDWWDWLWLL",
+        "clean_sheets": 6,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1598": {
         "name": "Orlando City SC",
         "league": 253,
-        "clean_sheet_rate": 0.3076923076923077,
-        "failed_rate": 0.2564102564102564,
-        "form": "WDDWL"
+        "form": "LWLDWWDDDWDDWWWLLWWLDDLWWWWLDWDDLLL",
+        "clean_sheets": 8,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "1599": {
         "name": "Philadelphia Union",
         "league": 253,
-        "clean_sheet_rate": 0.23529411764705882,
-        "failed_rate": 0.14705882352941177,
-        "form": "WDLLL"
+        "form": "WWWLWLDLWWWDWWDWDWWLLWWDWDLWWLWWWLWWL",
+        "clean_sheets": 15,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1600": {
         "name": "Houston Dynamo",
         "league": 253,
-        "clean_sheet_rate": 0.25,
-        "failed_rate": 0.25,
-        "form": "WLWDD"
+        "form": "LLDLDLWDDWLLWWDWLLLWWLLDDDLWDLWLLD",
+        "clean_sheets": 10,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "1601": {
         "name": "Toronto FC",
         "league": 253,
-        "clean_sheet_rate": 0.23529411764705882,
-        "failed_rate": 0.2647058823529412,
-        "form": "LLDLL"
+        "form": "DLLLLDDDWLLWLWLLLDWLDWLLDDDDDDDDLW",
+        "clean_sheets": 7,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "1602": {
         "name": "New York Red Bulls",
         "league": 253,
-        "clean_sheet_rate": 0.2564102564102564,
-        "failed_rate": 0.1794871794871795,
-        "form": "WDWWL"
+        "form": "LWDDWLWDLWLWLLWWWLDDDLWLLWWLDLWLLL",
+        "clean_sheets": 10,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1603": {
         "name": "Vancouver Whitecaps",
         "league": 253,
-        "clean_sheet_rate": 0.23684210526315788,
-        "failed_rate": 0.21052631578947367,
-        "form": "LWLWL"
+        "form": "WWWWLDWWDWWDDWDWLLWLLWDWLDWWWDDWWLWWWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "1604": {
         "name": "New York City FC",
         "league": 253,
-        "clean_sheet_rate": 0.15789473684210525,
-        "failed_rate": 0.2894736842105263,
-        "form": "LLWDL"
+        "form": "DLWWDLLWLWWLDWWLDWLWLWDWWWLWWWLWLLWLWWL",
+        "clean_sheets": 11,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "1605": {
         "name": "Los Angeles Galaxy",
         "league": 253,
-        "clean_sheet_rate": 0.23076923076923078,
-        "failed_rate": 0.10256410256410256,
-        "form": "WWWWW"
+        "form": "LLLDDLLDLLLLLDLLWDLDWWLDLLWDDLWLWW",
+        "clean_sheets": 3,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1606": {
         "name": "Real Salt Lake",
         "league": 253,
-        "clean_sheet_rate": 0.2777777777777778,
-        "failed_rate": 0.2222222222222222,
-        "form": "DWWDD"
+        "form": "LWLWLLWLLWLDDLLDLWDWWWLWLLLWLLWWLDL",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "1607": {
         "name": "Chicago Fire",
         "league": 253,
-        "clean_sheet_rate": 0.11764705882352941,
-        "failed_rate": 0.3235294117647059,
-        "form": "LLDLL"
+        "form": "LDWWWDLDLLDWWLWWLLWLLDWWDWLWLWWWDDWLL",
+        "clean_sheets": 6,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "1608": {
         "name": "Atlanta United FC",
         "league": 253,
-        "clean_sheet_rate": 0.1282051282051282,
-        "failed_rate": 0.23076923076923078,
-        "form": "DLWWL"
+        "form": "WLDLDWDLLLDLDLWWLLLDDDLDDLDWLDLLLD",
+        "clean_sheets": 4,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1609": {
         "name": "New England Revolution",
         "league": 253,
-        "clean_sheet_rate": 0.14705882352941177,
-        "failed_rate": 0.29411764705882354,
-        "form": "WLLLL"
+        "form": "DLLLWLWWWWDDDDWLLDLLDLLLWLWLLDLWLD",
+        "clean_sheets": 10,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1610": {
         "name": "Colorado Rapids",
         "league": 253,
-        "clean_sheet_rate": 0.16666666666666666,
-        "failed_rate": 0.1388888888888889,
-        "form": "LLLLL"
+        "form": "DDWWLWLWDDLLLWWLLLWDLLWDLWWLLWLDLD",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "1611": {
         "name": "Sporting Kansas City",
         "league": 253,
-        "clean_sheet_rate": 0.08823529411764706,
-        "failed_rate": 0.17647058823529413,
-        "form": "WLLLL"
+        "form": "LLLDLLWLWLWLDDDWLLWDWLDLLLLWLLLLLD",
+        "clean_sheets": 4,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1612": {
         "name": "Minnesota United FC",
         "league": 253,
-        "clean_sheet_rate": 0.21621621621621623,
-        "failed_rate": 0.16216216216216217,
-        "form": "WWDDL"
+        "form": "LWWDDWWDDLWWLWDDWLWDWWLDWLWWDWLDWLWLWL",
+        "clean_sheets": 11,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "1613": {
         "name": "Columbus Crew",
         "league": 253,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.16666666666666666,
-        "form": "WWWLD"
+        "form": "WWDDDWWWLWWDDDLDLWWWDWLWLDLDWLDLDWLWL",
+        "clean_sheets": 6,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "1614": {
         "name": "CF Montreal",
         "league": 253,
-        "clean_sheet_rate": 0.22857142857142856,
-        "failed_rate": 0.2857142857142857,
-        "form": "WWLWD"
+        "form": "LLLDLDLLDLLWDLDLLWLWLDLLWDDWDLLWDL",
+        "clean_sheets": 4,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "1615": {
         "name": "DC United",
         "league": 253,
-        "clean_sheet_rate": 0.058823529411764705,
-        "failed_rate": 0.23529411764705882,
-        "form": "LDWWL"
+        "form": "DDWDLLLLWLWLDDLDWLLLDLLLLLDDWDLLLD",
+        "clean_sheets": 4,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1616": {
         "name": "Los Angeles FC",
         "league": 253,
-        "clean_sheet_rate": 0.34210526315789475,
-        "failed_rate": 0.15789473684210525,
-        "form": "WWLWL"
+        "form": "WWLLWLLWDDWDWDDWLWWWDLDWDLWWWWWWLDWWL",
+        "clean_sheets": 12,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "1617": {
         "name": "Portland Timbers",
         "league": 253,
-        "clean_sheet_rate": 0.17142857142857143,
-        "failed_rate": 0.17142857142857143,
-        "form": "DLDDL"
+        "form": "LWLDWWDWDWLWDDLWWDLWLLDWLLDDWLDDLLWLWL",
+        "clean_sheets": 7,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "2242": {
         "name": "FC Cincinnati",
         "league": 253,
-        "clean_sheet_rate": 0.24324324324324326,
-        "failed_rate": 0.1891891891891892,
-        "form": "LWWLD"
+        "form": "WLWLDWWWWWLWWDLDLWWWWLWWDLWLLWWDWWWLWL",
+        "clean_sheets": 12,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "9568": {
         "name": "Inter Miami",
         "league": 253,
-        "clean_sheet_rate": 0.16216216216216217,
-        "failed_rate": 0.05405405405405406,
-        "form": "WWWLL"
+        "form": "DWWWWDDWLWLDLDWWWWWLWDLWDLWWWDLWWWWLWWWW",
+        "clean_sheets": 8,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "9569": {
         "name": "Nashville SC",
         "league": 253,
-        "clean_sheet_rate": 0.2647058823529412,
-        "failed_rate": 0.3235294117647059,
-        "form": "DLLLW"
+        "form": "DLWWWLLWLWDWWDWDDWWWWLWWLLLWLLLWDLLWL",
+        "clean_sheets": 9,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "16489": {
         "name": "Austin",
         "league": 253,
-        "clean_sheet_rate": 0.23529411764705882,
-        "failed_rate": 0.29411764705882354,
-        "form": "LDWLW"
+        "form": "WLLWWWDLWLLLDDDDLWWLDWWDDLWWLWLLWLLL",
+        "clean_sheets": 9,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "18310": {
         "name": "Charlotte",
         "league": 253,
-        "clean_sheet_rate": 0.35135135135135137,
-        "failed_rate": 0.2702702702702703,
-        "form": "WWLDD"
+        "form": "DWLWWLWWWLLLLLWLWLLLDWWWWWWWWWLLWWLWL",
+        "clean_sheets": 14,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
     },
     "20787": {
         "name": "St. Louis City",
         "league": 253,
-        "clean_sheet_rate": 0.20588235294117646,
-        "failed_rate": 0.23529411764705882,
-        "form": "WWLWL"
+        "form": "DDWWLLLLDDLLDLLWLDLLLWLLWLLLDWWLWD",
+        "clean_sheets": 6,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "1125": {
         "name": "Millonarios",
         "league": 239,
-        "clean_sheet_rate": 0.4,
-        "failed_rate": 0.22,
-        "form": "WWDDD"
+        "form": "WWDLWLWLWLWWWDDWDDWWWDDDWLLLLDLLWWDWLWLWLDWDDW",
+        "clean_sheets": 20,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1126": {
         "name": "Deportivo Pasto",
         "league": 239,
-        "clean_sheet_rate": 0.36363636363636365,
-        "failed_rate": 0.3409090909090909,
-        "form": "LWWLD"
+        "form": "LLDWWWLWWDDDDLWLWLWLWDDLLLDWLLDLLDDDLWLW",
+        "clean_sheets": 10,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "1127": {
         "name": "Deportivo Cali",
         "league": 239,
-        "clean_sheet_rate": 0.23684210526315788,
-        "failed_rate": 0.3157894736842105,
-        "form": "WWLLL"
+        "form": "DWLDWWDDDDDWDLWLDLLLLDDWLDWDLDWWLWLLLLLD",
+        "clean_sheets": 13,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0
     },
     "1128": {
         "name": "Independiente Medellin",
         "league": 239,
-        "clean_sheet_rate": 0.34210526315789475,
-        "failed_rate": 0.2631578947368421,
-        "form": "WWWDW"
+        "form": "DWWDWWWDDDDLWWDDLLWLDWWWWDDLDLLWWWWWWDDWLWWDLWWWLDLDLW",
+        "clean_sheets": 20,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "1129": {
         "name": "Envigado",
         "league": 239,
-        "clean_sheet_rate": 0.23684210526315788,
-        "failed_rate": 0.5,
-        "form": "LDLWL"
+        "form": "DLLWLWLLDLWDLWWLLLLLLDWDDWLDLDLDDLWLLLDW",
+        "clean_sheets": 6,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0
     },
     "1131": {
         "name": "Bucaramanga",
         "league": 239,
-        "clean_sheet_rate": 0.5,
-        "failed_rate": 0.34782608695652173,
-        "form": "LLDWW"
+        "form": "LLLDDDWLDWWLWWDLLWWWDLWWLWWWDDWLWWDWLWLWDLWDD",
+        "clean_sheets": 19,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1132": {
         "name": "Chico",
         "league": 239,
-        "clean_sheet_rate": 0.21052631578947367,
-        "failed_rate": 0.3157894736842105,
-        "form": "WLDWL"
+        "form": "WLDLLWDDDDLLDDLLDWWLDWLDLDLDWLLDLDLDWLLL",
+        "clean_sheets": 13,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0
     },
     "1133": {
         "name": "Jaguares",
@@ -3004,44 +3108,56 @@
     "1134": {
         "name": "Internacional de Bogota",
         "league": 239,
-        "clean_sheet_rate": 0.4090909090909091,
-        "failed_rate": 0.36363636363636365,
-        "form": "LWLDL"
+        "form": "DLLLDLLDLDLLWLWLLLLLDLWDLDWLDLDLLLLLLLLW",
+        "clean_sheets": 8,
+        "failed_to_score": 21,
+        "over_25": 0,
+        "under_25": 0
     },
     "1135": {
         "name": "Junior",
         "league": 239,
-        "clean_sheet_rate": 0.38,
-        "failed_rate": 0.38,
-        "form": "LDLWL"
+        "form": "DDDWWLDWWWWWDDWLDLWWDLLLLLWWWDWDWLWLDDWLWWLLDWWDDWWLWW",
+        "clean_sheets": 18,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "1136": {
         "name": "Once Caldas",
         "league": 239,
-        "clean_sheet_rate": 0.36,
-        "failed_rate": 0.36,
-        "form": "DDWWL"
+        "form": "LWWLWWLLLDWWDWLWDLWDLDDLLLLDLDDLWWDWLWWLLWDWD",
+        "clean_sheets": 16,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "1137": {
         "name": "Atletico Nacional",
         "league": 239,
-        "clean_sheet_rate": 0.34782608695652173,
-        "failed_rate": 0.2391304347826087,
-        "form": "DWWDW"
+        "form": "WWWDLWWDWDLWDWLWDWLLDDLWLWWWLDDWDDWDWWDWDWWWLWDDLWL",
+        "clean_sheets": 17,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "1138": {
         "name": "America de Cali",
         "league": 239,
-        "clean_sheet_rate": 0.36363636363636365,
-        "failed_rate": 0.3181818181818182,
-        "form": "DLWLW"
+        "form": "WWDWDWLWDWWLDDLWWDWWDWDLWDDWLLLDLDLDWWDLWWWWWLLDWDLW",
+        "clean_sheets": 21,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "1139": {
         "name": "Santa Fe",
         "league": 239,
-        "clean_sheet_rate": 0.40384615384615385,
-        "failed_rate": 0.3076923076923077,
-        "form": "LLLDL"
+        "form": "WDDDLWWWDWLWDLLDWWWLLWWLWWDWDWDDWLWLLDWDWLDDLWWWLWLLWD",
+        "clean_sheets": 21,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "1140": {
         "name": "Patriotas",
@@ -3053,37 +3169,47 @@
     "1141": {
         "name": "Alianza Valledupar",
         "league": 239,
-        "clean_sheet_rate": 0.15789473684210525,
-        "failed_rate": 0.5263157894736842,
-        "form": "DLWDL"
+        "form": "DDLDWWWLLDLLWWLDWWLWDWLDLLDWWLWDWDLLWWWL",
+        "clean_sheets": 17,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "1142": {
         "name": "Deportes Tolima",
         "league": 239,
-        "clean_sheet_rate": 0.38461538461538464,
-        "failed_rate": 0.17307692307692307,
-        "form": "LLWDL"
+        "form": "WDWDDLWDLWWWDLWDWWWLDLDWLWLLWWDWWWDLWLLWLWWWWWWDWWDWLL",
+        "clean_sheets": 23,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1144": {
         "name": "\u00c1guilas Doradas",
         "league": 239,
-        "clean_sheet_rate": 0.2631578947368421,
-        "failed_rate": 0.3684210526315789,
-        "form": "LLLLW"
+        "form": "DDDLLDLLWDLDDLDLDWWWDLDLDDWLLDWWLWDWWWLL",
+        "clean_sheets": 12,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "1147": {
         "name": "Fortaleza FC",
         "league": 239,
-        "clean_sheet_rate": 0.2894736842105263,
-        "failed_rate": 0.2894736842105263,
-        "form": "LWWLL"
+        "form": "DLWWLLLDDDLLLWWDLWLLWWDDDDDWDWWLWDWLWWDLLLWLLL",
+        "clean_sheets": 16,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
     },
     "1462": {
         "name": "Deportivo Pereira",
         "league": 239,
-        "clean_sheet_rate": 0.3409090909090909,
-        "failed_rate": 0.25,
-        "form": "WWDDW"
+        "form": "LDLDLWLWWDLDDWWDDWLWDLWLWDWDLLDDDLWLLLLL",
+        "clean_sheets": 12,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "395": {
         "name": "Vejle",
@@ -3235,9 +3361,11 @@
     "38": {
         "name": "Watford",
         "league": 40,
-        "clean_sheet_rate": 0.2608695652173913,
-        "failed_rate": 0.2391304347826087,
-        "form": "LLLLD"
+        "form": "LWDDLLWDWLWLWDDWDLWDDWWWWLDDLDLDWLWDLWDLDLLLLL",
+        "clean_sheets": 7,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "43": {
         "name": "Cardiff",
@@ -3248,143 +3376,189 @@
     },
     "44": {
         "name": "Burnley",
-        "league": 40,
-        "clean_sheet_rate": 0.6521739130434783,
-        "failed_rate": 0.30434782608695654,
-        "form": "WWWWW"
+        "league": 39,
+        "form": "LWLLDLLWWLLLLLLLDDLLDDDLLWDLLDLLLLLDLD",
+        "clean_sheets": 4,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 66,
+        "red_cards": 3
     },
     "56": {
         "name": "Bristol City",
         "league": 40,
-        "clean_sheet_rate": 0.20833333333333334,
-        "failed_rate": 0.2916666666666667,
-        "form": "LLDLL"
+        "form": "WDDWWLDDLWWWLLDWLWLDLWWLWLDLWLWDLWLLLDLWWDLDLW",
+        "clean_sheets": 14,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "58": {
         "name": "Millwall",
         "league": 40,
-        "clean_sheet_rate": 0.34782608695652173,
-        "failed_rate": 0.2826086956521739,
-        "form": "WLWWL"
+        "form": "WLWLDWDLWWWWDLDLWWWDLLDWDWWLWDWWLWWWWLDWLDWWDWDL",
+        "clean_sheets": 19,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "59": {
         "name": "Preston",
         "league": 40,
-        "clean_sheet_rate": 0.2826086956521739,
-        "failed_rate": 0.2391304347826087,
-        "form": "LLLLD"
+        "form": "DWWLDWDDWLLWWWDLDWDDWDDLWWLLLDWDLDLLLLWDDWLLWL",
+        "clean_sheets": 9,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "60": {
         "name": "West Brom",
         "league": 40,
-        "clean_sheet_rate": 0.30434782608695654,
-        "failed_rate": 0.2826086956521739,
-        "form": "WLLDW"
+        "form": "WWDWLLDWLWLLDLWLDWLLWLLWLLLLDLDDLDLDDWWDDDWWDL",
+        "clean_sheets": 14,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "62": {
         "name": "Sheffield Utd",
         "league": 40,
-        "clean_sheet_rate": 0.4897959183673469,
-        "failed_rate": 0.14285714285714285,
-        "form": "WDWWL"
+        "form": "LLLLLLWLLWWLLLDWWWWDLWLWWLLWDWLWWLWDLDLDLWWLLW",
+        "clean_sheets": 10,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "63": {
         "name": "Leeds",
-        "league": 40,
-        "clean_sheet_rate": 0.5434782608695652,
-        "failed_rate": 0.15217391304347827,
-        "form": "WWWWW"
+        "league": 39,
+        "form": "WLDLWDLLWLLLLWDDWDDDLWDLWDDLLDDWWDWDWL",
+        "clean_sheets": 8,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 64,
+        "red_cards": 1
     },
     "64": {
         "name": "Hull City",
         "league": 40,
-        "clean_sheet_rate": 0.15217391304347827,
-        "failed_rate": 0.3695652173913043,
-        "form": "DLWLD"
+        "form": "DWLLDWLDWWWDWLWLLWLWWWDWLWWWWDLLWWLLWLWDDLDDLWDWW",
+        "clean_sheets": 14,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "67": {
         "name": "Blackburn",
         "league": 40,
-        "clean_sheet_rate": 0.32608695652173914,
-        "failed_rate": 0.32608695652173914,
-        "form": "WWWWD"
+        "form": "LLWLWLLDLLWWWLWLDDDLWDDLDLLDLWLWWLLDLWDWDDLDWL",
+        "clean_sheets": 12,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "69": {
         "name": "Derby",
         "league": 40,
-        "clean_sheet_rate": 0.2608695652173913,
-        "failed_rate": 0.3695652173913043,
-        "form": "DLWWD"
+        "form": "LLDDWLDDDLWWWWWLWLLDWDDLWLWWDWLWLLWWLWWLWLWLWL",
+        "clean_sheets": 12,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "70": {
         "name": "Middlesbrough",
         "league": 40,
-        "clean_sheet_rate": 0.2826086956521739,
-        "failed_rate": 0.2826086956521739,
-        "form": "LWLDL"
+        "form": "WWWWDWDDLWWDLDWDLWWWWLDLLWWWWWWLDDWWLDDLDLDWWDDLL",
+        "clean_sheets": 14,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "71": {
         "name": "Norwich",
         "league": 40,
-        "clean_sheet_rate": 0.17391304347826086,
-        "failed_rate": 0.2391304347826087,
-        "form": "LLLDW"
+        "form": "LWLWDLDLLLLLLDLLDWLDWDWLWLWWWLWWLWWWWLWDWLWWDL",
+        "clean_sheets": 9,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "72": {
         "name": "QPR",
         "league": 40,
-        "clean_sheet_rate": 0.21739130434782608,
-        "failed_rate": 0.2608695652173913,
-        "form": "DWLLW"
+        "form": "DLLWWWDDWLWLLLDWWLWWLWDLLWDDLWDLWLLLLWWWDDLLLL",
+        "clean_sheets": 10,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "74": {
         "name": "Sheffield Wednesday",
         "league": 40,
-        "clean_sheet_rate": 0.1956521739130435,
-        "failed_rate": 0.30434782608695654,
-        "form": "LLWDD"
+        "form": "LLDLLWDDLLLLDDLLLLDLLDDLLLLLLLLLLLLLDLLLDDDLLW",
+        "clean_sheets": 4,
+        "failed_to_score": 23,
+        "over_25": 0,
+        "under_25": 0
     },
     "75": {
         "name": "Stoke City",
         "league": 40,
-        "clean_sheet_rate": 0.30434782608695654,
-        "failed_rate": 0.391304347826087,
-        "form": "WWLLD"
+        "form": "WWWLWLDDDWLWWWLLWLLLWLDLWWDLDLDLDWLLDWLWLDLLLL",
+        "clean_sheets": 13,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
     },
     "76": {
         "name": "Swansea",
         "league": 40,
-        "clean_sheet_rate": 0.30434782608695654,
-        "failed_rate": 0.34782608695652173,
-        "form": "WWWLD"
+        "form": "LWDWDLDWLDLWDLLLLLWWLWLWWLDWLWWLWDLWWLLDDWLWDW",
+        "clean_sheets": 12,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "746": {
         "name": "Sunderland",
-        "league": 40,
-        "clean_sheet_rate": 0.3469387755102041,
-        "failed_rate": 0.2653061224489796,
-        "form": "LLWDW"
+        "league": 39,
+        "form": "WLWDDWLWWDDLWDLWDDDDLWLWLLLDWLWWLLDDWW",
+        "clean_sheets": 11,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 82,
+        "red_cards": 3
     },
     "1338": {
         "name": "Oxford United",
         "league": 40,
-        "clean_sheet_rate": 0.2826086956521739,
-        "failed_rate": 0.2608695652173913,
-        "form": "WLDWD"
+        "form": "LLLDDWLDLWLWDLLDDWLDLLWLLDDWLLDLDLWWWDLDDWLLWL",
+        "clean_sheets": 8,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0
     },
     "1346": {
         "name": "Coventry",
         "league": 40,
-        "clean_sheet_rate": 0.2708333333333333,
-        "failed_rate": 0.20833333333333334,
-        "form": "LLWLD"
+        "form": "DWWDDDWWWWWWLWWWWWLDWDWLDLWWLLDWWWWWWLWWDDDWWW",
+        "clean_sheets": 17,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "1355": {
         "name": "Portsmouth",
         "league": 40,
-        "clean_sheet_rate": 0.21739130434782608,
-        "failed_rate": 0.30434782608695654,
-        "form": "DWWDD"
+        "form": "WLDWDLLDWDLLLDLWLLLWDDWLWDDWLLWWLLDLLLDDWWWLWD",
+        "clean_sheets": 10,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "1357": {
         "name": "Plymouth",
@@ -3403,30 +3577,40 @@
     "545": {
         "name": "Eibar",
         "league": 141,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.3333333333333333,
-        "form": "LWWWL"
+        "form": "DWLWLWDLDLDLWDLLLDWWLDWWDWLWWDWWWWDWWLWLWL",
+        "clean_sheets": 18,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "713": {
         "name": "Cordoba",
         "league": 141,
-        "clean_sheet_rate": 0.21428571428571427,
-        "failed_rate": 0.21428571428571427,
-        "form": "WLLLD"
+        "form": "LLDWLDDWWDWWDLDLDDWWWLWWWLLLLLLDLWWWWWWLLD",
+        "clean_sheets": 9,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "715": {
         "name": "Granada CF",
         "league": 141,
-        "clean_sheet_rate": 0.2857142857142857,
-        "failed_rate": 0.19047619047619047,
-        "form": "LLWWL"
+        "form": "LLLDLDWWDDDLWDDWDLDLDDWWLWLLWDWWLLWLLWLLLL",
+        "clean_sheets": 12,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
     },
     "718": {
         "name": "Oviedo",
-        "league": 141,
-        "clean_sheet_rate": 0.34782608695652173,
-        "failed_rate": 0.2391304347826087,
-        "form": "WWDLW"
+        "league": 140,
+        "form": "LLWLLLWLLDDLDLDLDDDLLWLDLLDWLWWDLLDLLL",
+        "clean_sheets": 10,
+        "failed_to_score": 21,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 81,
+        "red_cards": 10
     },
     "719": {
         "name": "Tenerife",
@@ -3438,72 +3622,94 @@
     "722": {
         "name": "Albacete",
         "league": 141,
-        "clean_sheet_rate": 0.23809523809523808,
-        "failed_rate": 0.2857142857142857,
-        "form": "LWLWD"
+        "form": "DLLLDWWDDWLWLWLLWLDLDWWWLDLDDWWDDLLWLWWWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "723": {
         "name": "Almeria",
         "league": 141,
-        "clean_sheet_rate": 0.25,
-        "failed_rate": 0.09090909090909091,
-        "form": "WDWLD"
+        "form": "DWDLLWWDWDWWWWLDWLLWDLLWWWWDWLWWLWLWWWDLLWDWDL",
+        "clean_sheets": 10,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
     },
     "724": {
         "name": "Cadiz",
         "league": 141,
-        "clean_sheet_rate": 0.30952380952380953,
-        "failed_rate": 0.3333333333333333,
-        "form": "LWLWL"
+        "form": "WDWDWWDLWLDDDLLWLWWDWLLLLDLLLWLLLLLLLDLDWL",
+        "clean_sheets": 11,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
     },
     "726": {
         "name": "Huesca",
         "league": 141,
-        "clean_sheet_rate": 0.2619047619047619,
-        "failed_rate": 0.21428571428571427,
-        "form": "LLWLW"
+        "form": "DWWLWLLWLDLLDLWDLWDLLLDWLWLLDLLLDLDLWLLDLD",
+        "clean_sheets": 10,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "731": {
         "name": "Sporting Gijon",
         "league": 141,
-        "clean_sheet_rate": 0.21428571428571427,
-        "failed_rate": 0.16666666666666666,
-        "form": "LWLWW"
+        "form": "WWWLLLLLWWWDLDLDWWWLLWWLWDDDLWLDLWLWLLLWWW",
+        "clean_sheets": 11,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "732": {
         "name": "Zaragoza",
         "league": 141,
-        "clean_sheet_rate": 0.19047619047619047,
-        "failed_rate": 0.23809523809523808,
-        "form": "WWLWL"
+        "form": "LLDDDLWLLLLLLWWWDLDLWDDLDDLLWWLWDLLDLLLLDL",
+        "clean_sheets": 8,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "797": {
         "name": "Elche",
-        "league": 141,
-        "clean_sheet_rate": 0.4523809523809524,
-        "failed_rate": 0.21428571428571427,
-        "form": "WLLWW"
+        "league": 140,
+        "form": "DDWDWDWLDLLDDLWLWLDDLLLDLDLLWLWWWLDLWD",
+        "clean_sheets": 8,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 81,
+        "red_cards": 5
     },
     "799": {
         "name": "Mirandes",
         "league": 141,
-        "clean_sheet_rate": 0.3695652173913043,
-        "failed_rate": 0.2391304347826087,
-        "form": "WDWWL"
+        "form": "LLWWLDLDDLLLWLLWDLLLDLLWLDWLLLWDDWDLWLLDWL",
+        "clean_sheets": 3,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "4665": {
         "name": "Racing Santander",
         "league": 141,
-        "clean_sheet_rate": 0.25,
-        "failed_rate": 0.1590909090909091,
-        "form": "LDWDL"
+        "form": "WWWWLDLWLWWWLDWWWDDDLWWLWLWWWWLLWLWWDWWWDW",
+        "clean_sheets": 8,
+        "failed_to_score": 4,
+        "over_25": 0,
+        "under_25": 0
     },
     "5254": {
         "name": "Castell\u00f3n",
         "league": 141,
-        "clean_sheet_rate": 0.19047619047619047,
-        "failed_rate": 0.2619047619047619,
-        "form": "WLDLW"
+        "form": "LLDLDWWWDLLWDWWWWWLWDWDWWWDLLLDDWWDWWLDDWWDL",
+        "clean_sheets": 12,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "5262": {
         "name": "FC Cartagena",
@@ -3515,9 +3721,11 @@
     "9580": {
         "name": "Burgos",
         "league": 141,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.35714285714285715,
-        "form": "LWLLD"
+        "form": "WDLDWDWLLWWWDWLLLWDLWWLWDDLWWDWWDWWLDDDWWW",
+        "clean_sheets": 19,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "9692": {
         "name": "Eldense",
@@ -3528,31 +3736,41 @@
     },
     "488": {
         "name": "Sassuolo",
-        "league": 136,
-        "clean_sheet_rate": 0.39473684210526316,
-        "failed_rate": 0.10526315789473684,
-        "form": "WWDLL"
+        "league": 135,
+        "form": "LLWLWWDLWLWDLWDLDDLLLWWLWWWLLDWLWDWLLL",
+        "clean_sheets": 8,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 83,
+        "red_cards": 4
     },
     "498": {
         "name": "Sampdoria",
         "league": 136,
-        "clean_sheet_rate": 0.3333333333333333,
-        "failed_rate": 0.3333333333333333,
-        "form": "DDWDW"
+        "form": "LLLLDDWLDDLLWLWLDWLDDWWDWLLDLDLWWWLDWL",
+        "clean_sheets": 9,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "508": {
         "name": "Bari",
         "league": 136,
-        "clean_sheet_rate": 0.34210526315789475,
-        "failed_rate": 0.2631578947368421,
-        "form": "LLWLD"
+        "form": "LDLLDDWLWWDLLDDDLDLLWLLDLDWWLWLLWLLLWWDD",
+        "clean_sheets": 9,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "509": {
         "name": "Cesena",
         "league": 136,
-        "clean_sheet_rate": 0.28205128205128205,
-        "failed_rate": 0.2564102564102564,
-        "form": "LWWWL"
+        "form": "WDWWDLLWWWLWLWDWDLLWLLWLLLDLDDLWDLLDDL",
+        "clean_sheets": 7,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "510": {
         "name": "Cittadella",
@@ -3564,16 +3782,20 @@
     "512": {
         "name": "Frosinone",
         "league": 136,
-        "clean_sheet_rate": 0.21052631578947367,
-        "failed_rate": 0.3157894736842105,
-        "form": "DLDLW"
+        "form": "WDWDWWLLDWWDWWWWWDWDWDLWWDDDWDWWWDWWWW",
+        "clean_sheets": 15,
+        "failed_to_score": 3,
+        "over_25": 0,
+        "under_25": 0
     },
     "515": {
         "name": "Spezia",
         "league": 136,
-        "clean_sheet_rate": 0.42857142857142855,
-        "failed_rate": 0.23809523809523808,
-        "form": "WWWDL"
+        "form": "LDDLLDLLWDLDLWWLLWLLWLDDLWLDWLDLLLWLDD",
+        "clean_sheets": 6,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "518": {
         "name": "Brescia",
@@ -3584,59 +3806,79 @@
     },
     "520": {
         "name": "Cremonese",
-        "league": 136,
-        "clean_sheet_rate": 0.23809523809523808,
-        "failed_rate": 0.19047619047619047,
-        "form": "LLWDW"
+        "league": 135,
+        "form": "WWDDDLDDWLLLWWLDLLDLDLLLDLLLLWLLDLLWWL",
+        "clean_sheets": 11,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 73,
+        "red_cards": 6
     },
     "522": {
         "name": "Palermo",
         "league": 136,
-        "clean_sheet_rate": 0.28205128205128205,
-        "failed_rate": 0.20512820512820512,
-        "form": "LLWDL"
+        "form": "WDWWDDWDLLWLDWWWDWDWDWWDWWLWWLDWWDWDWLLW",
+        "clean_sheets": 18,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
     },
     "801": {
         "name": "Pisa",
-        "league": 136,
-        "clean_sheet_rate": 0.2894736842105263,
-        "failed_rate": 0.23684210526315788,
-        "form": "WWLDW"
+        "league": 135,
+        "form": "DLLLDLDDDDWDLLLDLDLDDLLDLLLLWLLLLLLLLL",
+        "clean_sheets": 5,
+        "failed_to_score": 21,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 78,
+        "red_cards": 5
     },
     "863": {
         "name": "Juve Stabia",
         "league": 136,
-        "clean_sheet_rate": 0.3170731707317073,
-        "failed_rate": 0.3170731707317073,
-        "form": "LDWWL"
+        "form": "DDDWDWLWDLWLDDLWDWDWWDDWLLDDLDDWLWDDLDWDL",
+        "clean_sheets": 12,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
     },
     "880": {
         "name": "Reggiana",
         "league": 136,
-        "clean_sheet_rate": 0.21052631578947367,
-        "failed_rate": 0.3157894736842105,
-        "form": "WWWWL"
+        "form": "LWDDLDWWLWLDDLWLLLLLLDLWDDWLLLDLLWLDLW",
+        "clean_sheets": 10,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "899": {
         "name": "Modena",
         "league": 136,
-        "clean_sheet_rate": 0.18421052631578946,
-        "failed_rate": 0.23684210526315788,
-        "form": "WLLDL"
+        "form": "WDWWWDWDWLWDDLLWLLLWDDLWWWLLDWWLDDLLWLL",
+        "clean_sheets": 14,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
     },
     "1687": {
         "name": "Catanzaro",
         "league": 136,
-        "clean_sheet_rate": 0.34146341463414637,
-        "failed_rate": 0.2926829268292683,
-        "form": "WDWLL"
+        "form": "DDDDDDLLWWWLDWWWWWLLDLWWWWDDWWLDDDDWLLWWLLW",
+        "clean_sheets": 12,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
     },
     "1693": {
         "name": "Mantova",
         "league": 136,
-        "clean_sheet_rate": 0.21052631578947367,
-        "failed_rate": 0.2894736842105263,
-        "form": "LWLWD"
+        "form": "LWLLLLDDLLWWWLLLLDDWLDWLLWDLWDWLWWLWWL",
+        "clean_sheets": 9,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
     },
     "10137": {
         "name": "Cosenza",
@@ -3648,23 +3890,31 @@
     "535": {
         "name": "Malaga",
         "league": 141,
-        "clean_sheet_rate": 0.38095238095238093,
-        "failed_rate": 0.35714285714285715,
-        "form": "WLWLD"
+        "form": "DWWDLLLLWLWLDLWDDWWWWWWLWLWWDWWDDDWLLWWWDWWDDW",
+        "clean_sheets": 13,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "539": {
         "name": "Levante",
-        "league": 141,
-        "clean_sheet_rate": 0.2619047619047619,
-        "failed_rate": 0.23809523809523808,
-        "form": "DWWWW"
+        "league": 140,
+        "form": "LLLDWLDWLDLLLLLDWDLWDLLLLWDDWLWWDLWWWL",
+        "clean_sheets": 9,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 86,
+        "red_cards": 5
     },
     "544": {
         "name": "Deportivo La Coruna",
         "league": 141,
-        "clean_sheet_rate": 0.2619047619047619,
-        "failed_rate": 0.2857142857142857,
-        "form": "WLLLL"
+        "form": "WDDWWWDDLLDWWWWWLLLDDWLWWLWWLWWDWDDWDWWWWL",
+        "clean_sheets": 11,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
     },
     "9409": {
         "name": "Racing Ferrol",
@@ -3683,16 +3933,20 @@
     "1578": {
         "name": "Sudtirol",
         "league": 136,
-        "clean_sheet_rate": 0.21052631578947367,
-        "failed_rate": 0.2894736842105263,
-        "form": "WWWDD"
+        "form": "DWLDWDLDLLDDDLDDDLWWWWDDWLDWLDLLDDLLLDDD",
+        "clean_sheets": 10,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
     },
     "1581": {
         "name": "Carrarese",
         "league": 136,
-        "clean_sheet_rate": 0.34210526315789475,
-        "failed_rate": 0.3157894736842105,
-        "form": "WLWLD"
+        "form": "WDDLDDWDWLLDDLLWLDWWWLDLLLDDLDWWWLDLDL",
+        "clean_sheets": 12,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
     },
     "939": {
         "name": "Western Sydney Wanderers",
@@ -3813,93 +4067,109 @@
     },
     "2312": {
         "name": "Atlante FC",
-        "league": 262,
-        "form": "LDWDLD",
-        "clean_sheets": 1,
-        "failed_to_score": 2,
+        "league": 263,
+        "form": "DLWLWWWWWDWWDWLDDLLDWWDWDWLWLDWL",
+        "clean_sheets": 12,
+        "failed_to_score": 5,
         "over_25": 0,
         "under_25": 0
     },
     "47": {
         "name": "Tottenham",
         "league": 39,
-        "form": "LL",
-        "clean_sheets": 0,
-        "failed_to_score": 2,
+        "form": "WWLWDDWLWLDLLDWLLWDDLLDDLLLLLDLLDWWDLW",
+        "clean_sheets": 9,
+        "failed_to_score": 7,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 101,
+        "red_cards": 4
     },
     "49": {
         "name": "Chelsea",
         "league": 39,
-        "form": "W",
-        "clean_sheets": 0,
-        "failed_to_score": 0,
+        "form": "DWWDLLWWLWWWDLDWDLDDLWWWWDDLWLLLLLLDWL",
+        "clean_sheets": 9,
+        "failed_to_score": 7,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 98,
+        "red_cards": 8
     },
     "50": {
         "name": "Manchester City",
         "league": 39,
-        "form": "WW",
-        "clean_sheets": 0,
-        "failed_to_score": 0,
+        "form": "WLLWDWWWLWWLWWWWWWDDDLWDWWWWDDWWWDWWDL",
+        "clean_sheets": 16,
+        "failed_to_score": 4,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 67,
+        "red_cards": 0
     },
     "51": {
         "name": "Brighton",
         "league": 39,
-        "form": "W",
-        "clean_sheets": 1,
-        "failed_to_score": 0,
+        "form": "DLWLDWDWLWDWWLDLDLDWDDLDLLWWLWWWDWLWLL",
+        "clean_sheets": 10,
+        "failed_to_score": 9,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 86,
+        "red_cards": 0
     },
     "52": {
         "name": "Crystal Palace",
         "league": 39,
-        "form": "LL",
-        "clean_sheets": 0,
-        "failed_to_score": 1,
+        "form": "DDWDWWLDLWDWLWWLLLDLDLLDWLWLWDWDLLDLDL",
+        "clean_sheets": 12,
+        "failed_to_score": 12,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 76,
+        "red_cards": 2
     },
     "55": {
         "name": "Brentford",
         "league": 39,
-        "form": "W",
-        "clean_sheets": 1,
-        "failed_to_score": 0,
+        "form": "LWLDLWLWWLWLWLLDWWDWWLLWWDLWDDDDDLWLDD",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 69,
+        "red_cards": 1
     },
     "57": {
         "name": "Ipswich",
-        "league": 39,
-        "form": "W",
-        "clean_sheets": 0,
-        "failed_to_score": 0,
+        "league": 40,
+        "form": "DDLDWWDWLLWWDWDWLDWWLWDWWWWLDWLWWWDDWDWWLDWDDW",
+        "clean_sheets": 17,
+        "failed_to_score": 6,
         "over_25": 0,
         "under_25": 0
     },
     "65": {
         "name": "Nottingham Forest",
         "league": 39,
-        "form": "LD",
-        "clean_sheets": 0,
-        "failed_to_score": 1,
+        "form": "WDLLDLLLLDWWLWLWLLLLWDWDLDLLDDWDWWWDLD",
+        "clean_sheets": 9,
+        "failed_to_score": 14,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 60,
+        "red_cards": 1
     },
     "66": {
         "name": "Aston Villa",
         "league": 39,
-        "form": "L",
-        "clean_sheets": 0,
-        "failed_to_score": 1,
+        "form": "DLLDDWWWWLWWWWWWWWLWDLWLDWDLLLWDWLLDWW",
+        "clean_sheets": 9,
+        "failed_to_score": 10,
         "over_25": 0,
-        "under_25": 0
+        "under_25": 0,
+        "yellow_cards": 58,
+        "red_cards": 1
     },
     "174": {
         "name": "FC Schalke 04",
@@ -3913,16 +4183,16 @@
     "175": {
         "name": "Hamburger SV",
         "league": 78,
-        "form": "L",
-        "clean_sheets": 0,
-        "failed_to_score": 1,
+        "form": "DLLWDWLLLDLWWLDLDDDWWDLLWDLDLLLWWD",
+        "clean_sheets": 6,
+        "failed_to_score": 10,
         "over_25": 0,
         "under_25": 0
     },
     "185": {
         "name": "SC Paderborn 07",
         "league": 78,
-        "form": "D",
+        "form": "DW",
         "clean_sheets": 1,
         "failed_to_score": 1,
         "over_25": 0,
@@ -3931,18 +4201,18 @@
     "192": {
         "name": "1. FC K\u00f6ln",
         "league": 78,
-        "form": "W",
-        "clean_sheets": 0,
-        "failed_to_score": 0,
+        "form": "WWDLLWDLWLLDDLLDLWLWLLDLLDDDWDLDLL",
+        "clean_sheets": 3,
+        "failed_to_score": 4,
         "over_25": 0,
         "under_25": 0
     },
     "97": {
         "name": "Lorient",
         "league": 61,
-        "form": "DL",
-        "clean_sheets": 1,
-        "failed_to_score": 1,
+        "form": "LWLLDWLDLDLDDWWDDWWWLWDDDWLDLWLDWL",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
         "over_25": 0,
         "under_25": 0
     },
@@ -3958,9 +4228,9 @@
     "114": {
         "name": "Paris FC",
         "league": 61,
-        "form": "D",
-        "clean_sheets": 1,
-        "failed_to_score": 1,
+        "form": "LLWWLDWLLDWLLDDLLWDDDLDWDDWDWWLWLW",
+        "clean_sheets": 8,
+        "failed_to_score": 9,
         "over_25": 0,
         "under_25": 0
     },
@@ -3976,9 +4246,803 @@
     "196": {
         "name": "Excelsior",
         "league": 88,
-        "form": "WLW",
-        "clean_sheets": 1,
+        "form": "LLLWLWLLWLDLWWLWLDDDDWLLLLLDLDWWDW",
+        "clean_sheets": 6,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "48": {
+        "name": "West Ham",
+        "league": 39,
+        "form": "LLWLLDLLLWWDLDDLLLDLLWWLWDDLWDLWDWLLLW",
+        "clean_sheets": 7,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0,
+        "yellow_cards": 69,
+        "red_cards": 3
+    },
+    "416": {
+        "name": "FC Volendam",
+        "league": 89,
+        "form": "WL",
+        "clean_sheets": 0,
         "failed_to_score": 0,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "25484": {
+        "name": "San Diego",
+        "league": 253,
+        "form": "WDWDLWWLLLWWWDWLWWWWLWLDWWWDWLDLWWWLWWL",
+        "clean_sheets": 13,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "123": {
+        "name": "Sport Recife",
+        "league": 71,
+        "form": "DLLLLDLLLDLLLDDDWDLLDWLDDLDLLLLLLLLLLL",
+        "clean_sheets": 5,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "128": {
+        "name": "Santos",
+        "league": 71,
+        "form": "LDLWLLLDLWLWWLLDWWLLDDWDDLWLDDLLWDDWWW",
+        "clean_sheets": 10,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "129": {
+        "name": "Ceara",
+        "league": 71,
+        "form": "DWLWLDWDWLLWLLLWDLWDLDDWLWDLLLWDWLLDLL",
+        "clean_sheets": 11,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "7848": {
+        "name": "Mirassol",
+        "league": 71,
+        "form": "LDDWDDLWDWWDWWDWLDWWWDWLDLWWWWDLWDWLWD",
+        "clean_sheets": 11,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "461": {
+        "name": "San Martin S.J.",
+        "league": 128,
+        "form": "LDDDLLLWLLLLLWLLLWDLDWLDLDDWWDDL",
+        "clean_sheets": 11,
+        "failed_to_score": 20,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "463": {
+        "name": "Aldosivi",
+        "league": 128,
+        "form": "LLLLLDLDLWWDLLWWDLDLDLLLLLWWLWWW",
+        "clean_sheets": 8,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1464": {
+        "name": "Llaneros",
+        "league": 239,
+        "form": "LWDDLLWLLLLWWLLLWLLWDDWWWLLWLWDLLDWWLLLL",
+        "clean_sheets": 10,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1465": {
+        "name": "Union Magdalena",
+        "league": 239,
+        "form": "LDDDLLDLDLLLDDDLLLWDLLWDLWLLWLLDWLWLLLW",
+        "clean_sheets": 6,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2284": {
+        "name": "Monarcas",
+        "league": 263,
+        "form": "DWLWDWLLLDWLWDWDDDWWLDWWWLWLWLDLLW",
+        "clean_sheets": 13,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2297": {
+        "name": "Dorados",
+        "league": 263,
+        "form": "LLWLLLLLLLDLDLLWDDDLLLLDLWLW",
+        "clean_sheets": 3,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2299": {
+        "name": "Mineros de Zacatecas",
+        "league": 263,
+        "form": "DWWDLDLDWDWLWDDDWLDLDLWLWWWLWDWLDD",
+        "clean_sheets": 9,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2300": {
+        "name": "Alebrijes de Oaxaca",
+        "league": 263,
+        "form": "LLDLLLWLWDWDLDLDWDDLWLWLDLLW",
+        "clean_sheets": 4,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2307": {
+        "name": "Leones Negros UDG",
+        "league": 263,
+        "form": "LWWDDDLLWLLWWWWLWLDLLDDLDLDWLL",
+        "clean_sheets": 7,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2311": {
+        "name": "Venados FC",
+        "league": 263,
+        "form": "LLLDWDLWWWLDLWWLDLDWLLLLWDWD",
+        "clean_sheets": 2,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2313": {
+        "name": "Correcaminos Uat",
+        "league": 263,
+        "form": "DDLWLLLDLLWLLDLLDWLDDWWLLLLL",
+        "clean_sheets": 4,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "14276": {
+        "name": "Canc\u00fan",
+        "league": 263,
+        "form": "WWWWDWLWWDWWDLLDWLDWLWLWDDDWWWDWLD",
+        "clean_sheets": 11,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "14278": {
+        "name": "Tapat\u00edo",
+        "league": 263,
+        "form": "WWLDWLLDLLDLLWDWLWWWDLLWLWLLDL",
+        "clean_sheets": 5,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "14279": {
+        "name": "Tepatitl\u00e1n",
+        "league": 263,
+        "form": "DDWWWDDLDWLLDLWDLLDWWDWDWLWLWDWDLWDDDWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "14280": {
+        "name": "Tlaxcala",
+        "league": 263,
+        "form": "DLLLDWWWDLDDLLLWWLWDWLDDWLDD",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "15932": {
+        "name": "Irapuato",
+        "league": 263,
+        "form": "WLWLDWDWWDLDWDDDDDDLLWLWWLLWLDLWWD",
+        "clean_sheets": 10,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "19024": {
+        "name": "CA La Paz",
+        "league": 263,
+        "form": "LDLDWWWDLDLDWLDWDWDLWWDWDLDDLL",
+        "clean_sheets": 8,
+        "failed_to_score": 5,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "19905": {
+        "name": "CDS Tampico Madero",
+        "league": 263,
+        "form": "WDWDWWWWDDWDWDLWWWDWLLWLLWWLWDDDWWWWWDDLLW",
+        "clean_sheets": 13,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "444": {
+        "name": "Patronato",
+        "league": 129,
+        "form": "WDLLDDDLWWLDWDWLWDDWWLWLWLWDDLWDDLL",
+        "clean_sheets": 15,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "447": {
+        "name": "Chacarita Juniors",
+        "league": 129,
+        "form": "WDDLLWDWWWWDLWWDLWWDLDWWLDDDDDLLDL",
+        "clean_sheets": 15,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "448": {
+        "name": "Colon Santa Fe",
+        "league": 129,
+        "form": "DWWWLWDLLLLLLWDWLLLLLWWLLLLDLLLDLW",
+        "clean_sheets": 9,
+        "failed_to_score": 19,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "454": {
+        "name": "Temperley",
+        "league": 129,
+        "form": "DWLWLLLWWLDWDDWWDWDDDWWWDDDDLWWLDWL",
+        "clean_sheets": 22,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "459": {
+        "name": "Arsenal Sarandi",
+        "league": 129,
+        "form": "DDDDLLDDLLLLLDDDWLWLLWLWLWLWWDLLLW",
+        "clean_sheets": 7,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "462": {
+        "name": "Agropecuario",
+        "league": 129,
+        "form": "LDWLWLWLWLWDWLDWDLDDWDLLDWWDWWWWLWL",
+        "clean_sheets": 12,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "464": {
+        "name": "All Boys",
+        "league": 129,
+        "form": "DDDWLWLLLWDLDDLDDWLDDDLWDWWDLDDDDW",
+        "clean_sheets": 17,
+        "failed_to_score": 18,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "466": {
+        "name": "Atletico Mitre",
+        "league": 129,
+        "form": "LLLLWWWDDWDDLDDLWWDWLWLLLDLWDLLWLD",
+        "clean_sheets": 14,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "469": {
+        "name": "Deportivo Moron",
+        "league": 129,
+        "form": "DWLDLDDWLWWWWDDWWWDDDWLDWLWWDWLDWDDWDWL",
+        "clean_sheets": 21,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "470": {
+        "name": "Ferro Carril Oeste",
+        "league": 129,
+        "form": "DLDWWLDWWLLLWLDWLDLDDLDLDLWLDDLWWW",
+        "clean_sheets": 14,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "479": {
+        "name": "Gimnasia Jujuy",
+        "league": 129,
+        "form": "DDWDLWWWDLWWWWDDWWDWDDDLWDWDWLLLLWDL",
+        "clean_sheets": 20,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "480": {
+        "name": "Quilmes",
+        "league": 129,
+        "form": "DLDDWWWLWWDLLDDLDLDDWLLWLLWDDDLDDL",
+        "clean_sheets": 12,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "482": {
+        "name": "Almagro",
+        "league": 129,
+        "form": "DLLLWDWDDLDWWWDWDDLLLLDLWLDDDDLLDL",
+        "clean_sheets": 10,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "483": {
+        "name": "Los Andes",
+        "league": 129,
+        "form": "LDWWDLWDDLWLWLLDWDLLDLWLWDWDDLWLLL",
+        "clean_sheets": 14,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "484": {
+        "name": "Nueva Chicago",
+        "league": 129,
+        "form": "LLDWDLLWDLDWLLDLWDWDWWDWLLDLDLWDWL",
+        "clean_sheets": 14,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "485": {
+        "name": "San Martin Tucuman",
+        "league": 129,
+        "form": "DWWDDDWWDWDWWLDWLDWLLWDLLDWDLLWLDDD",
+        "clean_sheets": 16,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1066": {
+        "name": "Gimnasia M.",
+        "league": 129,
+        "form": "DWWDWWDDWDWDLWDWDDDWWLWWWWLLDWLWDWW",
+        "clean_sheets": 18,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1067": {
+        "name": "Defensores De Belgrano",
+        "league": 129,
+        "form": "DDWWDDDLWWDWWLLLDLDWLDLLDLWDWWDWWL",
+        "clean_sheets": 14,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1927": {
+        "name": "Talleres Remedios",
+        "league": 129,
+        "form": "LLLWLLDLLLLDDLLLLLDLLDLWLWWLLLWLWL",
+        "clean_sheets": 8,
+        "failed_to_score": 22,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1928": {
+        "name": "Gimnasia Y Tiro",
+        "league": 129,
+        "form": "DWWLDWLDDLDLDDWLWWLWDWDWLDWLWDWLDWWDL",
+        "clean_sheets": 18,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1929": {
+        "name": "Deportivo Madryn",
+        "league": 129,
+        "form": "LLDWLWDWDDDDLWWDWDWDWDWWWWDWLWWDWLLWLWLD",
+        "clean_sheets": 13,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1932": {
+        "name": "San Telmo",
+        "league": 129,
+        "form": "WDLLWDWDLWDWLWDDDDLLDLLWDDWLLLWLWL",
+        "clean_sheets": 9,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1936": {
+        "name": "CA Estudiantes",
+        "league": 129,
+        "form": "WWDDWWLLLWWLLDDWDLWLLDWWWWLWDWWWWDWDWWL",
+        "clean_sheets": 21,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1945": {
+        "name": "Defensores Unidos",
+        "league": 129,
+        "form": "WLDDLLLDLLDDLDLLLLLDLLDWDDLLWLLDDL",
+        "clean_sheets": 7,
+        "failed_to_score": 21,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1946": {
+        "name": "Chaco For Ever",
+        "league": 129,
+        "form": "LWWLLWDWLWLLWWDWLWWDWLDWWLLDWDDWLDL",
+        "clean_sheets": 16,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1948": {
+        "name": "Atlanta",
+        "league": 129,
+        "form": "WDDDWWDWDWWDLWDWWDLDWLLWLDDWDWLWDLWLD",
+        "clean_sheets": 20,
+        "failed_to_score": 15,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1951": {
+        "name": "Central Norte",
+        "league": 129,
+        "form": "WLDDWLLLWDLLLLLWLWDWWLLWLDDWLLLWLL",
+        "clean_sheets": 10,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1954": {
+        "name": "Deportivo Maipu",
+        "league": 129,
+        "form": "WWLWLDDLDWLDWDDWLDDLWWLDWLLDWDDWLWL",
+        "clean_sheets": 11,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1957": {
+        "name": "Racing Cordoba",
+        "league": 129,
+        "form": "LWWLWWDDLDDWLDDDLDLWDLWLLWLDDWLWLL",
+        "clean_sheets": 8,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1962": {
+        "name": "Alvarado",
+        "league": 129,
+        "form": "DDLDLDDWDLLWLLDLLWWLDDWLDDDDLDLWDL",
+        "clean_sheets": 15,
+        "failed_to_score": 22,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1965": {
+        "name": "Tristan Suarez",
+        "league": 129,
+        "form": "LWDWWDLDDDWWWLDDDDWDLDDWWLDDWDDLWWWDL",
+        "clean_sheets": 17,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "2424": {
+        "name": "Estudiantes de Rio Cuarto",
+        "league": 129,
+        "form": "DDLWWDWWWLDLWDDWWDDDWDDLWLWWWWWLDWWDWLWWD",
+        "clean_sheets": 20,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "3969": {
+        "name": "Club Atl\u00e9tico G\u00fcemes",
+        "league": 129,
+        "form": "DDLDLLDLDLWLWDDDDDDWWDDDLDLLWLWDWW",
+        "clean_sheets": 10,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "8375": {
+        "name": "Almirante Brown",
+        "league": 129,
+        "form": "DLDLWLDLDLDWLLDWDLLDDLWLWDLDLWWLDW",
+        "clean_sheets": 11,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "8377": {
+        "name": "Colegiales",
+        "league": 129,
+        "form": "DDDLLLLDDWWWLWLLLLWWDWLWLWLDLWDWWW",
+        "clean_sheets": 17,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "8379": {
+        "name": "San Miguel",
+        "league": 129,
+        "form": "WLWLWLDDDDDWLWLDWDWWDDWLWDWLDDWDLDD",
+        "clean_sheets": 17,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "46": {
+        "name": "Leicester",
+        "league": 40,
+        "form": "WLWWDDDDWDLLLDWWLLWDWLLWLWLDLLLLDDLDWLDDDLLDDW",
+        "clean_sheets": 6,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "54": {
+        "name": "Birmingham",
+        "league": 40,
+        "form": "DWWLLWLDDLWLWWLWDWLLDLDDLWDWDWWDWLLLWDLLLWDWWD",
+        "clean_sheets": 10,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1335": {
+        "name": "Charlton",
+        "league": 40,
+        "form": "WDLLDWWDLWWDDWLLLLLDWLLDDWLLWDWLDDLWWDLLDLDLWL",
+        "clean_sheets": 13,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "1837": {
+        "name": "Wrexham",
+        "league": 40,
+        "form": "LLDWLWDDDLWDWDWDWDDLDLWWWWLDWWLDWWWLWLWDLLWWLD",
+        "clean_sheets": 12,
+        "failed_to_score": 6,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "525": {
+        "name": "Pescara",
+        "league": 136,
+        "form": "LLDWLDLDDDLLDLDLWLDLLDLLWLWDWDWLWLDDLD",
+        "clean_sheets": 5,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "527": {
+        "name": "Virtus Entella",
+        "league": 136,
+        "form": "DDWLLDLWDLWDDLLLDLWDLDDWLLLWWLLWLDDWLW",
+        "clean_sheets": 7,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "528": {
+        "name": "Avellino",
+        "league": 136,
+        "form": "LDWWWDDLLDWLLWDLDDWLLWLLLDDLWWWLLDWWLWL",
+        "clean_sheets": 8,
+        "failed_to_score": 14,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "870": {
+        "name": "Padova",
+        "league": 136,
+        "form": "LDLWWDLWDDDLLWDWDLWLLLDWLDWDLLLLLWWLWW",
+        "clean_sheets": 9,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "725": {
+        "name": "Cultural Leonesa",
+        "league": 141,
+        "form": "LLLDWLWDLWLWLWWLWLLDDLLLLDDLLLDLDWLLLDLWLD",
+        "clean_sheets": 7,
+        "failed_to_score": 17,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "8157": {
+        "name": "FC Andorra",
+        "league": 141,
+        "form": "DWWLWDWLLDLDDLLDLWWLDWDLLLWWWDLWDWWWWLWLLL",
+        "clean_sheets": 9,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "9585": {
+        "name": "Real Sociedad II",
+        "league": 141,
+        "form": "WLDDLLDLWLLWWLWLLWLDDDLDWWWLWWLLLLDLLDWDLD",
+        "clean_sheets": 10,
+        "failed_to_score": 13,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "10139": {
+        "name": "AD Ceuta FC",
+        "league": 141,
+        "form": "LLLWDWDWDWWLLLWWDDWWLLWLLWWWLLLWDLDDDWDLWW",
+        "clean_sheets": 12,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "200": {
+        "name": "Vitesse",
+        "league": 89,
+        "form": "LDWLWWLDWLDWLDWLLDWLDWDLDWDLWWLWWDWWDL",
+        "clean_sheets": 9,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "204": {
+        "name": "VVV Venlo",
+        "league": 89,
+        "form": "LLWLWLWWLLWLWLWLLLWWWLLDDWDDLLLLDWLDLW",
+        "clean_sheets": 7,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "208": {
+        "name": "Emmen",
+        "league": 89,
+        "form": "LLLWWDWLLLWLWDWDDWLWLLDLLDLWWLDLLDWLDW",
+        "clean_sheets": 6,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "411": {
+        "name": "Jong PSV U21",
+        "league": 89,
+        "form": "WWWWWLWLDDDLLWWDLWLLWLWWLWLWDWLLLLWWLL",
+        "clean_sheets": 8,
+        "failed_to_score": 7,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "412": {
+        "name": "MVV",
+        "league": 89,
+        "form": "LLWDLLLWDWLWDLLLLDWWLWDLDWLLDDWDLLLDDL",
+        "clean_sheets": 6,
+        "failed_to_score": 16,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "414": {
+        "name": "Roda",
+        "league": 89,
+        "form": "WWLDDWLWDWWWDDLDLDLWWDLDWLWWDLDLDWLWDLDL",
+        "clean_sheets": 8,
+        "failed_to_score": 8,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "418": {
+        "name": "Jong AZ",
+        "league": 89,
+        "form": "LLLLWDLWDLLWWLLWLLWLLLWLWLWDLLLDWWLLLW",
+        "clean_sheets": 6,
+        "failed_to_score": 11,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "422": {
+        "name": "FC Eindhoven",
+        "league": 89,
+        "form": "WWWDLLLLDLLLLWLDWLWWWLWDLLWLLWWLWDLLLW",
+        "clean_sheets": 9,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "423": {
+        "name": "FC OSS",
+        "league": 89,
+        "form": "WLLLDWWLLDDDDLDDWLDLLWWLLLLDLDLDWLWWWW",
+        "clean_sheets": 7,
+        "failed_to_score": 9,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "424": {
+        "name": "Helmond Sport",
+        "league": 89,
+        "form": "LDWLLWLWLWWLLWLLWDLLDDLDLWWLLDLLDLDDWL",
+        "clean_sheets": 9,
+        "failed_to_score": 12,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "425": {
+        "name": "Jong Ajax",
+        "league": 89,
+        "form": "LWLDDLLLLDDDLLDLLWLLLWDWLLWDWLWWLLLLWL",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "428": {
+        "name": "Jong Utrecht",
+        "league": 89,
+        "form": "LDWLWLLLDLWWDDLDWWLWLWDDDDLLLLWLWLLWDW",
+        "clean_sheets": 7,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "218": {
+        "name": "Tondela",
+        "league": 94,
+        "form": "LLLDLDWLLDLWLLLWLLLDDDWDLDLDLLDWWL",
+        "clean_sheets": 7,
+        "failed_to_score": 18,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "4724": {
+        "name": "Alverca",
+        "league": 94,
+        "form": "LLDLWLWWLLDWWLLLWWLDLDDDDDLWWLWLDL",
+        "clean_sheets": 6,
+        "failed_to_score": 10,
+        "over_25": 0,
+        "under_25": 0
+    },
+    "4799": {
+        "name": "Torreense",
+        "league": 94,
+        "form": "DL",
+        "clean_sheets": 1,
+        "failed_to_score": 2,
         "over_25": 0,
         "under_25": 0
     }
