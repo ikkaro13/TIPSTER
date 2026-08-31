@@ -133,11 +133,14 @@ def place_bet(match_id, pick, odds, stake, evidence_snapshot=None, bet_type="PRE
             VALUES (?, ?, ?, ?, ?, 'OPEN', 0, ?, datetime('now'), ?)
         ''', (bet_id, match_id, pick, odds, stake, evidence_snapshot, bet_type))
         
-        cursor.execute('''
-            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
-            VALUES (?, 'PLACE_BET', ?, ?, ?)
-        ''', (bet_id, -stake, bankroll, new_bankroll))
-        
+        try:
+            cursor.execute('''
+                INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+                VALUES (?, 'PLACE_BET', ?, ?, ?)
+            ''', (bet_id, -stake, bankroll, new_bankroll))
+        except Exception as audit_err:
+            print(f"Warning: Could not write to audit log during place_bet: {audit_err}")
+            
         conn.commit()
         return {"status": "success", "bet_id": bet_id, "new_bankroll": new_bankroll}
     except Exception as e:
@@ -179,11 +182,13 @@ def settle_bet(bet_id, result_status):
         cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
         cursor.execute("UPDATE bets SET status = ?, profit = ? WHERE id = ?", (result_status, profit, bet_id))
         
-        cursor.execute('''
-            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
-            VALUES (?, 'SETTLE', ?, ?, ?)
-        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
-        
+        try:
+            cursor.execute('''
+                INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+                VALUES (?, 'SETTLE', ?, ?, ?)
+            ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        except Exception as audit_err:
+            print(f'Warning: Could not write to audit log: {audit_err}')
         conn.commit()
         return {"status": "success", "new_bankroll": new_bankroll}
     except Exception as e:
@@ -228,11 +233,13 @@ def reopen_bet(bet_id):
         cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
         cursor.execute("UPDATE bets SET status = 'OPEN', profit = 0 WHERE id = ?", (bet_id,))
         
-        cursor.execute('''
-            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
-            VALUES (?, 'REOPEN', ?, ?, ?)
-        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
-        
+        try:
+            cursor.execute('''
+                INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+                VALUES (?, 'REOPEN', ?, ?, ?)
+            ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        except Exception as audit_err:
+            print(f'Warning: Could not write to audit log: {audit_err}')
         conn.commit()
         return {"status": "success", "message": f"Apuesta reabierta correctamente.", "new_bankroll": new_bankroll}
     except Exception as e:
@@ -324,11 +331,13 @@ def update_bet_odds(bet_id, new_odds):
             
         cursor.execute("UPDATE bets SET odds = ?, profit = ? WHERE id = ?", (new_odds, profit, bet_id))
         
-        cursor.execute('''
-            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
-            VALUES (?, 'UPDATE_ODDS', ?, ?, ?)
-        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
-        
+        try:
+            cursor.execute('''
+                INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+                VALUES (?, 'UPDATE_ODDS', ?, ?, ?)
+            ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        except Exception as audit_err:
+            print(f'Warning: Could not write to audit log: {audit_err}')
         conn.commit()
         return {"status": "success", "new_bankroll": new_bankroll}
     except Exception as e:
