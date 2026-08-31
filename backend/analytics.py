@@ -1,4 +1,5 @@
 ﻿import math
+from market_rules import is_shadow_market
 import os
 import joblib
 from scraper import get_corners_data
@@ -487,6 +488,26 @@ def find_value_bets(real_probs, bookmaker_odds, tuning_params=None):
         price = odds_info.get("price", 0)
         if price <= 1.0:
             continue
+            
+        # TAREA 2.4 - IGNORAR SHADOW MARKETS
+        internal_name_map = {
+            "Ganador Local": "home",
+            "Empate": "draw",
+            "Ganador Visita": "away",
+            "Más 1.5 Goles": "over_1_5",
+            "Menos 1.5 Goles": "under_1_5",
+            "Más 2.5 Goles": "over_2_5",
+            "Menos 2.5 Goles": "under_2_5",
+            "Más 3.5 Goles": "over_3_5",
+            "Menos 3.5 Goles": "under_3_5",
+            "Ambos Anotan (SÍ)": "btts_yes",
+            "Ambos Anotan (NO)": "btts_no"
+        }
+        internal_key = internal_name_map.get(name)
+        if internal_key:
+            # We don't have lab_stats easily accessible here, but passing None reads market_rules base thresholds
+            if is_shadow_market(internal_key, None):
+                continue
             
         if p_percent > best_safe_prob and p_percent >= 55.0:
             best_safe_prob = p_percent

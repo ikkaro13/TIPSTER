@@ -251,6 +251,8 @@ def api_recalculate_hermes(req: RecalculateHermesRequest):
 
 @app.post("/api/portfolio/bet")
 def api_place_bet(req: BetRequest):
+    if not req.evidence_snapshot:
+        print(f"[WARNING] Bet sin evidence_snapshot: {req.match_id} - {req.pick}")
     return place_bet(req.match_id, req.pick, req.odds, req.stake, req.evidence_snapshot, req.bet_type)
 
 
@@ -314,6 +316,16 @@ def delete_bet_endpoint(bet_id: str):
     if res.get("status") == "error":
         raise HTTPException(status_code=404, detail=res["message"])
     return res
+
+
+@app.get("/api/shadow/status")
+def get_shadow_status():
+    from market_rules import get_all_shadow_markets, get_shadow_market_progress
+    lab_stats = get_cached_lab_stats()
+    shadow_markets = get_all_shadow_markets(lab_stats)
+    return {
+        "shadow_markets": [get_shadow_market_progress(m, lab_stats) for m in shadow_markets]
+    }
 
 @app.get("/api/portfolio/lab")
 def portfolio_lab():
@@ -946,7 +958,21 @@ def scan_day_for_value_bets(date: str):
                 pass
 
         # ── check_edge: definida FUERA del loop para eficiencia ────────────
-        def check_edge(prob_percent, odds_val, pick_name, match_probs, match_odds,
+        
+_LAB_STATS_CACHE = {"data": None, "timestamp": 0}
+LAB_CACHE_TTL = 3600 # 1 hora
+
+def get_cached_lab_stats():
+    import time
+    now = time.time()
+    if _LAB_STATS_CACHE["data"] is None or (now - _LAB_STATS_CACHE["timestamp"]) > LAB_CACHE_TTL:
+        result = portfolio_lab()
+        _LAB_STATS_CACHE["data"] = result.get("por_mercado", {})
+        _LAB_STATS_CACHE["timestamp"] = now
+    return _LAB_STATS_CACHE["data"]
+
+
+def check_edge(prob_percent, odds_val, pick_name, match_probs, match_odds,
                        match_home, match_away, match_league, match_fixture_id):
             from data_engine import save_delfos_pick
             import json as _json
