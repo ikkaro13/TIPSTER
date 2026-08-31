@@ -251,9 +251,24 @@ def api_recalculate_hermes(req: RecalculateHermesRequest):
 
 @app.post("/api/portfolio/bet")
 def api_place_bet(req: BetRequest):
-    if not req.evidence_snapshot:
+    import json
+    snap_str = req.evidence_snapshot
+    if not snap_str:
         print(f"[WARNING] Bet sin evidence_snapshot: {req.match_id} - {req.pick}")
-    return place_bet(req.match_id, req.pick, req.odds, req.stake, req.evidence_snapshot, req.bet_type)
+    else:
+        try:
+            snap = json.loads(snap_str)
+            if 'hermes' not in snap or 'home' not in snap:
+                snap_str = ""
+                print("[WARNING] evidence_snapshot invalido, marcando sin evidencia")
+        except Exception:
+            snap_str = ""
+            print("[WARNING] evidence_snapshot corrupto, marcando sin evidencia")
+            
+    res = place_bet(req.match_id, req.pick, req.odds, req.stake, snap_str, req.bet_type)
+    if snap_str == "":
+        res['message'] = res.get('message', '') + " (WARNING: Apuesta guardada SIN evidencia analizable)"
+    return res
 
 
 @app.get("/api/portfolio/audit-log")
@@ -281,6 +296,41 @@ def toggle_argos():
 @app.get("/api/argos/status")
 def get_argos_status():
     return {"argos_active": ARGOS_DAEMON_ACTIVE}
+
+
+@app.get("/api/delfos/diagnostic")
+def delfos_diagnostic():
+    from portfolio_manager import get_db_connection
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('SELECT COUNT(*) FROM bets')
+    total = c.fetchone()[0]
+    
+    c.execute('SELECT status, COUNT(*) FROM bets GROUP BY status')
+    status_counts = dict(c.fetchall())
+    
+    c.execute('SELECT COUNT(*) FROM bets WHERE evidence_snapshot IS NOT NULL AND evidence_snapshot != ""')
+    has_snap = c.fetchone()[0]
+    
+    c.execute('SELECT COUNT(*) FROM bets WHERE evidence_snapshot IS NULL OR evidence_snapshot = ""')
+    no_snap = c.fetchone()[0]
+    
+    c.execute('SELECT COUNT(*) FROM bets WHERE match_id IN ("-1", "mock_12345")')
+    mock_matches = c.fetchone()[0]
+    
+    # Excluidos (simulamos para la UI)
+    c.execute('SELECT * FROM bets WHERE match_id IN ("-1", "mock_12345") OR evidence_snapshot IS NULL OR evidence_snapshot = ""')
+    excluidos = [dict(r) for r in c.fetchall()]
+    conn.close()
+    
+    return {
+        "total": total,
+        "status_counts": status_counts,
+        "has_snap": has_snap,
+        "no_snap": no_snap,
+        "mock_matches": mock_matches,
+        "excluidos": excluidos
+    }
 
 @app.post("/api/autotune/run")
 def trigger_auto_tuning():
@@ -355,15 +405,16 @@ def portfolio_lab():
     def extract_market_from_pick(pick: str) -> str:
         """Infiere el mercado apostado desde el texto del pick."""
         p = pick.lower()
-        if "over 2.5" in p or "más de 2.5" in p: return "Over 2.5"
+        if "over 2.5" in p or "m\u00e1s de 2.5" in p or "mas de 2.5" in p or "más de 2.5" in p: return "Over 2.5"
         if "under 2.5" in p or "menos de 2.5" in p: return "Under 2.5"
-        if "over 1.5" in p or "más de 1.5" in p: return "Over 1.5"
+        if "over 1.5" in p or "m\u00e1s de 1.5" in p or "mas de 1.5" in p or "más de 1.5" in p: return "Over 1.5"
         if "under 1.5" in p or "menos de 1.5" in p: return "Under 1.5"
-        if "over 0.5" in p or "más de 0.5" in p: return "Over 0.5"
+        if "over 0.5" in p or "m\u00e1s de 0.5" in p or "mas de 0.5" in p or "más de 0.5" in p: return "Over 0.5"
         if "btts" in p or "ambos anotan" in p: return "BTTS"
-        if "doble oportunidad" in p or "dc_1x" in p or "(1x)" in p: return "Doble Oportunidad 1X"
-        if "doble oportunidad" in p or "dc_x2" in p or "(x2)" in p: return "Doble Oportunidad X2"
-        if "draw no bet" in p or "empate no acción" in p or "dnb" in p: return "DNB"
+        if "(x2)" in p or "dc_x2" in p: return "Doble Oportunidad X2"
+        if "(1x)" in p or "dc_1x" in p: return "Doble Oportunidad 1X"
+        if "doble oportunidad" in p: return "Doble Oportunidad (Sin Especificar)"
+        if "draw no bet" in p or "empate no acci" in p or "dnb" in p: return "DNB"
         if "empate" in p or "draw" in p: return "Empate"
         if "gana visita" in p or "away" in p: return "Gana Visita"
         if "pivote seguro" in p or "gana local" in p or "home" in p: return "Gana Local"
@@ -422,10 +473,20 @@ def portfolio_lab():
             prob_used = snap.get("draw", 0)
         elif "gana visita" in pick_lower:
             prob_used = snap.get("away", 0)
-        elif "1x" in pick_lower or "doble oportunidad (1x)" in pick_lower.replace(" ", ""):
+        elif "(x2)" in pick_lower or "dc_x2" in pick_lower:
+            prob_used = snap.get("dc_2x", 0)
+            if prob_used == 0:
+                import re as _re
+                match = _re.search(r'pivote seguro:\s*\+?([\d.]+)%', pick_lower)
+                if match:
+                    prob_used = float(match.group(1))
+        elif "(1x)" in pick_lower or "dc_1x" in pick_lower:
             prob_used = snap.get("dc_1x", 0)
-        elif "x2" in pick_lower or "doble oportunidad (x2)" in pick_lower.replace(" ", ""):
-            prob_used = snap.get("dc_x2", 0)
+            if prob_used == 0:
+                import re as _re
+                match = _re.search(r'pivote seguro:\s*\+?([\d.]+)%', pick_lower)
+                if match:
+                    prob_used = float(match.group(1))
         elif "over 1.5" in pick_lower or "más de 1.5" in pick_lower:
             prob_used = snap.get("over_1_5", 0)
         elif "over 2.5" in pick_lower or "más de 2.5" in pick_lower:
@@ -959,20 +1020,20 @@ def scan_day_for_value_bets(date: str):
 
         # ── check_edge: definida FUERA del loop para eficiencia ────────────
         
-_LAB_STATS_CACHE = {"data": None, "timestamp": 0}
-LAB_CACHE_TTL = 3600 # 1 hora
+        _LAB_STATS_CACHE = {"data": None, "timestamp": 0}
+        LAB_CACHE_TTL = 3600 # 1 hora
 
-def get_cached_lab_stats():
-    import time
-    now = time.time()
-    if _LAB_STATS_CACHE["data"] is None or (now - _LAB_STATS_CACHE["timestamp"]) > LAB_CACHE_TTL:
-        result = portfolio_lab()
-        _LAB_STATS_CACHE["data"] = result.get("por_mercado", {})
-        _LAB_STATS_CACHE["timestamp"] = now
-    return _LAB_STATS_CACHE["data"]
+        def get_cached_lab_stats():
+            import time
+            now = time.time()
+            if _LAB_STATS_CACHE["data"] is None or (now - _LAB_STATS_CACHE["timestamp"]) > LAB_CACHE_TTL:
+                result = portfolio_lab()
+                _LAB_STATS_CACHE["data"] = result.get("por_mercado", {})
+                _LAB_STATS_CACHE["timestamp"] = now
+            return _LAB_STATS_CACHE["data"]
 
 
-def check_edge(prob_percent, odds_val, pick_name, match_probs, match_odds,
+        def check_edge(prob_percent, odds_val, pick_name, match_probs, match_odds,
                        match_home, match_away, match_league, match_fixture_id):
             from data_engine import save_delfos_pick
             import json as _json
