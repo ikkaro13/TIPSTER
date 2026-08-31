@@ -122,12 +122,21 @@ def calculate_match_probabilities(home_team, away_team, elo_db, current_minute=0
         # 4. Tendencias de Goles (Over/Under)
         h_over_rate = home_stats.get("over_25", 0) / h_matches
         a_over_rate = away_stats.get("over_25", 0) / a_matches
-        if h_over_rate > 0.6 and a_over_rate > 0.6:
-            home_expected_full *= 1.1
-            away_expected_full *= 1.1
-        elif h_over_rate < 0.4 and a_over_rate < 0.4:
-            home_expected_full *= 0.9
-            away_expected_full *= 0.9
+        # 4. Tendencias de Goles (Over/Under) - AJUSTE INDIVIDUAL PROPORCIONAL
+        OFFENSIVE_BASELINE = 0.5
+        OFFENSIVE_MAX_BOOST = 1.15
+        OFFENSIVE_MAX_PENALTY = 0.90
+        
+        def offensive_multiplier(over_rate):
+            if over_rate > OFFENSIVE_BASELINE:
+                excess = min(over_rate - OFFENSIVE_BASELINE, 0.5)
+                return 1.0 + (excess / 0.5) * (OFFENSIVE_MAX_BOOST - 1.0)
+            else:
+                deficit = min(OFFENSIVE_BASELINE - over_rate, 0.5)
+                return 1.0 - (deficit / 0.5) * (1.0 - OFFENSIVE_MAX_PENALTY)
+                
+        home_expected_full *= offensive_multiplier(h_over_rate)
+        away_expected_full *= offensive_multiplier(a_over_rate)
     
     # --------------------------------------------
     # TIME DECAY (Decaimiento Temporal para En Vivo)
