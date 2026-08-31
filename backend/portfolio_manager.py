@@ -8,7 +8,7 @@ def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS portfolio (key TEXT PRIMARY KEY, value REAL)")
-    c.execute("CREATE TABLE IF NOT EXISTS bets (id TEXT PRIMARY KEY, match_id TEXT, pick TEXT, odds REAL, stake REAL, status TEXT, profit REAL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, evidence_snapshot TEXT)")
+    c.execute("CREATE TABLE IF NOT EXISTS bets (id TEXT PRIMARY KEY, match_id TEXT, pick TEXT, odds REAL, stake REAL, status TEXT, profit REAL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, evidence_snapshot TEXT, bet_type TEXT DEFAULT 'PRE')")
     
     # NUEVO SCHEMA PARA BANKROLL_AUDIT_LOG
     c.execute("""
@@ -46,6 +46,13 @@ def get_db_connection():
         created_at TEXT DEFAULT (datetime('now'))
     );
     """)
+    
+    # MIGRACION AUTOMATICA
+    try:
+        conn.execute("ALTER TABLE bets ADD COLUMN bet_type TEXT DEFAULT 'PRE'")
+    except sqlite3.OperationalError:
+        pass # La columna ya existe
+        
     conn.commit()
     return conn
 
