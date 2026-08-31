@@ -21,9 +21,20 @@ def init_db():
 init_db()
 
 def get_db_connection():
-
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS bankroll_audit_log (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        bet_id TEXT,
+        action TEXT,
+        delta REAL,
+        bankroll_before REAL,
+        bankroll_after REAL,
+        created_at TEXT DEFAULT (datetime('now'))
+    );
+    """)
+    conn.commit()
     return conn
 
 def get_portfolio():
