@@ -1,10 +1,13 @@
 import requests
 import os
+from dotenv import load_dotenv
+load_dotenv()
+VERIFY_SSL = os.getenv("VERIFY_SSL", "true").lower() == "true"
 import logging
 
 # Configuración del Bot (Datos proporcionados por el usuario)
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "8986944818:AAHqGe76ZHZ6LomfVFJ-Xsk2ira2_S_ZzXs")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "6506436422")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # Variable global para evitar hacer spam de la misma alerta repetidas veces
 _sent_alerts = set()
@@ -37,7 +40,7 @@ def send_telegram_alert(message: str, alert_id: str = None):
     }
     
     try:
-        response = requests.post(url, json=payload, timeout=5, verify=False)
+        response = requests.post(url, json=payload, timeout=5, verify=VERIFY_SSL)
         response.raise_for_status()
         return True
     except Exception as e:
@@ -51,3 +54,4 @@ if __name__ == "__main__":
         print("Mensaje de prueba enviado exitosamente a Telegram.")
     else:
         print("Fallo al enviar el mensaje.")
+

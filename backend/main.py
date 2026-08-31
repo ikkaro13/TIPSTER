@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
+VERIFY_SSL = os.getenv("VERIFY_SSL", "true").lower() == "true"
 import time
 import traceback
 import requests
@@ -90,15 +93,16 @@ class DeleteBetRequest(BaseModel):
 
 app = FastAPI(title="Tipster API Financial Grade", version="5.0")
 
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
-API_KEY = "42cbf57204514f65c3ba5cbf2b440a0f"
+API_KEY = os.getenv("API_FOOTBALL_KEY")
 GLOBAL_STATS_DB = None
 ODDS_CACHE = {"timestamp": 0, "data": []}
 CACHE_TTL = 3600 # 1 hora de cachÃ©
@@ -742,13 +746,13 @@ def get_daily_calendar(date: str = None):
         # 2. RESPALDO: THE-ODDS-API
         if len(calendar_matches) == 0:
             import requests
-            theodds_key = "4e9ed7e82f648f0ea89f8cab32123953"
+            theodds_key = os.getenv("THE_ODDS_API_KEY")
             fallback_leagues = ['soccer_mexico_ligamx', 'soccer_usa_mls', 'soccer_epl', 'soccer_spain_la_liga', 'soccer_italy_serie_a']
             
             for lg in fallback_leagues:
                 url = f"https://api.the-odds-api.com/v4/sports/{lg}/odds/?apiKey={theodds_key}&regions=us&markets=h2h"
                 try:
-                    res = requests.get(url, verify=False, timeout=7)
+                    res = requests.get(url, verify=VERIFY_SSL, timeout=7)
                     if res.status_code == 200:
                         odds_data = res.json()
                         for g in odds_data:
@@ -774,10 +778,10 @@ def get_daily_calendar(date: str = None):
         
         # 3. RESPALDO: FOOTBALL-DATA
         if len(calendar_matches) == 0:
-            fd_key = "d238787ab8b3494592c7c805b9be8b84"
+            fd_key = os.getenv("FOOTBALL_DATA_KEY")
             url = f"https://api.football-data.org/v4/matches?dateFrom={query_date}&dateTo={query_date}"
             try:
-                res = requests.get(url, headers={'X-Auth-Token': fd_key}, verify=False, timeout=7)
+                res = requests.get(url, headers={'X-Auth-Token': fd_key}, verify=VERIFY_SSL, timeout=7)
                 if res.status_code == 200:
                     fd_data = res.json().get('matches', [])
                     for m in fd_data:
@@ -1243,6 +1247,9 @@ def api_delfos_historial():
         "picks_hoy": picks_hoy,
         "historial": historial[:100] # Mostrar 100 más recientes
     }
+
+
+
 
 
 

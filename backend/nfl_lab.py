@@ -2,7 +2,7 @@ import requests
 import json
 import statistics
 
-API_KEY = "4e9ed7e82f648f0ea89f8cab32123953"
+API_KEY = os.getenv("THE_ODDS_API_KEY")
 SPORT = "americanfootball_nfl"
 REGIONS = "us,uk" # Expandimos para ver casinos europeos afilados
 MARKETS = "spreads" # Solo buscaremos hándicaps (donde están los números clave)
@@ -15,7 +15,7 @@ def analyze_key_numbers():
     print("🏈 Escaneando discrepancias de Hándicaps y Números Clave...")
     url = f"https://api.the-odds-api.com/v4/sports/{SPORT}/odds/?apiKey={API_KEY}&regions={REGIONS}&markets={MARKETS}&oddsFormat={ODDS_FORMAT}"
     
-    response = requests.get(url, verify=False)
+    response = requests.get(url, verify=VERIFY_SSL)
     
     if response.status_code != 200:
         print("❌ Error al conectar.")
@@ -77,3 +77,4 @@ def analyze_key_numbers():
 
 if __name__ == "__main__":
     analyze_key_numbers()
+

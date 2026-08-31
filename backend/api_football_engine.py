@@ -1,4 +1,4 @@
-﻿import requests
+import requests
 
 import time
 
@@ -8,7 +8,7 @@ from datetime import datetime
 
 API_KEYS = [
 
-    "7419e977170de5db2ea68791e952179f"
+    os.getenv("API_FOOTBALL_KEY")
 
 ]
 
@@ -38,7 +38,7 @@ def make_api_request(endpoint):
 
             url = f"{BASE_URL}{endpoint}"
 
-            response = requests.get(url, headers=get_headers(), timeout=5, verify=False)
+            response = requests.get(url, headers=get_headers(), timeout=5, verify=VERIFY_SSL)
 
             
 
@@ -91,6 +91,9 @@ def make_api_request(endpoint):
 import json
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
+VERIFY_SSL = os.getenv("VERIFY_SSL", "true").lower() == "true"
 
 
 
@@ -220,7 +223,7 @@ def get_daily_fixtures(date_str, timezone_str="America/Mexico_City"):
 
     try:
 
-        # Añadimos verify=False de forma preventiva para el entorno local
+        # Añadimos verify=VERIFY_SSL de forma preventiva para el entorno local
 
         data = make_api_request(f"/fixtures?date={date_str}&timezone={timezone_str}")
 
@@ -493,6 +496,7 @@ def get_fixture_injuries(fixture_id):
         print(f"Error fetching injuries for {fixture_id}: {e}")
 
     return []
+
 
 
 
