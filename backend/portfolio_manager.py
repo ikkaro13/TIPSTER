@@ -44,20 +44,32 @@ def reset_bankroll(new_amount):
     if cursor.rowcount == 0:
         cursor.execute("INSERT INTO portfolio (key, value) VALUES ('initial_bankroll', ?)", (new_amount,))
         
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS bankroll_audit_log (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        bet_id TEXT,
+        action TEXT,
+        delta REAL,
+        bankroll_before REAL,
+        bankroll_after REAL,
+        created_at TEXT DEFAULT (datetime('now'))
+    );
+""")
     conn.commit()
     conn.close()
     return {"status": "success", "new_bankroll": new_amount}
 
 def place_bet(match_id, pick, odds, stake, evidence_snapshot=None, bet_type="PRE"):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    
     try:
+        conn.execute("BEGIN IMMEDIATE")
+        cursor = conn.cursor()
         cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
         row = cursor.fetchone()
         bankroll = row['value'] if row else 10000.0
         
         if stake > bankroll:
+            conn.rollback()
             return {"status": "error", "message": "Bankroll insuficiente"}
             
         new_bankroll = bankroll - stake
@@ -73,20 +85,30 @@ def place_bet(match_id, pick, odds, stake, evidence_snapshot=None, bet_type="PRE
             VALUES (?, ?, ?, ?, ?, 'OPEN', 0, ?, datetime('now'), ?)
         ''', (bet_id, match_id, pick, odds, stake, evidence_snapshot, bet_type))
         
+        cursor.execute('''
+            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+            VALUES (?, 'PLACE_BET', ?, ?, ?)
+        ''', (bet_id, -stake, bankroll, new_bankroll))
+        
         conn.commit()
         return {"status": "success", "bet_id": bet_id, "new_bankroll": new_bankroll}
+    except Exception as e:
+        conn.rollback()
+        return {"status": "error", "message": str(e)}
     finally:
         conn.close()
 
 def settle_bet(bet_id, result_status):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    
     try:
+        conn.execute("BEGIN IMMEDIATE")
+        cursor = conn.cursor()
+        
         cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
         bet = cursor.fetchone()
         
         if not bet or bet['status'] != 'OPEN':
+            conn.rollback()
             return {"status": "error", "message": "Apuesta no encontrada o ya cerrada"}
             
         cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
@@ -98,35 +120,46 @@ def settle_bet(bet_id, result_status):
         
         if result_status == 'WON':
             profit = (stake * odds) - stake
-            bankroll += (stake * odds)
+            new_bankroll = bankroll + (stake * odds)
         elif result_status == 'LOST':
             profit = -stake
+            new_bankroll = bankroll
         else: # REFUND
             profit = 0
-            bankroll += stake
+            new_bankroll = bankroll + stake
             
-        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
         cursor.execute("UPDATE bets SET status = ?, profit = ? WHERE id = ?", (result_status, profit, bet_id))
         
+        cursor.execute('''
+            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+            VALUES (?, 'SETTLE', ?, ?, ?)
+        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        
         conn.commit()
-        return {"status": "success", "new_bankroll": bankroll}
+        return {"status": "success", "new_bankroll": new_bankroll}
+    except Exception as e:
+        conn.rollback()
+        return {"status": "error", "message": str(e)}
     finally:
         conn.close()
 
 def reopen_bet(bet_id):
-    """Revierte una apuesta cerrada (REFUND/WON/LOST) de vuelta a OPEN, ajustando el bankroll."""
     conn = get_db_connection()
-    cursor = conn.cursor()
-    
     try:
+        conn.execute("BEGIN IMMEDIATE")
+        cursor = conn.cursor()
+        
         cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
         bet = cursor.fetchone()
         
         if not bet:
+            conn.rollback()
             return {"status": "error", "message": "Apuesta no encontrada"}
         
         if bet['status'] == 'OPEN':
-            return {"status": "error", "message": "La apuesta ya está abierta"}
+            conn.rollback()
+            return {"status": "error", "message": "La apuesta ya esta abierta"}
             
         cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
         row = cursor.fetchone()
@@ -135,101 +168,121 @@ def reopen_bet(bet_id):
         stake = bet['stake']
         odds = bet['odds']
         current_status = bet['status']
+        new_bankroll = bankroll
         
-        # Revertir el efecto financiero según el estado actual
         if current_status == 'WON':
-            bankroll = bankroll - (stake * odds)  # quitar la ganancia
+            new_bankroll = bankroll - (stake * odds)
         elif current_status == 'LOST':
-            bankroll = bankroll - stake  # quitar la devolución (el stake ya estaba descontado)
+            new_bankroll = bankroll - stake
         elif current_status == 'REFUND':
-            bankroll = bankroll - stake  # quitar el reembolso
+            new_bankroll = bankroll - stake
         
-        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
         cursor.execute("UPDATE bets SET status = 'OPEN', profit = 0 WHERE id = ?", (bet_id,))
         
+        cursor.execute('''
+            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+            VALUES (?, 'REOPEN', ?, ?, ?)
+        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        
         conn.commit()
-        return {"status": "success", "message": f"Apuesta reabierta correctamente.", "new_bankroll": bankroll}
+        return {"status": "success", "message": f"Apuesta reabierta correctamente.", "new_bankroll": new_bankroll}
+    except Exception as e:
+        conn.rollback()
+        return {"status": "error", "message": str(e)}
     finally:
         conn.close()
 
 def delete_bet(bet_id):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
-    bet = cursor.fetchone()
-    
-    if not bet:
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
+        bet = cursor.fetchone()
+        
+        if not bet:
+            conn.rollback()
+            return {"status": "error", "message": "Apuesta no encontrada"}
+            
+        cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+        row = cursor.fetchone()
+        bankroll = row['value'] if row else 10000.0
+        
+        stake = bet['stake']
+        odds = bet['odds']
+        status = bet['status']
+        new_bankroll = bankroll
+        
+        if status == 'OPEN':
+            new_bankroll += stake
+        elif status == 'WON':
+            new_bankroll = bankroll - (stake * odds) + stake
+        elif status == 'LOST':
+            new_bankroll += stake
+        elif status == 'REFUND':
+            pass
+            
+        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
+        cursor.execute("DELETE FROM bets WHERE id = ?", (bet_id,))
+        
+        cursor.execute('''
+            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+            VALUES (?, 'DELETE', ?, ?, ?)
+        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        
+        conn.commit()
+        return {"status": "success", "new_bankroll": new_bankroll}
+    except Exception as e:
+        conn.rollback()
+        return {"status": "error", "message": str(e)}
+    finally:
         conn.close()
-        return {"status": "error", "message": "Apuesta no encontrada"}
-        
-    cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
-    row = cursor.fetchone()
-    bankroll = row['value'] if row else 10000.0
-    
-    stake = bet['stake']
-    odds = bet['odds']
-    status = bet['status']
-    
-    # Revertir el bankroll según el estado en el que estaba la apuesta
-    if status == 'OPEN':
-        bankroll += stake
-    elif status == 'WON':
-        bankroll = bankroll - (stake * odds) + stake
-    elif status == 'LOST':
-        bankroll += stake
-    elif status == 'REFUND':
-        # bankroll remained unchanged when refunded (stake was already returned)
-        # Actually, when settled as REFUND, bankroll += stake is done.
-        # So to undo it, we shouldn't do anything because the stake was returned, 
-        # so if we delete the bet, it's as if the bet never happened. 
-        # Wait, if we never placed the bet, we would have stake in bankroll.
-        # After place_bet: bankroll - stake
-        # After REFUND: bankroll + stake
-        # Result = bankroll. So if we delete it now, we don't need to change the bankroll!
-        pass
-        
-    cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
-    cursor.execute("DELETE FROM bets WHERE id = ?", (bet_id,))
-    
-    conn.commit()
-    conn.close()
-    
-    return {"status": "success", "new_bankroll": bankroll}
 
 def update_bet_odds(bet_id, new_odds):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
-    bet = cursor.fetchone()
-    
-    if not bet:
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT * FROM bets WHERE id = ?", (bet_id,))
+        bet = cursor.fetchone()
+        
+        if not bet:
+            conn.rollback()
+            return {"status": "error", "message": "Apuesta no encontrada"}
+            
+        old_odds = bet['odds']
+        stake = bet['stake']
+        status = bet['status']
+        
+        cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
+        row = cursor.fetchone()
+        bankroll = row['value'] if row else 10000.0
+        
+        profit = bet['profit']
+        new_bankroll = bankroll
+        
+        if status == 'WON':
+            new_bankroll = bankroll - (stake * old_odds)
+            new_bankroll = new_bankroll + (stake * new_odds)
+            profit = (stake * new_odds) - stake
+            
+            cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
+            
+        cursor.execute("UPDATE bets SET odds = ?, profit = ? WHERE id = ?", (new_odds, profit, bet_id))
+        
+        cursor.execute('''
+            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+            VALUES (?, 'UPDATE_ODDS', ?, ?, ?)
+        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        
+        conn.commit()
+        return {"status": "success", "new_bankroll": new_bankroll}
+    except Exception as e:
+        conn.rollback()
+        return {"status": "error", "message": str(e)}
+    finally:
         conn.close()
-        return {"status": "error", "message": "Apuesta no encontrada"}
-        
-    old_odds = bet['odds']
-    stake = bet['stake']
-    status = bet['status']
-    
-    cursor.execute("SELECT value FROM portfolio WHERE key = 'bankroll'")
-    row = cursor.fetchone()
-    bankroll = row['value'] if row else 10000.0
-    
-    profit = bet['profit']
-    
-    if status == 'WON':
-        # Revert the old win from bankroll
-        bankroll = bankroll - (stake * old_odds)
-        # Apply the new win
-        bankroll = bankroll + (stake * new_odds)
-        profit = (stake * new_odds) - stake
-        
-        cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (bankroll,))
-        
-    cursor.execute("UPDATE bets SET odds = ?, profit = ? WHERE id = ?", (new_odds, profit, bet_id))
-    
-    conn.commit()
-    conn.close()
-    
-    return {"status": "success", "new_bankroll": bankroll}
+

@@ -253,6 +253,17 @@ def api_recalculate_hermes(req: RecalculateHermesRequest):
 def api_place_bet(req: BetRequest):
     return place_bet(req.match_id, req.pick, req.odds, req.stake, req.evidence_snapshot, req.bet_type)
 
+
+@app.get("/api/portfolio/audit-log")
+def get_audit_log(limit: int = 50):
+    from portfolio_manager import get_db_connection
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM bankroll_audit_log ORDER BY created_at DESC LIMIT ?", (limit,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"audit_log": rows}
+
 @app.post("/api/portfolio/reset")
 def api_reset_bankroll(req: ResetBankrollRequest):
     return reset_bankroll(req.new_amount)
