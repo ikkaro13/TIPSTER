@@ -1,9 +1,9 @@
-from engine.rules import ALL_PREMATCH_RULES
+﻿from engine.rules import ALL_PREMATCH_RULES
 from market_rules import HERMES_MIN_EDGE, HERMES_MIN_ODDS, HERMES_MIN_PROB, is_shadow_market, get_all_shadow_markets
 
 class ValueAggregator:
     def __init__(self, min_edge=None, min_prob_threshold=None):
-        # Lee umbrales de market_rules.py (fuente única de verdad)
+        # Lee umbrales de market_rules.py (fuente Ãºnica de verdad)
         self.min_edge = min_edge if min_edge is not None else HERMES_MIN_EDGE * 100  # en %
         self.min_prob_threshold = min_prob_threshold if min_prob_threshold is not None else HERMES_MIN_PROB
 
@@ -20,8 +20,8 @@ class ValueAggregator:
             "Empate": "draw",
             context.get('away_team'): "away",
             "Over 2.5 Goles (Alta Intensidad)": "over_2_5",
-            "Over 0.5 Goles 1T (Arranque Rápido)": "over_0_5_ht",
-            "Ambos Anotan - SÍ": "btts_yes",
+            "Over 0.5 Goles 1T (Arranque RÃ¡pido)": "over_0_5_ht",
+            "Ambos Anotan - SÃ": "btts_yes",
             "Ambos Anotan - NO": "btts_no",
             "Under 2.5 Goles (Partido Cerrado)": "under_2_5",
             "Doble Oportunidad (1X)": "dc_1x",
@@ -32,17 +32,17 @@ class ValueAggregator:
         
         market_map_inverse = {v: k for k, v in market_map.items()}
         
-        # Calcular todos los edges disponibles — respetar shadow mode
+        # Calcular todos los edges disponibles â€” respetar shadow mode
         edges = {}
         for market_desc, key in market_map.items():
             if key in odds and key in probs:
-                # Si el mercado está en shadow mode → no recomendar
+                # Si el mercado estÃ¡ en shadow mode â†’ no recomendar
                 if is_shadow_market(market_desc):
                     continue
                     
                 o = float(odds[key])
                 if o < HERMES_MIN_ODDS:
-                    continue  # Cuota mínima 1.60
+                    continue  # Cuota mÃ­nima 1.60
                 
                 p = float(probs[key]) / 100.0
                 if o > 1.0:
@@ -58,7 +58,7 @@ class ValueAggregator:
         if current_edge >= self.min_edge and current_confidence >= self.min_prob_threshold:
             return f"{current_pick} (Value Bet: +{current_edge:.1f}%)", current_confidence
             
-        # Si el pick actual no sirve, buscamos el mercado MÁS PROBABLE que tenga un Edge positivo (>= min_edge)
+        # Si el pick actual no sirve, buscamos el mercado MÃS PROBABLE que tenga un Edge positivo (>= min_edge)
         # Y que cumpla con el filtro estricto de confianza del usuario (>= min_prob_threshold)
         valid_markets = {}
         for m, e in edges.items():
@@ -82,8 +82,8 @@ class ValueAggregator:
                     
             return f"{best_market} (Pivote Seguro: +{best_market_edge:.1f}%)", int(best_market_prob)
             
-        # Si NO HAY NINGÚN MERCADO individual con valor, armamos una Combinada (SGP)
-        # 1. Buscar lo más probable de 1X2 (Incluyendo Doble Oportunidad)
+        # Si NO HAY NINGÃšN MERCADO individual con valor, armamos una Combinada (SGP)
+        # 1. Buscar lo mÃ¡s probable de 1X2 (Incluyendo Doble Oportunidad)
         p_home = float(probs.get('home', 0))
         p_draw = float(probs.get('draw', 0))
         p_away = float(probs.get('away', 0))
@@ -102,12 +102,12 @@ class ValueAggregator:
         best_winner_desc = max(winner_probs, key=winner_probs.get)
         best_winner_prob = winner_probs[best_winner_desc] / 100.0
 
-        # 2. Buscar lo más probable de Goles
+        # 2. Buscar lo mÃ¡s probable de Goles
         goals_probs = {
-            "Más de 1.5 Goles": float(probs.get('over_1_5', 0)),
+            "MÃ¡s de 1.5 Goles": float(probs.get('over_1_5', 0)),
             "Menos de 3.5 Goles": float(probs.get('under_3_5', 0)),
-            "Más de 2.5 Goles": float(probs.get('over_2_5', 0)),
-            "Ambos Anotan (SÍ)": float(probs.get('btts_yes', 0)),
+            "MÃ¡s de 2.5 Goles": float(probs.get('over_2_5', 0)),
+            "Ambos Anotan (SÃ)": float(probs.get('btts_yes', 0)),
             "Ambos Anotan (NO)": float(probs.get('btts_no', 0))
         }
         goals_probs = {k: v for k, v in goals_probs.items() if v > 0}
@@ -122,14 +122,14 @@ class ValueAggregator:
             
             if combined_prob > 0.25: # Al menos 25% de probabilidad conjunta (Cuotas ~4.00 o menores)
                 min_odds = (1.0 + (self.min_edge / 100.0)) / combined_prob
-                return f"👑 PARLAY (Crear Apuesta): {best_winner_desc} + {best_goal_desc} (Busca cuota > {min_odds:.2f})", int(combined_prob * 100)
+                return f"ðŸ‘‘ PARLAY (Crear Apuesta): {best_winner_desc} + {best_goal_desc} (Busca cuota > {min_odds:.2f})", int(combined_prob * 100)
                 
-        return "NO BET (Sin Valor Matemático > 3%)", 0
+        return "NO BET (Sin Valor MatemÃ¡tico > 3%)", 0
 
     def evaluate_safe(self, current_pick, confidence, context):
         """
-        El 'Ladrillo'. Busca el mercado con mayor probabilidad absoluta que tenga una cuota mínima de 1.60.
-        Ignora por completo el Edge matemático.
+        El 'Ladrillo'. Busca el mercado con mayor probabilidad absoluta que tenga una cuota mÃ­nima de 1.60.
+        Ignora por completo el Edge matemÃ¡tico.
         """
         odds = context.get('odds', {})
         probs = context.get('probs', {})
@@ -139,10 +139,10 @@ class ValueAggregator:
             context.get('home_team', "Gana Local"): "home",
             "Empate": "draw",
             context.get('away_team', "Gana Visita"): "away",
-            "Más de 1.5 Goles": "over_1_5",
-            "Más de 2.5 Goles": "over_2_5",
+            "MÃ¡s de 1.5 Goles": "over_1_5",
+            "MÃ¡s de 2.5 Goles": "over_2_5",
             "Menos de 3.5 Goles": "under_3_5",
-            "Ambos Anotan (SÍ)": "btts_yes",
+            "Ambos Anotan (SÃ)": "btts_yes",
             "Ambos Anotan (NO)": "btts_no",
             "Menos de 2.5 Goles": "under_2_5",
             "Doble Oportunidad (1X)": "dc_1x",
@@ -159,7 +159,7 @@ class ValueAggregator:
                 except (ValueError, TypeError):
                     continue
                 
-                # REGLA DEL LADRILLO: Cuota mínima de 1.60
+                # REGLA DEL LADRILLO: Cuota mÃ­nima de 1.60
                 if o >= 1.60:
                     # Verificar que el edge no sea demasiado negativo (> -5%)
                     # Evita recomendar apuestas con overround muy alto donde la casa siempre gana
@@ -168,7 +168,7 @@ class ValueAggregator:
                         valid_safe_markets[market_desc] = p
                     
         if not valid_safe_markets:
-            return "NO HAY SAFE PICK (Ningún mercado seguro >= 1.60)", 0
+            return "NO HAY SAFE PICK (NingÃºn mercado seguro >= 1.60)", 0
             
         best_safe_desc = max(valid_safe_markets, key=valid_safe_markets.get)
         best_safe_prob = valid_safe_markets[best_safe_desc]
@@ -178,7 +178,7 @@ class ValueAggregator:
 
 class EvidenceAggregator:
     def __init__(self):
-        # Asignación de pesos dinámicos por regla
+        # AsignaciÃ³n de pesos dinÃ¡micos por regla
         self.weights = {
             "Elo Dominance": 1.0,
             "Poisson Lethality": 1.5,
@@ -230,9 +230,9 @@ class EvidenceAggregator:
         if is_conflicted:
             confidence = int(confidence * 0.5)
             
-        # --- NUEVOS MÓDULOS (API PRO) ---
-        # 1. Penalización Médica
-        MAX_TOTAL_PENALTY = 30 # nunca penalizar más de 30 puntos combinados
+        # --- NUEVOS MÃ“DULOS (API PRO) ---
+        # 1. PenalizaciÃ³n MÃ©dica
+        MAX_TOTAL_PENALTY = 30 # nunca penalizar mÃ¡s de 30 puntos combinados
         total_penalty = 0
         h_injuries = context.get('home_injuries', 0)
         a_injuries = context.get('away_injuries', 0)
@@ -262,28 +262,28 @@ class EvidenceAggregator:
                 final_pick = "Over 2.5 Goles (Alta Intensidad)"
                 confidence = min(int((total_xg / 3.5) * 85), 95)
             elif total_xg >= 2.2 and home_xg >= 1.1 and away_xg >= 1.1:
-                # BTTS en shadow mode → usar Over 1.5 como alternativa
-                if is_shadow_market("Ambos Anotan - SÍ"):
-                    final_pick = "Más de 1.5 Goles (Alternativa BTTS)"
+                # BTTS en shadow mode â†’ usar Over 1.5 como alternativa
+                if is_shadow_market("Ambos Anotan - SÃ"):
+                    final_pick = "MÃ¡s de 1.5 Goles (Alternativa BTTS)"
                     confidence = 75
                 else:
-                    final_pick = "Ambos Anotan - SÍ"
+                    final_pick = "Ambos Anotan - SÃ"
                     confidence = 80
             elif total_xg >= 2.0:
-                final_pick = "Over 0.5 Goles 1T (Arranque Rápido)"
+                final_pick = "Over 0.5 Goles 1T (Arranque RÃ¡pido)"
                 confidence = 75
             elif total_xg <= 1.5:
-                # Under 2.5 en shadow mode → NO BET honesto
+                # Under 2.5 en shadow mode â†’ NO BET honesto
                 if is_shadow_market("Under 2.5 Goles (Partido Cerrado)"):
-                    final_pick = "NO BET (Partido Cerrado — Mercado en Monitoreo)"
+                    final_pick = "NO BET (Partido Cerrado â€” Mercado en Monitoreo)"
                     confidence = 0
                 else:
                     final_pick = "Under 2.5 Goles (Partido Cerrado)"
                     confidence = 85
             elif home_xg < 0.8 or away_xg < 0.8:
-                # BTTS NO en shadow mode → NO BET honesto
+                # BTTS NO en shadow mode â†’ NO BET honesto
                 if is_shadow_market("Ambos Anotan - NO"):
-                    final_pick = "NO BET (Una defensa dominante — Mercado en Monitoreo)"
+                    final_pick = "NO BET (Una defensa dominante â€” Mercado en Monitoreo)"
                     confidence = 0
                 else:
                     final_pick = "Ambos Anotan - NO"
@@ -317,7 +317,7 @@ class Hermes:
         self.aggregator = EvidenceAggregator()
 
     def analyze(self, context: dict):
-        # Sanitizar strings vacíos
+        # Sanitizar strings vacÃ­os
         for k, v in context.get('odds', {}).items():
             if v == "" or v is None:
                 context['odds'][k] = 0
@@ -340,7 +340,7 @@ class Hermes:
         aggregation = self.aggregator.aggregate(results, context)
         
         # Stake Engine (1 Unidad = 100 por defecto, pero dejaremos que el frontend decida el valor base de la unidad)
-        # Aquí solo sugerimos las Unidades en base al pick de Valor
+        # AquÃ­ solo sugerimos las Unidades en base al pick de Valor
         conf = aggregation["value_confidence"]
         if "NO BET" in aggregation["value_pick"]:
             recommended_units = 0
@@ -365,3 +365,4 @@ class Hermes:
             "recommended_units": recommended_units,
             "rules_evaluated": results
         }
+

@@ -1,4 +1,4 @@
-import os
+﻿import os
 from dotenv import load_dotenv
 load_dotenv()
 import requests
@@ -53,7 +53,7 @@ def make_api_request(endpoint):
 
                 if errors and isinstance(errors, dict) and ('token' in errors or 'rateLimit' in errors or 'requests' in errors or 'access' in errors):
 
-                    print(f"[API-Football] Límite o Error en llave {API_KEYS[current_key_index][:8]}... Cambiando a la siguiente...")
+                    print(f"[API-Football] LÃ­mite o Error en llave {API_KEYS[current_key_index][:8]}... Cambiando a la siguiente...")
 
                     current_key_index = (current_key_index + 1) % len(API_KEYS)
 
@@ -136,7 +136,7 @@ def save_calendar_cache(calendar_data):
 
 
 
-# Sistema de Caché Inteligente (Para ahorrar peticiones)
+# Sistema de CachÃ© Inteligente (Para ahorrar peticiones)
 
 # Se almacenan las respuestas y su timestamp
 
@@ -158,7 +158,7 @@ CACHE = {
 
 TTL_FIXTURES = 180 # 3 minutos para ahorrar tokens diarios (antes era 30s)
 
-TTL_STATS = 60 # 1 minuto (Solo durante ventana primaria, si no, se podría ampliar)
+TTL_STATS = 60 # 1 minuto (Solo durante ventana primaria, si no, se podrÃ­a ampliar)
 
 
 
@@ -172,13 +172,13 @@ def get_live_fixtures():
 
     if current_time - CACHE['fixtures']['timestamp'] < TTL_FIXTURES:
 
-        print("[API-Football] Usando caché de Fixtures")
+        print("[API-Football] Usando cachÃ© de Fixtures")
 
         return CACHE['fixtures']['data']
 
         
 
-    print("[API-Football] Petición a /fixtures?live=all")
+    print("[API-Football] PeticiÃ³n a /fixtures?live=all")
 
     try:
 
@@ -210,23 +210,23 @@ def get_daily_fixtures(date_str, timezone_str="America/Mexico_City"):
 
     
 
-    # Usar caché de 10 minutos para el calendario (así detecta cuando finalizan los partidos)
+    # Usar cachÃ© de 10 minutos para el calendario (asÃ­ detecta cuando finalizan los partidos)
 
     if date_str in CACHE['calendar']:
 
         if current_time - CACHE['calendar'][date_str]['timestamp'] < 600:
 
-            print("[API-Football] Usando caché de Calendario")
+            print("[API-Football] Usando cachÃ© de Calendario")
 
             return CACHE['calendar'][date_str]['data']
 
         
 
-    print(f"[API-Football] Petición a /fixtures?date={date_str}")
+    print(f"[API-Football] PeticiÃ³n a /fixtures?date={date_str}")
 
     try:
 
-        # Añadimos verify=VERIFY_SSL de forma preventiva para el entorno local
+        # AÃ±adimos verify=VERIFY_SSL de forma preventiva para el entorno local
 
         data = make_api_request(f"/fixtures?date={date_str}&timezone={timezone_str}")
 
@@ -234,7 +234,7 @@ def get_daily_fixtures(date_str, timezone_str="America/Mexico_City"):
 
             data = data.get('response', [])
 
-            # Guardar el día actual y mantener máximo 3 días en memoria
+            # Guardar el dÃ­a actual y mantener mÃ¡ximo 3 dÃ­as en memoria
 
             CACHE['calendar'][date_str] = {
 
@@ -270,9 +270,9 @@ def get_live_stats(fixture_id, minute, mock=False):
 
     """
 
-    Obtiene las estadísticas en vivo.
+    Obtiene las estadÃ­sticas en vivo.
 
-    Implementa caché y control de ventana primaria (min 12 al 25).
+    Implementa cachÃ© y control de ventana primaria (min 12 al 25).
 
     """
 
@@ -296,7 +296,7 @@ def get_live_stats(fixture_id, minute, mock=False):
 
     # Verificar si estamos fuera de la ventana primaria para ahorrar peticiones
 
-    # Si el minuto es > 30, extendemos el caché a 5 minutos.
+    # Si el minuto es > 30, extendemos el cachÃ© a 5 minutos.
 
     ttl = TTL_STATS if (10 <= minute <= 30) else 300 
 
@@ -306,13 +306,13 @@ def get_live_stats(fixture_id, minute, mock=False):
 
     if fixture_id in CACHE['stats'] and (current_time - CACHE['stats'][fixture_id]['timestamp']) < ttl:
 
-        print(f"[API-Football] Usando caché de Stats para {fixture_id}")
+        print(f"[API-Football] Usando cachÃ© de Stats para {fixture_id}")
 
         return CACHE['stats'][fixture_id]['data']
 
         
 
-    print(f"[API-Football] Petición a /fixtures/statistics para {fixture_id}")
+    print(f"[API-Football] PeticiÃ³n a /fixtures/statistics para {fixture_id}")
 
     try:
 
@@ -324,7 +324,7 @@ def get_live_stats(fixture_id, minute, mock=False):
 
             
 
-            # Mapear estadísticas de API-Football a nuestro motor ATHENA
+            # Mapear estadÃ­sticas de API-Football a nuestro motor ATHENA
 
             stats = {
 
@@ -344,11 +344,11 @@ def get_live_stats(fixture_id, minute, mock=False):
 
             if len(teams_data) > 0:
 
-                # Usualmente queremos las estadísticas combinadas o la mayor presión
+                # Usualmente queremos las estadÃ­sticas combinadas o la mayor presiÃ³n
 
-                # Para simplificar el indicador global, sumaremos la presión de ambos equipos
+                # Para simplificar el indicador global, sumaremos la presiÃ³n de ambos equipos
 
-                # (En una versión PRO se calcula el diferencial, pero usaremos el total como indicador de ritmo)
+                # (En una versiÃ³n PRO se calcula el diferencial, pero usaremos el total como indicador de ritmo)
 
                 for team in teams_data:
 
@@ -384,7 +384,7 @@ def get_live_stats(fixture_id, minute, mock=False):
 
                 
 
-                # Promediar la posesión del equipo dominante
+                # Promediar la posesiÃ³n del equipo dominante
 
                 if len(teams_data) == 2:
 
@@ -412,7 +412,7 @@ def get_live_stats(fixture_id, minute, mock=False):
 
 def get_fixture_details(fixture_id):
 
-    """ Obtiene los detalles de un partido específico (incluye IDs de equipos) """
+    """ Obtiene los detalles de un partido especÃ­fico (incluye IDs de equipos) """
 
     if fixture_id == "mock_12345":
 
@@ -420,7 +420,7 @@ def get_fixture_details(fixture_id):
 
         
 
-    print(f"[API-Football] Petición a /fixtures?id={fixture_id}")
+    print(f"[API-Football] PeticiÃ³n a /fixtures?id={fixture_id}")
 
     try:
 
@@ -444,7 +444,7 @@ def get_fixture_details(fixture_id):
 
 def get_team_historical_stats(team_id, last_n=10):
 
-    """ Obtiene los últimos N partidos de un equipo para construir su Memoria Histórica """
+    """ Obtiene los Ãºltimos N partidos de un equipo para construir su Memoria HistÃ³rica """
 
     if team_id in [1, 2]: # Mock
 
@@ -452,7 +452,7 @@ def get_team_historical_stats(team_id, last_n=10):
 
         
 
-    print(f"[API-Football] Petición a /fixtures?team={team_id}&last={last_n}")
+    print(f"[API-Football] PeticiÃ³n a /fixtures?team={team_id}&last={last_n}")
 
     try:
 
@@ -492,13 +492,16 @@ def get_fixture_injuries(fixture_id):
 
         if data:
 
-            return data.get("response", [])
+            return data.get('response', [])
+
+        return []
 
     except Exception as e:
 
         print(f"Error fetching injuries for {fixture_id}: {e}")
 
     return []
+
 
 
 
