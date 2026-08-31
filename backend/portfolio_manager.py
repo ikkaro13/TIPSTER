@@ -9,7 +9,19 @@ def init_db():
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS portfolio (key TEXT PRIMARY KEY, value REAL)")
     c.execute("CREATE TABLE IF NOT EXISTS bets (id TEXT PRIMARY KEY, match_id TEXT, pick TEXT, odds REAL, stake REAL, status TEXT, profit REAL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, evidence_snapshot TEXT)")
-    c.execute("CREATE TABLE IF NOT EXISTS bankroll_audit_log (id INTEGER PRIMARY KEY AUTOINCREMENT, bet_id TEXT, action TEXT, amount REAL, balance_after REAL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)")
+    
+    # NUEVO SCHEMA PARA BANKROLL_AUDIT_LOG
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS bankroll_audit_log (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        bet_id TEXT,
+        action TEXT,
+        delta REAL,
+        bankroll_before REAL,
+        bankroll_after REAL,
+        created_at TEXT DEFAULT (datetime('now'))
+    )""")
+    
     c.execute("CREATE TABLE IF NOT EXISTS delfos_picks (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, league TEXT, match TEXT, market TEXT, confidence REAL, edge REAL, odds REAL, status TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, evidence_snapshot TEXT)")
     c.execute("SELECT * FROM portfolio WHERE key = 'bankroll'")
     if not c.fetchone():
