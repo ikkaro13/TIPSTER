@@ -268,10 +268,13 @@ def delete_bet(bet_id):
         cursor.execute("UPDATE portfolio SET value = ? WHERE key = 'bankroll'", (new_bankroll,))
         cursor.execute("DELETE FROM bets WHERE id = ?", (bet_id,))
         
-        cursor.execute('''
-            INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
-            VALUES (?, 'DELETE', ?, ?, ?)
-        ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        try:
+            cursor.execute('''
+                INSERT INTO bankroll_audit_log (bet_id, action, delta, bankroll_before, bankroll_after)
+                VALUES (?, 'DELETE', ?, ?, ?)
+            ''', (bet_id, new_bankroll - bankroll, bankroll, new_bankroll))
+        except Exception as audit_err:
+            print(f"Warning: Could not write to audit log: {audit_err}")
         
         conn.commit()
         return {"status": "success", "new_bankroll": new_bankroll}

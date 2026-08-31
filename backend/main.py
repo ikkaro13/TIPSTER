@@ -826,7 +826,10 @@ def get_daily_calendar(date: str = None):
                 })
         
         debug_msg = ""
-        
+        fallback_used = False
+        if len(calendar_matches) == 0:
+            fallback_used = True
+
         # 2. RESPALDO: THE-ODDS-API
         if len(calendar_matches) == 0:
             import requests
@@ -861,7 +864,7 @@ def get_daily_calendar(date: str = None):
                     debug_msg += f"OddsAPI Err. "
         
         # 3. RESPALDO: FOOTBALL-DATA
-        if len(calendar_matches) == 0:
+        if fallback_used:
             fd_key = os.getenv("FOOTBALL_DATA_KEY")
             url = f"https://api.football-data.org/v4/matches?dateFrom={query_date}&dateTo={query_date}"
             try:
